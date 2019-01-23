@@ -1,22 +1,25 @@
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 // Material
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatPaginator, MatSort, MatSnackBar, MatDialog } from '@angular/material';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatPaginator, MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
 // RXJS
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-import { fromEvent, merge, forkJoin, Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import {debounceTime, distinctUntilChanged, tap, map, startWith, switchMap, catchError} from 'rxjs/operators';
+import {fromEvent, merge, forkJoin, Observable, of as observableOf} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 // Services
-import { CustomersService } from '../../_core/services/index';
-import { LayoutUtilsService, MessageType } from '../../_core/utils/layout-utils.service';
-import { HttpUtilsService } from '../../_core/utils/http-utils.service';
+import {CustomersService} from '../../_core/services/index';
+import {LayoutUtilsService, MessageType} from '../../_core/utils/layout-utils.service';
+import {HttpUtilsService} from '../../_core/utils/http-utils.service';
 // Models
-import { QueryParamsModel } from '../../_core/models/query-models/query-params.model';
-import { CustomerModel } from '../../_core/models/customer.model';
-import { CustomersDataSource } from '../../_core/models/data-sources/customers.datasource';
+import {QueryParamsModel} from '../../_core/models/query-models/query-params.model';
+import {CustomerModel} from '../../_core/models/customer.model';
+import {CustomersDataSource} from '../../_core/models/data-sources/customers.datasource';
 // Components
-import { CustomerEditDialogComponent } from '../customer-edit/customer-edit.dialog.component';
-import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
+import {CustomerEditDialogComponent} from '../customer-edit/customer-edit.dialog.component';
+import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestore';
+import {FormControl} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../../../../../environments/environment';
 
 // Table with EDIT item in MODAL
 // ARTICLE for table with sort/filter/paginator
@@ -32,10 +35,6 @@ import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firest
 })
 export class CustomersListComponent implements OnInit {
 	// Table fields
-	dataSource;
-	displayedColumns = ['select',  'name', 'country', 'language', 'phone', 'status', 'type', 'actions'];
-	@ViewChild(MatPaginator) paginator: MatPaginator;
-	@ViewChild(MatSort) sort: MatSort;
 	// Filter fields
 	@ViewChild('searchInput') searchInput: ElementRef;
 	filterStatus: string = '';
@@ -44,8 +43,25 @@ export class CustomersListComponent implements OnInit {
 	selection = new SelectionModel<CustomerModel>(true, []);
 	customersResult: CustomerModel[] = [];
 
-	customersDoc:AngularFirestoreDocument<any>;
-	customers: Observable<any[]>;  
+	customersDoc: AngularFirestoreDocument<any>;
+	customers: Observable<any[]>;
+
+	dataSource;
+	displayedColumns = ['name', 'country', 'language', 'phone', 'status', 'type', 'actions'];
+	@ViewChild(MatPaginator) paginator: MatPaginator;
+	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatTable) myTable: MatTable<any>;
+	public length: number;
+	resultsLength = 0;
+	isLoadingResults = true;
+	isRateLimitReached = false;
+	data: any;
+	resultsPerPage = 5;
+	query = new FormControl();
+	team = new FormControl();
+	status = new FormControl();
+	itemChanged = new FormControl();
+	items: Observable<any[]>;
 
 	constructor(
 		private customersService: CustomersService,
@@ -53,67 +69,78 @@ export class CustomersListComponent implements OnInit {
 		public snackBar: MatSnackBar,
 		private layoutUtilsService: LayoutUtilsService,
 		private translate: TranslateService,
-		private afs: AngularFirestore
+		private afs: AngularFirestore,
+		private http: HttpClient,
 	) {
 
 		this.customers = this.afs.collection('customers').snapshotChanges().pipe(
 			map(actions => actions.map(a => {
-			  const data = a.payload.doc.data();
-			  const id = a.payload.doc.id;
-			  return { id, ...data };
-			})));		
+				const data = a.payload.doc.data();
+				const id = a.payload.doc.id;
+				return {id, ...data};
+			})));
+
+		this.dataSource = new MatTableDataSource<any>([]);
+		this.query.setValue('');
+		this.status.setValue('');
+		this.team.setValue('');
+		this.itemChanged.setValue(false);
 	}
 
 	/** LOAD DATA */
 	ngOnInit() {
 		// If the user changes the sort order, reset back to the first page.
-		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-		/* Data load will be triggered in two cases:
-		- when a pagination event occurs => this.paginator.page
-		- when a sort event occurs => this.sort.sortChange
-		**/
-		merge(this.sort.sortChange, this.paginator.page)
-			.pipe(
-				tap(() => {
-					this.loadCustomersList();
-				})
-			)
-			.subscribe();
-
-		// Filtration, bind to searchInput
-		fromEvent(this.searchInput.nativeElement, 'keyup')
-			.pipe(
-				// tslint:disable-next-line:max-line-length
-				debounceTime(150), // The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator, we are limiting the amount of server requests emitted to a maximum of one every 150ms
-				distinctUntilChanged(), // This operator will eliminate duplicate values
-				tap(() => {
-					this.paginator.pageIndex = 0;
-					this.loadCustomersList();
-				})
-			)
-			.subscribe();
-
-		// Init DataSource
-		const queryParams = new QueryParamsModel(this.filterConfiguration(false));
-		// this.dataSource = new CustomersDataSource(this.customersService);
-		this.dataSource = this.customers;
-		// First load
-		// this.dataSource.loadCustomers(queryParams);
-		this.dataSource.entitySubject.subscribe(res => (this.customersResult = res));
+		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+		this.query.valueChanges.subscribe(value => {
+		});
+		this.team.valueChanges.subscribe(value => {
+		});
+		this.status.valueChanges.subscribe(value => {
+		});
+		this.loadCustomersList(
+			this.itemChanged.valueChanges,
+			this.team.valueChanges,
+			this.status.valueChanges,
+			this.query.valueChanges,
+			this.sort.sortChange,
+			this.paginator.page
+		);
 	}
 
-	loadCustomersList() {
-		this.selection.clear();
-		const queryParams = new QueryParamsModel(
-			this.filterConfiguration(true),
-			this.sort.direction,
-			this.sort.active,
-			this.paginator.pageIndex,
-			this.paginator.pageSize
-		);
-		this.dataSource.loadCustomers(queryParams);
-		this.selection.clear();
+	loadCustomersList(itemChanged, team, status, query, sortChange = null, page = null) {
+		merge(itemChanged, team, status, query, sortChange, page)
+			.pipe(
+				startWith({}),
+				switchMap(() => {
+					this.isLoadingResults = true;
+					return this.getCustomerListService(
+						this.team.value,
+						this.status.value,
+						this.query.value,
+						this.sort.active,
+						this.sort.direction,
+						this.paginator.pageIndex + 1,
+						this.resultsPerPage
+					);
+				}),
+				map(data => {
+					// Flip flag to show that loading has finished.
+					this.isLoadingResults = false;
+					this.isRateLimitReached = false;
+					this.resultsLength = data.length;
+					return data;
+				}),
+				catchError(() => {
+					this.isLoadingResults = false;
+					// Catch if the API has reached its rate limit. Return empty data.
+					this.isRateLimitReached = true;
+					return observableOf([]);
+				})
+			).subscribe(data => {this.data = data; });
+	}
+
+	getCustomerListService(team: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
+		return this.afs.collection('markets').valueChanges();
 	}
 
 	/** FILTRATION */
@@ -156,7 +183,7 @@ export class CustomersListComponent implements OnInit {
 
 			this.customersService.deleteCustomer(_item.id).subscribe(() => {
 				this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-				this.loadCustomersList();
+				// this.loadCustomersList();
 			});
 		});
 	}
@@ -181,7 +208,7 @@ export class CustomersListComponent implements OnInit {
 				.deleteCustomers(idsForDeletion)
 				.subscribe(() => {
 					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-					this.loadCustomersList();
+					// this.loadCustomersList();
 					this.selection.clear();
 				});
 		});
@@ -204,7 +231,7 @@ export class CustomersListComponent implements OnInit {
 	updateStatusForCustomers() {
 		const _title = this.translate.instant('ECOMMERCE.CUSTOMERS.UPDATE_STATUS.TITLE');
 		const _updateMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.UPDATE_STATUS.MESSAGE');
-		const _statuses = [{ value: 0, text: 'Suspended' }, { value: 1, text: 'Active' }, { value: 2, text: 'Pending' }];
+		const _statuses = [{value: 0, text: 'Suspended'}, {value: 1, text: 'Active'}, {value: 2, text: 'Pending'}];
 		const _messages = [];
 
 		this.selection.selected.forEach(elem => {
@@ -228,7 +255,7 @@ export class CustomersListComponent implements OnInit {
 				.updateStatusForCustomer(this.selection.selected, +res)
 				.subscribe(() => {
 					this.layoutUtilsService.showActionNotification(_updateMessage, MessageType.Update);
-					this.loadCustomersList();
+					// this.loadCustomersList();
 					this.selection.clear();
 				});
 		});
@@ -246,14 +273,14 @@ export class CustomersListComponent implements OnInit {
 		saveMessageTranslateParam += customer.id > 0 ? 'UPDATE_MESSAGE' : 'ADD_MESSAGE';
 		const _saveMessage = this.translate.instant(saveMessageTranslateParam);
 		const _messageType = customer.id > 0 ? MessageType.Update : MessageType.Create;
-		const dialogRef = this.dialog.open(CustomerEditDialogComponent, { data: { customer } });
+		const dialogRef = this.dialog.open(CustomerEditDialogComponent, {data: {customer}});
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
 
 			this.layoutUtilsService.showActionNotification(_saveMessage, _messageType, 10000, true, false);
-			this.loadCustomersList();
+			// this.loadCustomersList();
 		});
 	}
 

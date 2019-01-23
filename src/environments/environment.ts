@@ -7,11 +7,11 @@ export const environment = {
   production: false,
   isMockEnabled: true, // You have to switch this, when your real back-end is done
   firebaseConfig : {
-    apiKey: "AIzaSyBPhE1emq36dLx3zRj1CRsn5SfZgBe8aOY",
-    authDomain: "tamima-e0b87.firebaseapp.com",
-    databaseURL: "https://tamima-e0b87.firebaseio.com",
-    projectId: "tamima-e0b87",
-    storageBucket: "tamima-e0b87.appspot.com",
-    messagingSenderId: "936396213012"
+    apiKey: "AIzaSyABdhQIiB0XAmoYD-n_HHqobwcxTOE_mis",
+    authDomain: "tamima-c05fc.firebaseapp.com",
+    databaseURL: "https://tamima-c05fc.firebaseio.com",
+    projectId: "tamima-c05fc",
+    storageBucket: "tamima-c05fc.appspot.com",
+    messagingSenderId: "292755364721"
   }
 };
