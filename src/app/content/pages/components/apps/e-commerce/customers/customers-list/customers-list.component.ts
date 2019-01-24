@@ -134,7 +134,13 @@ export class CustomersListComponent implements OnInit {
 	getCustomerListService(lastMarketId: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
 		return this.afs.collection('markets', ref => {
 			return ref.limit(resultsPerPage).orderBy('marketId').startAfter(lastMarketId);
-		}).valueChanges();
+		}).snapshotChanges().pipe(
+			map(actions => actions.map(a => {
+				this.data = a.payload.doc.data();
+				const id = a.payload.doc.id;
+				console.log({ id, ...this.data });
+				return { id, ...this.data };
+			})));
 	}
 
 	/** FILTRATION */
