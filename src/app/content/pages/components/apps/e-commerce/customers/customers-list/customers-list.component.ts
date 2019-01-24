@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 // Material
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
@@ -9,17 +9,13 @@ import {TranslateService} from '@ngx-translate/core';
 // Services
 import {CustomersService} from '../../_core/services/index';
 import {LayoutUtilsService, MessageType} from '../../_core/utils/layout-utils.service';
-import {HttpUtilsService} from '../../_core/utils/http-utils.service';
 // Models
-import {QueryParamsModel} from '../../_core/models/query-models/query-params.model';
 import {CustomerModel} from '../../_core/models/customer.model';
-import {CustomersDataSource} from '../../_core/models/data-sources/customers.datasource';
 // Components
 import {CustomerEditDialogComponent} from '../customer-edit/customer-edit.dialog.component';
 import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestore';
 import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../../../../../../environments/environment';
 
 // Table with EDIT item in MODAL
 // ARTICLE for table with sort/filter/paginator
@@ -56,11 +52,11 @@ export class CustomersListComponent implements OnInit {
 	isLoadingResults = true;
 	isRateLimitReached = false;
 	data: any;
-	resultsPerPage = 5;
+	resultsPerPage = 1;
 	query = new FormControl();
 	team = new FormControl();
 	status = new FormControl();
-	itemChanged = new FormControl();
+	lastMarketId = new FormControl();
 	items: Observable<any[]>;
 
 	constructor(
@@ -72,19 +68,11 @@ export class CustomersListComponent implements OnInit {
 		private afs: AngularFirestore,
 		private http: HttpClient,
 	) {
-
-		this.customers = this.afs.collection('customers').snapshotChanges().pipe(
-			map(actions => actions.map(a => {
-				const data = a.payload.doc.data();
-				const id = a.payload.doc.id;
-				return {id, ...data};
-			})));
-
 		this.dataSource = new MatTableDataSource<any>([]);
 		this.query.setValue('');
 		this.status.setValue('');
 		this.team.setValue('');
-		this.itemChanged.setValue(false);
+		this.lastMarketId.setValue('');
 	}
 
 	/** LOAD DATA */
@@ -97,8 +85,10 @@ export class CustomersListComponent implements OnInit {
 		});
 		this.status.valueChanges.subscribe(value => {
 		});
+		this.lastMarketId.valueChanges.subscribe(value => {
+		});
 		this.loadCustomersList(
-			this.itemChanged.valueChanges,
+			this.lastMarketId.valueChanges,
 			this.team.valueChanges,
 			this.status.valueChanges,
 			this.query.valueChanges,
@@ -107,14 +97,14 @@ export class CustomersListComponent implements OnInit {
 		);
 	}
 
-	loadCustomersList(itemChanged, team, status, query, sortChange = null, page = null) {
-		merge(itemChanged, team, status, query, sortChange, page)
+	loadCustomersList(lastMarketId, team, status, query, sortChange = null, page = null) {
+		merge(lastMarketId, team, status, query, sortChange, page)
 			.pipe(
 				startWith({}),
 				switchMap(() => {
 					this.isLoadingResults = true;
 					return this.getCustomerListService(
-						this.team.value,
+						this.lastMarketId.value,
 						this.status.value,
 						this.query.value,
 						this.sort.active,
@@ -136,11 +126,15 @@ export class CustomersListComponent implements OnInit {
 					this.isRateLimitReached = true;
 					return observableOf([]);
 				})
-			).subscribe(data => {this.data = data; });
+			).subscribe(data => {
+				this.data = data;
+			});
 	}
 
-	getCustomerListService(team: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
-		return this.afs.collection('markets').valueChanges();
+	getCustomerListService(lastMarketId: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
+		return this.afs.collection('markets', ref => {
+			return ref.limit(resultsPerPage).orderBy('marketId').startAfter(lastMarketId);
+		}).valueChanges();
 	}
 
 	/** FILTRATION */
@@ -344,5 +338,10 @@ export class CustomersListComponent implements OnInit {
 				return 'Individual';
 		}
 		return '';
+	}
+
+	onPaginateChange(event) {
+		console.log(this.data[this.data.length - 1]);
+		this.lastMarketId.setValue(this.data[this.data.length - 1].marketId);
 	}
 }

@@ -1,5 +1,5 @@
 <!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
-<m-portlet [options]="{headLarge: true}" [loading$]="dataSource.loading$">
+<m-portlet [options]="{headLarge: true}">
 	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
 	<!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
 
@@ -188,10 +188,9 @@
 		<!-- start: BOTTOM -->
 		<div class="mat-table__bottom">
 			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
-			<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
 			<!-- MATERIAL PAGINATOR | Binded to dasources -->
 			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
-			<mat-paginator [pageSize]="1" [pageSizeOptions]="[2,4,6]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+			<mat-paginator [pageSize]="resultsPerPage"  [length]="50" [showFirstLastButtons]="true" (page)="onPaginateChange($event)"></mat-paginator>
 		</div>
 		<!-- end: BOTTOM -->
 	</ng-container>
