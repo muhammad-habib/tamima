@@ -52,11 +52,11 @@ export class CustomersListComponent implements OnInit {
 	isLoadingResults = true;
 	isRateLimitReached = false;
 	data: any;
-	resultsPerPage = 1;
+	resultsPerPage = 2;
 	query = new FormControl();
 	team = new FormControl();
 	status = new FormControl();
-	lastMarketId = new FormControl();
+	nextPage = new FormControl();
 	items: Observable<any[]>;
 
 	constructor(
@@ -72,7 +72,7 @@ export class CustomersListComponent implements OnInit {
 		this.query.setValue('');
 		this.status.setValue('');
 		this.team.setValue('');
-		this.lastMarketId.setValue('');
+		this.nextPage.setValue('');
 	}
 
 	/** LOAD DATA */
@@ -85,10 +85,10 @@ export class CustomersListComponent implements OnInit {
 		});
 		this.status.valueChanges.subscribe(value => {
 		});
-		this.lastMarketId.valueChanges.subscribe(value => {
+		this.nextPage.valueChanges.subscribe(value => {
 		});
 		this.loadCustomersList(
-			this.lastMarketId.valueChanges,
+			this.nextPage.valueChanges,
 			this.team.valueChanges,
 			this.status.valueChanges,
 			this.query.valueChanges,
@@ -104,7 +104,7 @@ export class CustomersListComponent implements OnInit {
 				switchMap(() => {
 					this.isLoadingResults = true;
 					return this.getCustomerListService(
-						this.lastMarketId.value,
+						this.nextPage.value,
 						this.status.value,
 						this.query.value,
 						this.sort.active,
@@ -127,19 +127,30 @@ export class CustomersListComponent implements OnInit {
 					return observableOf([]);
 				})
 			).subscribe(data => {
-				this.data = data;
-			});
+			this.data = data;
+		});
 	}
 
-	getCustomerListService(lastMarketId: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
+	getCustomerListService(nextPage: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
 		return this.afs.collection('markets', ref => {
-			return ref.limit(resultsPerPage).orderBy('marketId').startAfter(lastMarketId);
+			if (nextPage === 1) {
+				return ref.limit(resultsPerPage).orderBy('marketId', 'asc').startAfter(this.data[this.data.length - 1].marketId);
+			} else if (nextPage === 0) {
+				console.log(this.data);
+				if (this.data[0].forward === 1) {
+					return ref.limit(resultsPerPage).orderBy('marketId', 'desc').startAfter(this.data[0].marketId);
+				} else {
+					return ref.limit(resultsPerPage).orderBy('marketId', 'desc').startAfter(this.data[this.data.length - 1].marketId);
+				}
+			} else {
+				return ref.limit(resultsPerPage).orderBy('marketId', 'asc');
+			}
 		}).snapshotChanges().pipe(
 			map(actions => actions.map(a => {
 				this.data = a.payload.doc.data();
+				this.data['forward'] = nextPage;
 				const id = a.payload.doc.id;
-				console.log({ id, ...this.data });
-				return { id, ...this.data };
+				return {id, ...this.data};
 			})));
 	}
 
@@ -347,7 +358,12 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	onPaginateChange(event) {
-		console.log(this.data[this.data.length - 1]);
-		this.lastMarketId.setValue(this.data[this.data.length - 1].marketId);
+		console.log(this.data);
+		if (event.pageIndex > event.previousPageIndex) {
+			this.nextPage.setValue(1);
+		}
+		else if (event.pageIndex < event.previousPageIndex) {
+			this.nextPage.setValue(0);
+		}
 	}
 }
