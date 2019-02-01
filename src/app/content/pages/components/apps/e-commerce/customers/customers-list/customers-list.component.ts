@@ -15,7 +15,7 @@ import {CustomerModel} from '../../_core/models/customer.model';
 import {CustomerEditDialogComponent} from '../customer-edit/customer-edit.dialog.component';
 import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestore';
 import {FormControl} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 // Table with EDIT item in MODAL
 // ARTICLE for table with sort/filter/paginator
@@ -52,12 +52,14 @@ export class CustomersListComponent implements OnInit {
 	isLoadingResults = true;
 	isRateLimitReached = false;
 	data: any;
-	resultsPerPage = 2;
+	resultsPerPage = 3;
 	query = new FormControl();
 	team = new FormControl();
 	status = new FormControl();
 	nextPage = new FormControl();
 	items: Observable<any[]>;
+
+	private CloudFunctionsUrl = 'https://us-central1-tamima-c05fc.cloudfunctions.net';
 
 	constructor(
 		private customersService: CustomersService,
@@ -77,6 +79,7 @@ export class CustomersListComponent implements OnInit {
 
 	/** LOAD DATA */
 	ngOnInit() {
+		this.getCustomerLength();
 		// If the user changes the sort order, reset back to the first page.
 		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 		this.query.valueChanges.subscribe(value => {
@@ -365,5 +368,16 @@ export class CustomersListComponent implements OnInit {
 		else if (event.pageIndex < event.previousPageIndex) {
 			this.nextPage.setValue(0);
 		}
+	}
+
+	getCustomerLength() {
+		let url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=markets';
+		let params: URLSearchParams = new URLSearchParams();
+		let headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+		this.http.get(url).subscribe(
+			data => {
+				console.log(data);
+			}
+			);
 	}
 }
