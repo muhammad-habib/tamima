@@ -17,13 +17,6 @@ import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestor
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-// Table with EDIT item in MODAL
-// ARTICLE for table with sort/filter/paginator
-// https://blog.angular-university.io/angular-material-data-table/
-// https://v5.material.angular.io/components/table/overview
-// https://v5.material.angular.io/components/sort/overview
-// https://v5.material.angular.io/components/table/overview#sorting
-// https://www.youtube.com/watch?v=NSt9CI3BXv4
 @Component({
 	selector: 'm-customers-list',
 	templateUrl: './customers-list.component.html',
@@ -120,7 +113,6 @@ export class CustomersListComponent implements OnInit {
 					// Flip flag to show that loading has finished.
 					this.isLoadingResults = false;
 					this.isRateLimitReached = false;
-					this.resultsLength = data.length;
 					return data;
 				}),
 				catchError(() => {
@@ -371,13 +363,10 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	getCustomerLength() {
-		let url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=markets';
-		let params: URLSearchParams = new URLSearchParams();
-		let headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+		const url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=markets';
 		this.http.get(url).subscribe(
 			data => {
-				console.log(data);
-			}
-			);
+				this.resultsLength = data.length;
+			});
 	}
 }
