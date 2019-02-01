@@ -84,6 +84,12 @@ export const locale = {
 					WAIT_DESCRIPTION: 'Customers are deleting...',
 					MESSAGE: 'Selected customers have been deleted'
 				},
+				BLOCK_CUSTOMER_MULTY: {
+					TITLE: 'Customers Block',
+					DESCRIPTION: 'Are you sure to permanently Block selected customers?',
+					WAIT_DESCRIPTION: 'Customers are deleting...',
+					MESSAGE: 'Selected customers have been Blocked'
+				},
 				UPDATE_STATUS: {
 					TITLE: 'Status has been updated for selected customers',
 					MESSAGE: 'Selected customers status have successfully been updated'
