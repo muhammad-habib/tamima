@@ -35,14 +35,13 @@
 						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
 						<div class="m-form__control">
 							<mat-form-field class="mat-form-field-fluid">
-								<mat-select (selectionChange)="statusChangedHandler()">
+								<mat-select (selectionChange)="statusChangedHandler($event)">
 									<mat-option value="">All</mat-option>
-									<mat-option value="0">Suspended</mat-option>
-									<mat-option value="1">Active</mat-option>
-									<mat-option value="Pending">Pending</mat-option>
+									<mat-option value="2">Un Verified</mat-option>
+									<mat-option value="1">Verified</mat-option>
 								</mat-select>
 								<mat-hint align="start">
-									<strong>Filter</strong> by Status</mat-hint>
+									<strong>Filter</strong> by Verified</mat-hint>
 							</mat-form-field>
 						</div>
 					</div>
@@ -190,7 +189,7 @@
 			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
 			<!-- MATERIAL PAGINATOR | Binded to dasources -->
 			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
-			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="true" (page)="onPaginateChange($event)"></mat-paginator>
+			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="true" (page)="onPaginateChange($event)" [disabled]="false"></mat-paginator>
 		</div>
 		<!-- end: BOTTOM -->
 	</ng-container>

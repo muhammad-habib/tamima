@@ -52,8 +52,6 @@ export class CustomersListComponent implements OnInit {
 	nextPage = new FormControl();
 	items: Observable<any[]>;
 
-	private CloudFunctionsUrl = 'https://us-central1-tamima-c05fc.cloudfunctions.net';
-
 	constructor(
 		private customersService: CustomersService,
 		public dialog: MatDialog,
@@ -72,7 +70,7 @@ export class CustomersListComponent implements OnInit {
 
 	/** LOAD DATA */
 	ngOnInit() {
-		this.getCustomerLength();
+		this.getUsersLength();
 		// If the user changes the sort order, reset back to the first page.
 		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 		this.query.valueChanges.subscribe(value => {
@@ -83,7 +81,7 @@ export class CustomersListComponent implements OnInit {
 		});
 		this.nextPage.valueChanges.subscribe(value => {
 		});
-		this.loadCustomersList(
+		this.loadUsersList(
 			this.nextPage.valueChanges,
 			this.team.valueChanges,
 			this.status.valueChanges,
@@ -93,13 +91,13 @@ export class CustomersListComponent implements OnInit {
 		);
 	}
 
-	loadCustomersList(lastMarketId, team, status, query, sortChange = null, page = null) {
+	loadUsersList(lastMarketId, team, status, query, sortChange = null, page = null) {
 		merge(lastMarketId, team, status, query, sortChange, page)
 			.pipe(
 				startWith({}),
 				switchMap(() => {
 					this.isLoadingResults = true;
-					return this.getCustomerListService(
+					return this.getUsersListService(
 						this.nextPage.value,
 						this.status.value,
 						this.query.value,
@@ -126,19 +124,25 @@ export class CustomersListComponent implements OnInit {
 		});
 	}
 
-	getCustomerListService(nextPage: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
-		return this.afs.collection('markets', ref => {
+	getUsersListService(nextPage: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
+		return this.afs.collection('users', ref => {
 			if (nextPage === 1) {
-				return ref.limit(resultsPerPage).orderBy('marketId', 'asc').startAfter(this.data[this.data.length - 1].marketId);
+				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
 			} else if (nextPage === 0) {
-				console.log(this.data);
 				if (this.data[0].forward === 1) {
-					return ref.limit(resultsPerPage).orderBy('marketId', 'desc').startAfter(this.data[0].marketId);
+					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[0].marketId);
 				} else {
-					return ref.limit(resultsPerPage).orderBy('marketId', 'desc').startAfter(this.data[this.data.length - 1].marketId);
+					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[this.data.length - 1].userId);
 				}
 			} else {
-				return ref.limit(resultsPerPage).orderBy('marketId', 'asc');
+				if (status == 1) {
+					return ref.limit(resultsPerPage).where('verified', '==', true);
+				} else if (status == 2) {
+					return ref.limit(resultsPerPage).where('verified', '==', false);
+				}
+				else {
+					return ref.limit(resultsPerPage).orderBy('userId', 'asc');
+				}
 			}
 		}).snapshotChanges().pipe(
 			map(actions => actions.map(a => {
@@ -353,20 +357,22 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	onPaginateChange(event) {
-		console.log(this.data);
 		if (event.pageIndex > event.previousPageIndex) {
 			this.nextPage.setValue(1);
-		}
-		else if (event.pageIndex < event.previousPageIndex) {
+		} else if (event.pageIndex < event.previousPageIndex) {
 			this.nextPage.setValue(0);
 		}
 	}
 
-	getCustomerLength() {
-		const url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=markets';
+	getUsersLength() {
+		const url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=users';
 		this.http.get(url).subscribe(
 			data => {
-				this.resultsLength = data.length;
+				this.resultsLength = data['length'];
 			});
+	}
+
+	statusChangedHandler($event) {
+		this.status.setValue($event.value);
 	}
 }
