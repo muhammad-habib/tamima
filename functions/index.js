@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const cors = require('cors')({origin: true});
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -12,9 +13,9 @@ const db = admin.firestore();
 
 exports.countCollection = functions.https.onRequest((req, res) => {
     const collection_name = req.query.name;
-
-    db.collection(collection_name).get().then(snap => {
-        res.status(200).send({length: snap.size});
-    });
-
+    cors(req, res, () => {
+        return db.collection(collection_name).get().then(snap => {
+            res.status(200).send({length: snap.size});
+        });
+      });
 });
