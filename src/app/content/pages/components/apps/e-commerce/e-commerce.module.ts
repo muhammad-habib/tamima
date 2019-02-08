@@ -6,9 +6,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { PartialsModule } from '../../../../partials/partials.module';
 import { ECommerceComponent } from './e-commerce.component';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-// Core
-import { FakeApiService } from './_core/_server/fake-api.service';
 // Core => Services
 import { CustomersService } from './_core/services/index';
 import { OrdersService } from './_core/services/orders.service';
@@ -132,7 +129,6 @@ const routes: Routes = [
 		MatSnackBarModule,
 		MatTabsModule,
 		MatTooltipModule,
-		environment.isMockEnabled ? HttpClientInMemoryWebApiModule.forFeature(FakeApiService) : []
 	],
 	providers: [
 		// InterceptService,
