@@ -36,7 +36,7 @@ export class CustomersListComponent implements OnInit {
 	customers: Observable<any[]>;
 
 	dataSource;
-	displayedColumns = ['name', 'country', 'language', 'phone', 'status', 'type', 'actions'];
+	displayedColumns = ['name', 'country', 'language', 'phone', 'blocked', 'actions'];
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
 	@ViewChild(MatTable) myTable: MatTable<any>;
@@ -47,10 +47,11 @@ export class CustomersListComponent implements OnInit {
 	data: any;
 	resultsPerPage = 3;
 	query = new FormControl();
-	team = new FormControl();
+	block = new FormControl();
 	status = new FormControl();
 	nextPage = new FormControl();
 	items: Observable<any[]>;
+	hiddenPagination = false;
 
 	constructor(
 		private customersService: CustomersService,
@@ -64,7 +65,7 @@ export class CustomersListComponent implements OnInit {
 		this.dataSource = new MatTableDataSource<any>([]);
 		this.query.setValue('');
 		this.status.setValue('');
-		this.team.setValue('');
+		this.block.setValue('');
 		this.nextPage.setValue('');
 	}
 
@@ -75,7 +76,7 @@ export class CustomersListComponent implements OnInit {
 		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 		this.query.valueChanges.subscribe(value => {
 		});
-		this.team.valueChanges.subscribe(value => {
+		this.block.valueChanges.subscribe(value => {
 		});
 		this.status.valueChanges.subscribe(value => {
 		});
@@ -83,7 +84,7 @@ export class CustomersListComponent implements OnInit {
 		});
 		this.loadUsersList(
 			this.nextPage.valueChanges,
-			this.team.valueChanges,
+			this.block.valueChanges,
 			this.status.valueChanges,
 			this.query.valueChanges,
 			this.sort.sortChange,
@@ -91,8 +92,8 @@ export class CustomersListComponent implements OnInit {
 		);
 	}
 
-	loadUsersList(lastMarketId, team, status, query, sortChange = null, page = null) {
-		merge(lastMarketId, team, status, query, sortChange, page)
+	loadUsersList(lastMarketId, block, status, query, sortChange = null, page = null) {
+		merge(lastMarketId, block, status, query, sortChange, page)
 			.pipe(
 				startWith({}),
 				switchMap(() => {
@@ -100,6 +101,7 @@ export class CustomersListComponent implements OnInit {
 					return this.getUsersListService(
 						this.nextPage.value,
 						this.status.value,
+						this.block.value,
 						this.query.value,
 						this.sort.active,
 						this.sort.direction,
@@ -124,7 +126,7 @@ export class CustomersListComponent implements OnInit {
 		});
 	}
 
-	getUsersListService(nextPage: any, status: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
+	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
 		return this.afs.collection('users', ref => {
 			if (nextPage === 1) {
 				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
@@ -135,14 +137,55 @@ export class CustomersListComponent implements OnInit {
 					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[this.data.length - 1].userId);
 				}
 			} else {
-				if (status == 1) {
-					return ref.limit(resultsPerPage).where('verified', '==', true);
-				} else if (status == 2) {
-					return ref.limit(resultsPerPage).where('verified', '==', false);
+				if (status && !block && !query) {
+						status = (status == 'true');
+						this.hiddenPagination = true;
+						return ref.where('verified', '==', status);
 				}
-				else {
-					return ref.limit(resultsPerPage).orderBy('userId', 'asc');
+
+				if (status && block && !query) {
+					block = (block == 'true');
+					status = (status == 'true');
+					this.hiddenPagination = true;
+					return ref.where('blocked', '==', block)
+						.where('verified', '==', status);
 				}
+
+				if (query && status && block) {
+					block = (block == 'true');
+					status = (status == 'true');
+					this.hiddenPagination = true;
+					return ref.where('name', '==', query)
+						.where('blocked', '==', block)
+						.where('verified', '==', status);
+				}
+
+				if (query && status && !block) {
+					status = (status == 'true');
+					this.hiddenPagination = true;
+					return ref.where('name', '==', query)
+						.where('verified', '==', status);
+				}
+
+				if (query && !status && block) {
+					block = (block == 'true');
+					this.hiddenPagination = true;
+					return ref.where('name', '==', query)
+						.where('blocked', '==', block);
+				}
+
+				if (query && !status && !block) {
+					this.hiddenPagination = true;
+					return ref.where('name', '==', query);
+				}
+
+				if (!query && !status && block) {
+					block = (block == 'true');
+					this.hiddenPagination = true;
+					return ref.where('blocked', '==', block);
+				}
+				this.hiddenPagination = false;
+				return ref.limit(resultsPerPage);
 			}
 		}).snapshotChanges().pipe(
 			map(actions => actions.map(a => {
@@ -237,40 +280,6 @@ export class CustomersListComponent implements OnInit {
 		this.layoutUtilsService.fetchElements(messages);
 	}
 
-	/** Update Status */
-	updateStatusForCustomers() {
-		const _title = this.translate.instant('ECOMMERCE.CUSTOMERS.UPDATE_STATUS.TITLE');
-		const _updateMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.UPDATE_STATUS.MESSAGE');
-		const _statuses = [{value: 0, text: 'Suspended'}, {value: 1, text: 'Active'}, {value: 2, text: 'Pending'}];
-		const _messages = [];
-
-		this.selection.selected.forEach(elem => {
-			_messages.push({
-				text: `${elem.lastName}, ${elem.firstName}`,
-				id: elem.id.toString(),
-				status: elem.status,
-				statusTitle: this.getItemStatusString(elem.status),
-				statusCssClass: this.getItemCssClassByStatus(elem.status)
-			});
-		});
-
-		const dialogRef = this.layoutUtilsService.updateStatusForCustomers(_title, _statuses, _messages);
-		dialogRef.afterClosed().subscribe(res => {
-			if (!res) {
-				this.selection.clear();
-				return;
-			}
-
-			this.customersService
-				.updateStatusForCustomer(this.selection.selected, +res)
-				.subscribe(() => {
-					this.layoutUtilsService.showActionNotification(_updateMessage, MessageType.Update);
-					// this.loadCustomersList();
-					this.selection.clear();
-				});
-		});
-	}
-
 	addCustomer() {
 		const newCustomer = new CustomerModel();
 		newCustomer.clear(); // Set all defaults fields
@@ -322,14 +331,12 @@ export class CustomersListComponent implements OnInit {
 		return '';
 	}
 
-	getItemStatusString(status: number = 0): string {
+	getItemStatusString(status: boolean = false): string {
 		switch (status) {
-			case 0:
-				return 'Suspended';
-			case 1:
-				return 'Active';
-			case 2:
-				return 'Pending';
+			case true:
+				return 'Blocked';
+			case false:
+				return 'Un Blocked';
 		}
 		return '';
 	}
@@ -372,7 +379,15 @@ export class CustomersListComponent implements OnInit {
 			});
 	}
 
-	statusChangedHandler($event) {
+	verifyChangedHandler($event) {
 		this.status.setValue($event.value);
+	}
+
+	blockChangedHandler($event) {
+		this.block.setValue($event.value);
+	}
+
+	applyFilter(filterValue: string) {
+		this.query.setValue(filterValue);
 	}
 }

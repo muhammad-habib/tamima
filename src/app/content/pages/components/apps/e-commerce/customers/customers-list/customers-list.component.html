@@ -35,10 +35,10 @@
 						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
 						<div class="m-form__control">
 							<mat-form-field class="mat-form-field-fluid">
-								<mat-select (selectionChange)="statusChangedHandler($event)">
+								<mat-select (selectionChange)="verifyChangedHandler($event)">
 									<mat-option value="">All</mat-option>
-									<mat-option value="2">Un Verified</mat-option>
-									<mat-option value="1">Verified</mat-option>
+									<mat-option value="false">Un Verified</mat-option>
+									<mat-option value="true">Verified</mat-option>
 								</mat-select>
 								<mat-hint align="start">
 									<strong>Filter</strong> by Verified</mat-hint>
@@ -49,13 +49,13 @@
 					<div class="col-md-2 m--margin-bottom-10-mobile">
 						<div class="m-form__control">
 							<mat-form-field class="mat-form-field-fluid">
-								<mat-select (selectionChange)="typeChangedHandler()">
+								<mat-select (selectionChange)="blockChangedHandler($event)">
 									<mat-option value="">All</mat-option>
-									<mat-option value="0">Business</mat-option>
-									<mat-option value="1">Individual</mat-option>
+									<mat-option value="false">Un Blocked</mat-option>
+									<mat-option value="true">Blocked</mat-option>
 								</mat-select>
 								<mat-hint align="start">
-									<strong>Filter</strong> by Type</mat-hint>
+									<strong>Filter</strong> by Blocking</mat-hint>
 							</mat-form-field>
 						</div>
 					</div>
@@ -64,7 +64,7 @@
 						<mat-form-field class="mat-form-field-fluid">
 							<input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="Search">
 							<mat-hint align="start">
-								<strong>Search</strong> in all fields</mat-hint>
+								<strong>Search</strong> by name</mat-hint>
 						</mat-form-field>
 					</div>
 
@@ -145,7 +145,7 @@
 
 				<ng-container matColumnDef="language">
 					<mat-header-cell *matHeaderCellDef mat-sort-header class="email-cell">Language</mat-header-cell>
-					<mat-cell *matCellDef="let customer" class="email-cell">
+					<mat-cell *matCellDef="let customer">
 						<a href="ecommerce/customers#" class="m-link">{{customer.language}}</a>
 					</mat-cell>
 				</ng-container>
@@ -155,18 +155,10 @@
 					<mat-cell *matCellDef="let customer">{{customer.phone}}</mat-cell>
 				</ng-container>
 
-				<ng-container matColumnDef="status">
+				<ng-container matColumnDef="blocked">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
 					<mat-cell *matCellDef="let customer">
-						<span class="m-badge m-badge--{{ getItemCssClassByStatus(customer.status) }} m-badge--wide">{{  getItemStatusString(customer.status) }}</span>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="type">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-					<mat-cell *matCellDef="let customer">
-						<span class="m-badge m-badge--{{ getItemCssClassByType(customer.type) }} m-badge--dot"></span>&nbsp;
-						<span class="m--font-bold m--font-{{ getItemCssClassByType(customer.type) }}">{{ getItemTypeString(customer.type) }}</span>
+						<span class="m-badge m-badge--{{ getItemCssClassByStatus(customer.blocked) }} m-badge--wide">{{  getItemStatusString(customer.blocked) }}</span>
 					</mat-cell>
 				</ng-container>
 
@@ -189,7 +181,7 @@
 			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
 			<!-- MATERIAL PAGINATOR | Binded to dasources -->
 			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
-			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="true" (page)="onPaginateChange($event)" [disabled]="false"></mat-paginator>
+			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="true" (page)="onPaginateChange($event)" [hidden]="hiddenPagination"></mat-paginator>
 		</div>
 		<!-- end: BOTTOM -->
 	</ng-container>
