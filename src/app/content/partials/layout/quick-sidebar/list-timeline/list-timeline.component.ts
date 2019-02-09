@@ -22,6 +22,5 @@ export class ListTimelineComponent implements OnInit {
 	constructor(private logsService: LogsService) {}
 
 	ngOnInit() {
-		this.logList = this.logsService.getData({ types: this.type });
 	}
 }
