@@ -270,6 +270,32 @@ export class CustomersListComponent implements OnInit {
 		});
 	}
 
+	toggleCustomerBlock(_item: CustomerModel){		
+		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.TITLE');
+		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.DESCRIPTION');
+		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.WAIT_DESCRIPTION');
+		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.MESSAGE');
+
+		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		dialogRef.afterClosed().subscribe(res => {
+			if (!res) {
+				return;
+			}
+			const idsForDeletion: number[] = [];
+			for (let i = 0; i < this.selection.selected.length; i++) {
+				idsForDeletion.push(this.selection.selected[i].id);
+			}
+
+			let customerDoc = this.afs.doc('users/'+_item.id);	
+			if(customerDoc){
+				customerDoc.update({'blocked':!_item.blocked}).then(d=>{
+					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
+					this.selection.clear();
+				});	
+			}
+		});
+	}
+
 	/** Fetch */
 	fetchCustomers() {
 		const messages = [];
