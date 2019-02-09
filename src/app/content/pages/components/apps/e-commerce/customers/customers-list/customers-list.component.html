@@ -147,7 +147,7 @@
 				<ng-container matColumnDef="language">
 					<mat-header-cell *matHeaderCellDef mat-sort-header class="email-cell">Language</mat-header-cell>
 					<mat-cell *matCellDef="let customer">
-						<a href="ecommerce/customers#" class="m-link">{{customer.language}}</a>
+						{{customer.language}}
 					</mat-cell>
 				</ng-container>
 
@@ -187,7 +187,7 @@
 			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
 			<!-- MATERIAL PAGINATOR | Binded to dasources -->
 			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
-			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="true" (page)="onPaginateChange($event)" [hidden]="hiddenPagination"></mat-paginator>
+			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="false" (page)="onPaginateChange($event)" [hidden]="hiddenPagination"></mat-paginator>
 		</div>
 		<!-- end: BOTTOM -->
 	</ng-container>
