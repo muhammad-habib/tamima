@@ -222,7 +222,8 @@ export class CustomersListComponent implements OnInit {
 
 	/** ACTIONS */
 	/** Delete */
-	deleteCustomer(_item: CustomerModel) {
+	deleteCustomer(user) {
+		console.log(user);
 		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.TITLE');
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.DESCRIPTION');
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
@@ -233,10 +234,13 @@ export class CustomersListComponent implements OnInit {
 			if (!res) {
 				return;
 			}
-
-			this.customersService.deleteCustomer(_item.id).subscribe(() => {
-				this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-				// this.loadCustomersList();
+			this.afs.collection('users', ref => {
+				const th = this;
+				ref.doc(user.id).delete().then(function() {
+					th.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+				}).catch(function(error) {
+					console.error("Error removing document: ", error);
+				});
 			});
 		});
 	}
