@@ -10,14 +10,6 @@ const routes: Routes = [
 	{
 		path: '',
 		component: PagesComponent,
-		canActivate: [NgxPermissionsGuard],
-		data: {
-			permissions: {
-				only: ['ADMIN', 'USER'],
-				except: ['GUEST'],
-				redirectTo: '/login'
-			}
-		},
 		children: [
 			{
 				path: '',
@@ -64,16 +56,6 @@ const routes: Routes = [
 				component: ProfileComponent
 			}
 		]
-	},
-	{
-		path: 'login',
-		canActivate: [NgxPermissionsGuard],
-		loadChildren: './auth/auth.module#AuthModule',
-		data: {
-			permissions: {
-				except: 'ADMIN'
-			}
-		},
 	},
 	{
 		path: '404',

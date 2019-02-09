@@ -128,7 +128,6 @@ export class CustomersListComponent implements OnInit {
 
 	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
 		return this.afs.collection('users', ref => {
-			console.log(nextPage);
 			if (nextPage === 1) {
 				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
 			} else if (nextPage === 0) {
@@ -230,18 +229,18 @@ export class CustomersListComponent implements OnInit {
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
 
 		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		const currThis = this;
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			this.afs.collection('users', ref => {
-				const th = this;
-				ref.doc(user.id).delete().then(function() {
-					th.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-				}).catch(function(error) {
-					console.error("Error removing document: ", error);
-				});
-			});
+			// currThis.afs.collection( 'users', ref => {
+			// 	ref.doc(user.id).delete().then(function() {
+			// 		currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+			// 	}).catch(function(error) {
+			// 		console.error('Error removing document: ', error);
+			// 	});
+			// });
 		});
 	}
 
