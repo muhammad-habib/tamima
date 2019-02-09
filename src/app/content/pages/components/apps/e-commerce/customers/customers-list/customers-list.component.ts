@@ -128,11 +128,12 @@ export class CustomersListComponent implements OnInit {
 
 	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
 		return this.afs.collection('users', ref => {
+			console.log(nextPage);
 			if (nextPage === 1) {
 				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
 			} else if (nextPage === 0) {
 				if (this.data[0].forward === 1) {
-					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[0].marketId);
+					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[0].userId);
 				} else {
 					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[this.data.length - 1].userId);
 				}
@@ -185,7 +186,7 @@ export class CustomersListComponent implements OnInit {
 					return ref.where('blocked', '==', block);
 				}
 				this.hiddenPagination = false;
-				return ref.limit(resultsPerPage);
+				return ref.limit(resultsPerPage).orderBy('userId', 'asc');
 			}
 		}).snapshotChanges().pipe(
 			map(actions => actions.map(a => {
@@ -223,7 +224,6 @@ export class CustomersListComponent implements OnInit {
 	/** ACTIONS */
 	/** Delete */
 	deleteCustomer(user) {
-		console.log(user);
 		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.TITLE');
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.DESCRIPTION');
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
