@@ -392,7 +392,7 @@ export class CustomersListComponent implements OnInit {
 		const url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=markets';
 		this.http.get(url).subscribe(
 			data => {
-				this.resultsLength = data.length;
+				this.resultsLength = data['length'];
 			});
 	}
 }
