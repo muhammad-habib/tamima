@@ -62,7 +62,7 @@
 
 					<div class="col-md-2 m--margin-bottom-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
-							<!-- <input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="Search"> -->
+							 <input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="Search">
 							<input matInput  placeholder="Search">
 							<mat-hint align="start">
 								<strong>Search</strong> by name</mat-hint>
@@ -168,7 +168,7 @@
 					<mat-cell *matCellDef="let customer">
 						<button mat-icon-button color="primary" matTooltip="Edit customer" (click)="editCustomer(customer)"><mat-icon>create</mat-icon></button>&nbsp;
 						<button mat-icon-button color="warn" matTooltip="Delete customer" type="button" (click)="deleteCustomer(customer)"><mat-icon>delete</mat-icon></button>&nbsp;
-						
+
 						<button *ngIf="customer.blocked"  mat-icon-button color="warn" matTooltip="un block customer" type="button" (click)="toggleCustomerBlock(customer)">
 								<mat-icon >lock_open</mat-icon></button>
 						<button *ngIf="!customer.blocked"  mat-icon-button color="warn" matTooltip="block customer" type="button" (click)="toggleCustomerBlock(customer)">

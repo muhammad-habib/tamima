@@ -137,6 +137,7 @@ export class CustomersListComponent implements OnInit {
 					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[this.data.length - 1].userId);
 				}
 			} else {
+				console.log(query);
 				if (status && !block && !query) {
 						status = (status == 'true');
 						this.hiddenPagination = true;
@@ -234,13 +235,13 @@ export class CustomersListComponent implements OnInit {
 			if (!res) {
 				return;
 			}
-			// currThis.afs.collection( 'users', ref => {
-			// 	ref.doc(user.id).delete().then(function() {
-			// 		currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-			// 	}).catch(function(error) {
-			// 		console.error('Error removing document: ', error);
-			// 	});
-			// });
+			currThis.afs.collection( 'users', ref => {
+				ref.doc(user.id).delete().then(function() {
+					currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+				}).catch(function(error) {
+					console.error('Error removing document: ', error);
+				});
+			});
 		});
 	}
 
@@ -270,7 +271,7 @@ export class CustomersListComponent implements OnInit {
 		});
 	}
 
-	toggleCustomerBlock(_item: CustomerModel){		
+	toggleCustomerBlock(_item: CustomerModel){
 		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.TITLE');
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.DESCRIPTION');
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.WAIT_DESCRIPTION');
@@ -286,12 +287,12 @@ export class CustomersListComponent implements OnInit {
 				idsForDeletion.push(this.selection.selected[i].id);
 			}
 
-			let customerDoc = this.afs.doc('users/'+_item.id);	
+			let customerDoc = this.afs.doc('users/'+_item.id);
 			if(customerDoc){
 				customerDoc.update({'blocked':!_item.blocked}).then(d=>{
 					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
 					this.selection.clear();
-				});	
+				});
 			}
 		});
 	}
