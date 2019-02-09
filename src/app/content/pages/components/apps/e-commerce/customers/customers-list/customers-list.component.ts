@@ -229,20 +229,46 @@ export class CustomersListComponent implements OnInit {
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
 
+		// const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		// const currThis = this;
+		// dialogRef.afterClosed().subscribe(res => {
+		// 	if (!res) {
+		// 		return;
+		// 	}
+		// 	let customerDoc = this.afs.doc('users/'+user.id);
+
+		// 	currThis.afs.collection( 'users', ref => {
+		// 		ref.doc(user.id).delete().then(function() {
+		// 			currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+		// 		}).catch(function(error) {
+		// 			console.error('Error removing document: ', error);
+		// 		});
+		// 	});
+		// });
+
+
+
 		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
-		const currThis = this;
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			currThis.afs.collection( 'users', ref => {
-				ref.doc(user.id).delete().then(function() {
-					currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-				}).catch(function(error) {
-					console.error('Error removing document: ', error);
+			const idsForDeletion: number[] = [];
+			for (let i = 0; i < this.selection.selected.length; i++) {
+				idsForDeletion.push(this.selection.selected[i].id);
+			}
+
+			let customerDoc = this.afs.doc('users/'+user.id);
+			if(customerDoc){
+				customerDoc.delete().then(d=>{
+					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
+					this.selection.clear();
 				});
-			});
+			}
 		});
+
+
+
 	}
 
 	deleteCustomers() {
