@@ -283,10 +283,10 @@ export class CustomersListComponent implements OnInit {
 				idsForDeletion.push(this.selection.selected[i].id);
 			}
 
-			let customerDoc = this.afs.doc('markets/'+_item.id);	
+			let customerDoc = this.afs.doc('users/'+_item.id);	
 			if(customerDoc){
 				customerDoc.update({'blocked':!_item.blocked}).then(d=>{
-					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
 					this.selection.clear();
 				});	
 			}
