@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TypesUtilsService } from '../../_core/utils/types-utils.service';
 import { CustomersService } from '../../_core/services/index';
 import { CustomerModel } from '../../_core/models/customer.model';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Component({
 	selector: 'm-customers-edit-dialog',
@@ -11,53 +12,48 @@ import { CustomerModel } from '../../_core/models/customer.model';
 	// changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomerEditDialogComponent implements OnInit {
-	customer: CustomerModel;
+	customer;
+	customerDoc;
 	customerForm: FormGroup;
 	hasFormErrors: boolean = false;
 	viewLoading: boolean = false;
 	loadingAfterSubmit: boolean = false;
+	userDoc:AngularFirestoreDocument<any>;
+	private afs: AngularFirestore;
 
 	constructor(public dialogRef: MatDialogRef<CustomerEditDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private fb: FormBuilder,
 		private customerService: CustomersService,
 		private typesUtilsService: TypesUtilsService) { }
-
 	/** LOAD DATA */
 	ngOnInit() {
 		this.customer = this.data.customer;
+		this.customerDoc = this.data.customerDoc;
 		this.createForm();
 
-		/* Server loading imitation. Remove this on real code */
-		this.viewLoading = true;
-		setTimeout(() => {
-			this.viewLoading = false;
-		}, 1000);
+		// /* Server loading imitation. Remove this on real code */
+		// this.viewLoading = true;
+		// setTimeout(() => {
+		// 	this.viewLoading = false;
+		// }, 1000);
 	}
 
 	createForm() {
-		this.customer.dob = this.typesUtilsService.getDateFromString(this.customer.dateOfBbirth);
+		console.log(this.customer);
 		this.customerForm = this.fb.group({
-			firstName: [this.customer.firstName, Validators.required],
-			lastName: [this.customer.lastName, Validators.required],
-			email: [
-				this.customer.email,
-				[Validators.required, Validators.email]
-			],
-			dob: [this.customer.dob, Validators.nullValidator],
-			userName: [this.customer.userName, Validators.required],
-			gender: [this.customer.gender, Validators.required],
-			ipAddress: [this.customer.ipAddress, Validators.required],
-			type: [this.customer.type.toString(), Validators.required]
+			name: [this.customer.name, Validators.required],
+			phone: [this.customer.phone,Validators.required],
+			userName: [this.customer.name, Validators.required],
+			blocked: [this.customer.blocked, Validators.required],
+			language: [this.customer.language, Validators.required]
 		});
 	}
 
 	/** UI */
 	getTitle(): string {
-		if (this.customer.id > 0) {
-			return `Edit customer '${this.customer.firstName} ${
-				this.customer.lastName
-			}'`;
+		if (this.customer.id ) {
+			return `Edit customer '${this.customer.name}'`;
 		}
 
 		return 'New customer';
@@ -74,21 +70,11 @@ export class CustomerEditDialogComponent implements OnInit {
 		const controls = this.customerForm.controls;
 		const _customer = new CustomerModel();
 		_customer.id = this.customer.id;
-		const _date = controls['dob'].value;
-		if (_date) {
-			_customer.dateOfBbirth = this.typesUtilsService.dateFormat(_date);
-		} else {
-			_customer.dateOfBbirth = '';
-		}
+		_customer.name = controls['name'].value;
+		_customer.phone = controls['phone'].value;
+		_customer.blocked = controls['blocked'].value;
+		_customer.language = controls['language'].value;
 		console.log('_customer', _customer);
-		_customer.firstName = controls['firstName'].value;
-		_customer.lastName = controls['lastName'].value;
-		_customer.email = controls['email'].value;
-		_customer.userName = controls['userName'].value;
-		_customer.gender = controls['gender'].value;
-		_customer.ipAddress = controls['ipAddress'].value;
-		_customer.type = +controls['type'].value;
-		_customer.status = this.customer.status;
 		return _customer;
 	}
 
@@ -106,15 +92,24 @@ export class CustomerEditDialogComponent implements OnInit {
 			return;
 		}
 
-		const editedCustomer = this.prepareCustomer();
-		if (editedCustomer.id > 0) {
-			this.updateCustomer(editedCustomer);
-		} else {
-			this.createCustomer(editedCustomer);
-		}
+		// const editedCustomer = this.prepareCustomer();
+		console.log(controls['blocked'].value);
+
+		this.customerDoc.update({
+			name 		: controls['name'].value,
+			phone 		: controls['phone'].value,
+			blocked 	: JSON.parse(controls['blocked'].value),
+			language 	: controls['language'].value,
+			});	
+
+    	this.dialogRef.close({
+				'customer':this.customer,
+				isEdit: true
+			});
 	}
 
 	updateCustomer(_customer: CustomerModel) {
+		this.customer.
 		this.loadingAfterSubmit = true;
 		this.viewLoading = true;
 		this.customerService.updateCustomer(_customer).subscribe(res => {
