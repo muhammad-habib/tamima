@@ -1,7 +1,7 @@
-import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy, AfterViewInit} from '@angular/core';
 // Material
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatPaginator, MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
+import {MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
 // RXJS
 import {debounceTime, distinctUntilChanged, tap, map, startWith, switchMap, catchError} from 'rxjs/operators';
 import {fromEvent, merge, forkJoin, Observable, of as observableOf} from 'rxjs';
@@ -15,14 +15,15 @@ import {CustomerModel} from '../../_core/models/customer.model';
 import {CustomerEditDialogComponent} from '../customer-edit/customer-edit.dialog.component';
 import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestore';
 import {FormControl} from '@angular/forms';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
 	selector: 'm-customers-list',
 	templateUrl: './customers-list.component.html',
+	styleUrls: ['./customers-list.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomersListComponent implements OnInit {
+export class CustomersListComponent implements OnInit, AfterViewInit {
 	// Table fields
 	// Filter fields
 	@ViewChild('searchInput') searchInput: ElementRef;
@@ -37,15 +38,13 @@ export class CustomersListComponent implements OnInit {
 
 	dataSource;
 	displayedColumns = ['name', 'country', 'language', 'phone', 'blocked', 'actions'];
-	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
-	@ViewChild(MatTable) myTable: MatTable<any>;
 	public length: number;
 	resultsLength = 0;
 	isLoadingResults = true;
 	isRateLimitReached = false;
 	data: any;
-	resultsPerPage = 3;
+	resultsPerPage = 15;
 	query = new FormControl();
 	block = new FormControl();
 	status = new FormControl();
@@ -73,7 +72,7 @@ export class CustomersListComponent implements OnInit {
 	ngOnInit() {
 		this.getUsersLength();
 		// If the user changes the sort order, reset back to the first page.
-		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+		this.sort.sortChange.subscribe(() => {});
 		this.query.valueChanges.subscribe(value => {
 		});
 		this.block.valueChanges.subscribe(value => {
@@ -82,18 +81,21 @@ export class CustomersListComponent implements OnInit {
 		});
 		this.nextPage.valueChanges.subscribe(value => {
 		});
+
+	}
+
+	ngAfterViewInit() {
 		this.loadUsersList(
 			this.nextPage.valueChanges,
 			this.block.valueChanges,
 			this.status.valueChanges,
 			this.query.valueChanges,
-			this.sort.sortChange,
-			this.paginator.page
+			this.sort.sortChange
 		);
 	}
 
-	loadUsersList(lastMarketId, block, status, query, sortChange = null, page = null) {
-		merge(lastMarketId, block, status, query, sortChange, page)
+	loadUsersList(lastMarketId, block, status, query, sortChange = null) {
+		merge(lastMarketId, block, status, query, sortChange)
 			.pipe(
 				startWith({}),
 				switchMap(() => {
@@ -105,7 +107,6 @@ export class CustomersListComponent implements OnInit {
 						this.query.value,
 						this.sort.active,
 						this.sort.direction,
-						this.paginator.pageIndex + 1,
 						this.resultsPerPage
 					);
 				}),
@@ -126,7 +127,7 @@ export class CustomersListComponent implements OnInit {
 		});
 	}
 
-	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
+	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, resultsPerPage): Observable<any> {
 		return this.afs.collection('users', ref => {
 			if (nextPage === 1) {
 				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
@@ -139,9 +140,9 @@ export class CustomersListComponent implements OnInit {
 			} else {
 				console.log(query);
 				if (status && !block && !query) {
-						status = (status == 'true');
-						this.hiddenPagination = true;
-						return ref.where('verified', '==', status);
+					status = (status == 'true');
+					this.hiddenPagination = true;
+					return ref.where('verified', '==', status);
 				}
 
 				if (status && block && !query) {
@@ -229,46 +230,20 @@ export class CustomersListComponent implements OnInit {
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
 
-		// const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
-		// const currThis = this;
-		// dialogRef.afterClosed().subscribe(res => {
-		// 	if (!res) {
-		// 		return;
-		// 	}
-		// 	let customerDoc = this.afs.doc('users/'+user.id);
-
-		// 	currThis.afs.collection( 'users', ref => {
-		// 		ref.doc(user.id).delete().then(function() {
-		// 			currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-		// 		}).catch(function(error) {
-		// 			console.error('Error removing document: ', error);
-		// 		});
-		// 	});
-		// });
-
-
-
 		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		const currThis = this;
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			const idsForDeletion: number[] = [];
-			for (let i = 0; i < this.selection.selected.length; i++) {
-				idsForDeletion.push(this.selection.selected[i].id);
-			}
-
-			let customerDoc = this.afs.doc('users/'+user.id);
-			if(customerDoc){
-				customerDoc.delete().then(d=>{
-					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
-					this.selection.clear();
-				});
-			}
+			// currThis.afs.collection( 'users', ref => {
+			// 	ref.doc(user.id).delete().then(function() {
+			// 		currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+			// 	}).catch(function(error) {
+			// 		console.error('Error removing document: ', error);
+			// 	});
+			// });
 		});
-
-
-
 	}
 
 	deleteCustomers() {
@@ -445,5 +420,9 @@ export class CustomersListComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.query.setValue(filterValue);
+	}
+
+	onScroll() {
+		console.log('scrolled!!');
 	}
 }

@@ -108,8 +108,17 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="mat-table__wrapper">
-			<mat-table class="lmat-elevation-z8" [dataSource]="data" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
+		<div class="example-container mat-elevation-z8"
+			 infiniteScroll
+			 [infiniteScrollDistance]="2"
+			 [infiniteScrollThrottle]="50"
+			 [infiniteScrollContainer]="'.example-container'"
+			 [fromRoot]="true"
+			 (scrolled)="onScroll()"
+		>
+			<mat-table class="" [dataSource]="data" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+
+			>
 				<!-- Checkbox Column -->
 
 				<!-- Table with selection -->
@@ -176,20 +185,11 @@
 					</mat-cell>
 				</ng-container>
 
-				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
+				<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 			</mat-table>
 		</div>
 
-		<!-- start: BOTTOM -->
-		<div class="mat-table__bottom">
-			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
-			<!-- MATERIAL PAGINATOR | Binded to dasources -->
-			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
-			<mat-paginator [pageSize]="resultsPerPage"  [length]="resultsLength" [showFirstLastButtons]="false" (page)="onPaginateChange($event)" [hidden]="hiddenPagination"></mat-paginator>
-		</div>
-		<!-- end: BOTTOM -->
 	</ng-container>
 	<!-- end::Body -->
 

@@ -61,6 +61,7 @@ import {
 	MatTooltipModule
 } from '@angular/material';
 import { environment } from '../../../../../../environments/environment';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 const routes: Routes = [
 	{
@@ -129,6 +130,7 @@ const routes: Routes = [
 		MatSnackBarModule,
 		MatTabsModule,
 		MatTooltipModule,
+		InfiniteScrollModule
 	],
 	providers: [
 		// InterceptService,
