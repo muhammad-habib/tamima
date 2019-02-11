@@ -5,6 +5,9 @@ import { TypesUtilsService } from '../../_core/utils/types-utils.service';
 import { CustomersService } from '../../_core/services/index';
 import { CustomerModel } from '../../_core/models/customer.model';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'm-customers-edit-dialog',
@@ -19,19 +22,20 @@ export class CustomerEditDialogComponent implements OnInit {
 	viewLoading: boolean = false;
 	loadingAfterSubmit: boolean = false;
 	userDoc:AngularFirestoreDocument<any>;
-	private afs: AngularFirestore;
+	tempPhoto:string;
 
 	constructor(public dialogRef: MatDialogRef<CustomerEditDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private fb: FormBuilder,
 		private customerService: CustomersService,
+		private storage: AngularFireStorage,
 		private typesUtilsService: TypesUtilsService) { }
 	/** LOAD DATA */
 	ngOnInit() {
 		this.customer = this.data.customer;
 		this.customerDoc = this.data.customerDoc;
 		this.createForm();
-
+		this.tempPhoto = this.customer.photo;
 		// /* Server loading imitation. Remove this on real code */
 		// this.viewLoading = true;
 		// setTimeout(() => {
@@ -100,6 +104,7 @@ export class CustomerEditDialogComponent implements OnInit {
 			phone 		: controls['phone'].value,
 			blocked 	: JSON.parse(controls['blocked'].value),
 			language 	: controls['language'].value,
+			photo 		: this.tempPhoto?this.tempPhoto:this.customer.photo
 			});	
 
     	this.dialogRef.close({
@@ -138,4 +143,30 @@ export class CustomerEditDialogComponent implements OnInit {
 	onAlertClose($event) {
 		this.hasFormErrors = false;
 	}
+
+	uploadPercent: Observable<number>;
+	downloadURL: Observable<string>;
+	isUploading = false;
+
+	uploadFile(event) {
+		const file = event.target.files[0];
+		const filePath = 'profile_images/profile_'+this.customer.userId+(new Date()).getTime;
+		const fileRef = this.storage.ref(filePath);
+		const task = this.storage.upload(filePath, file);
+	
+		// observe percentage changes
+		this.uploadPercent = task.percentageChanges();
+		// get notified when the download URL is available
+		this.isUploading= true;
+		task.snapshotChanges().pipe(
+			finalize(() =>  fileRef.getDownloadURL().subscribe(
+				res=>{this.tempPhoto =res;
+					this.isUploading= false;
+				}
+			) )
+		 )
+		.subscribe()
+	  }
+
+
 }

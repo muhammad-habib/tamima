@@ -36,7 +36,7 @@ export class CustomersListComponent implements OnInit {
 	customers: Observable<any[]>;
 
 	dataSource;
-	displayedColumns = ['name', 'country', 'language', 'phone', 'blocked', 'actions'];
+	displayedColumns = ['name','photo', 'country', 'language', 'phone', 'blocked', 'actions'];
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
 	@ViewChild(MatTable) myTable: MatTable<any>;

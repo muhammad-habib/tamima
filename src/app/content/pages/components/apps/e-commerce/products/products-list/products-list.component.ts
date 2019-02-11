@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+
 import { ActivatedRoute } from '@angular/router';
 // Material
 import { MatPaginator, MatSort, MatDialog } from '@angular/material';
