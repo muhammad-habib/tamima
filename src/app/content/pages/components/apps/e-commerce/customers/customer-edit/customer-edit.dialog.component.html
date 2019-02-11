@@ -23,93 +23,51 @@
 			<div class="form-group m-form__group row">
 				<div class="col-lg-4 m--margin-bottom-20-mobile">
 					<mat-form-field class="mat-form-field-fluid">
-						<input matInput placeholder="Enter First Name" formControlName="firstName" />
-						<mat-error>First Name is
+						<input matInput placeholder="Enter First Name" formControlName="name" />
+						<mat-error>Name is
 							<strong>required</strong>
 						</mat-error>
 						<mat-hint align="start">Please enter
-							<strong>First Name</strong>
+							<strong>Name</strong>
 						</mat-hint>
 					</mat-form-field>
 				</div>
 				<div class="col-lg-4 m--margin-bottom-20-mobile">
-					<mat-form-field class="mat-form-field-fluid">
-						<input matInput placeholder="Enter Last Name" formControlName="lastName" />
-						<mat-error>Last Name is
-							<strong>required</strong>
-						</mat-error>
-						<mat-hint align="start">Please enter
-							<strong>Last Name</strong>
-						</mat-hint>
-					</mat-form-field>
-				</div>
-				<div class="col-lg-4 m--margin-bottom-20-mobile">
-					<mat-form-field class="mat-form-field-fluid">
-						<input matInput placeholder="Enter Login" formControlName="userName" />
-						<mat-error>Login is
-							<strong>required</strong>
-						</mat-error>
-						<mat-hint align="start">Please enter
-							<strong>Login</strong>
-						</mat-hint>
-					</mat-form-field>
-				</div>
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="blocked" formControlName="blocked">
+								<mat-option value="true">blocked</mat-option>
+								<mat-option value="false">unblocked</mat-option>
+							</mat-select>
+							<mat-hint align="start">
+								<strong>Blocked</strong>
+							</mat-hint>
+						</mat-form-field>
+					</div>	
 			</div>
 			<div class="m-separator m-separator--dashed"></div>
 			<div class="form-group m-form__group row">
 				<div class="col-lg-4 m--margin-bottom-20-mobile">
 					<mat-form-field class="mat-form-field-fluid">
-						<input type="email" matInput placeholder="Enter Email" formControlName="email" />
-						<mat-error>Email is
+						<input type="tel" matInput placeholder="Enter Phone" formControlName="phone" />
+						<mat-error>Phone is
 							<strong>required</strong>
 						</mat-error>
 						<mat-hint align="start">Please enter
-							<strong>Email</strong>
+							<strong>Phone</strong>
 						</mat-hint>
 					</mat-form-field>
 				</div>
 				<div class="col-lg-4 m--margin-bottom-20-mobile">
 					<mat-form-field class="mat-form-field-fluid">
-						<input matInput [matDatepicker]="picker" placeholder="Choose a Date of Birth" formControlName="dob" />
-						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-						<mat-datepicker #picker></mat-datepicker>
-						<mat-hint align="start">Please enter
-							<strong>Date of Birth</strong> in 'mm/dd/yyyy' format</mat-hint>
-					</mat-form-field>
-				</div>
-				<div class="col-lg-4 m--margin-bottom-20-mobile">
-					<mat-form-field class="mat-form-field-fluid">
-						<input type="email" matInput placeholder="Enter IP Address" formControlName="ipAddress" />
-						<mat-error>IP Address
+							<mat-select placeholder="Enter Language" formControlName="language">
+									<mat-option value="ar">AR</mat-option>
+									<mat-option value="en">EN</mat-option>
+							</mat-select>
+						<mat-error>Language
 							<strong>required</strong>
 						</mat-error>
-						<mat-hint align="start">We'll never share customer
-							<strong>IP Address</strong> with anyone else</mat-hint>
-					</mat-form-field>
-				</div>
-			</div>
-			<div class="m-separator m-separator--dashed"></div>
-			<div class="form-group m-form__group row">
-				<div class="col-lg-4 m--margin-bottom-20-mobile">
-					<mat-form-field class="mat-form-field-fluid">
-						<mat-select placeholder="Gender" formControlName="gender">
-							<mat-option value="Female">Female</mat-option>
-							<mat-option value="Male">Male</mat-option>
-						</mat-select>
-						<mat-hint align="start">
-							<strong>Gender</strong>
-						</mat-hint>
-					</mat-form-field>
-				</div>
-				<div class="col-lg-4 m--margin-bottom-20-mobile">
-					<mat-form-field class="mat-form-field-fluid">
-						<mat-select placeholder="Type" formControlName="type">
-							<mat-option value="0">Business</mat-option>
-							<mat-option value="1">Individual</mat-option>
-						</mat-select>
-						<mat-hint align="start">
-							<strong>Account Type</strong>
-						</mat-hint>
+						<!-- <mat-hint align="start">We'll never share customer
+							<strong>Language</strong> with anyone else</mat-hint> -->
 					</mat-form-field>
 				</div>
 			</div>

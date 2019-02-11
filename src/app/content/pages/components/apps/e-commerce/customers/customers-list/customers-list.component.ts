@@ -66,6 +66,12 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 		this.status.setValue('');
 		this.block.setValue('');
 		this.nextPage.setValue('');
+		this.items = this.afs.collection('users').snapshotChanges().pipe(
+			map(actions => actions.map(a => {
+			  const data = a.payload.doc.data();
+			  const id = a.payload.doc.id;
+			  return { id, ...data };
+			})));	  
 	}
 
 	/** LOAD DATA */
@@ -318,12 +324,14 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 	}
 
 	/** Edit */
-	editCustomer(customer: CustomerModel) {
+	editCustomer(customer) {
 		let saveMessageTranslateParam = 'ECOMMERCE.CUSTOMERS.EDIT.';
-		saveMessageTranslateParam += customer.id > 0 ? 'UPDATE_MESSAGE' : 'ADD_MESSAGE';
+		saveMessageTranslateParam += customer['userId']? 'UPDATE_MESSAGE' : 'ADD_MESSAGE';
 		const _saveMessage = this.translate.instant(saveMessageTranslateParam);
-		const _messageType = customer.id > 0 ? MessageType.Update : MessageType.Create;
-		const dialogRef = this.dialog.open(CustomerEditDialogComponent, {data: {customer}});
+		const _messageType = customer['userId']? MessageType.Update : MessageType.Create;
+		let customerDoc = this.afs.doc('users/'+customer.id);
+		
+		const dialogRef = this.dialog.open(CustomerEditDialogComponent, {data: {customerDoc,customer}});
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
