@@ -62,6 +62,9 @@ import {
 } from '@angular/material';
 import { environment } from '../../../../../../environments/environment';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {FirebaseService} from './_shared/firebase.service';
+import {PaginationService} from './_shared/pagination.service';
+import {ScrollableDirective} from './_shared/scrollable.directive';
 
 const routes: Routes = [
 	{
@@ -139,6 +142,8 @@ const routes: Routes = [
        	//  	useClass: InterceptService,
         	// multi: true
       	// },
+		FirebaseService,
+		PaginationService,
 		{
 			provide: MAT_DIALOG_DEFAULT_OPTIONS,
 			useValue: {
@@ -185,7 +190,8 @@ const routes: Routes = [
 		ProductEditComponent,
 		RemarksListComponent,
 		SpecificationsListComponent,
-		SpecificationEditDialogComponent
+		SpecificationEditDialogComponent,
+		ScrollableDirective
 	]
 })
 export class ECommerceModule { }

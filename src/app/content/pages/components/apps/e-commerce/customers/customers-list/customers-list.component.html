@@ -15,9 +15,6 @@
 	</ng-container>
 
 	<ng-container mPortletHeadTools>
-		<button (click)="addCustomer()" mat-raised-button matTooltip="Create new customer" color="primary" type="button">
-			<span translate="ECOMMERCE.CUSTOMERS.NEW_CUSTOMER">New Customer</span>
-		</button>
 		<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
 		<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
 	</ng-container>
@@ -108,15 +105,10 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8"
-			 infiniteScroll
-			 [infiniteScrollDistance]="2"
-			 [infiniteScrollThrottle]="50"
-			 [infiniteScrollContainer]="'.example-container'"
-			 [fromRoot]="true"
-			 (scrolled)="onScroll()"
+		<div class="example-container mat-elevation-z8" style="height: 200px;overflow-y: scroll;"
+			 scrollable (scrollPosition)="scrollHandler($event)"
 		>
-			<mat-table class="" [dataSource]="data" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+			<mat-table class="" [dataSource]="page.data" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
 
 			>
 				<!-- Checkbox Column -->
@@ -189,9 +181,9 @@
 				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 			</mat-table>
 		</div>
-
 	</ng-container>
 	<!-- end::Body -->
 
 </m-portlet>
+
 

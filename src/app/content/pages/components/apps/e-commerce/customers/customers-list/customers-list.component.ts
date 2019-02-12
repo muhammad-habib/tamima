@@ -16,6 +16,8 @@ import {CustomerEditDialogComponent} from '../customer-edit/customer-edit.dialog
 import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestore';
 import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
+import {FirebaseService} from '../../_shared/firebase.service';
+import {PaginationService} from '../../_shared/pagination.service';
 
 @Component({
 	selector: 'm-customers-list',
@@ -36,15 +38,14 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 	customersDoc: AngularFirestoreDocument<any>;
 	customers: Observable<any[]>;
 
-	dataSource;
 	displayedColumns = ['name', 'country', 'language', 'phone', 'blocked', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
 	isLoadingResults = true;
 	isRateLimitReached = false;
-	data: any;
-	resultsPerPage = 15;
+	data: any[] = [];
+	resultsPerPage = 3;
 	query = new FormControl();
 	block = new FormControl();
 	status = new FormControl();
@@ -60,174 +61,30 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 		private translate: TranslateService,
 		private afs: AngularFirestore,
 		private http: HttpClient,
+		private fs: FirebaseService,
+		public page: PaginationService
 	) {
-		this.dataSource = new MatTableDataSource<any>([]);
 		this.query.setValue('');
 		this.status.setValue('');
 		this.block.setValue('');
 		this.nextPage.setValue('');
-		this.items = this.afs.collection('users').snapshotChanges().pipe(
-			map(actions => actions.map(a => {
-			  const data = a.payload.doc.data();
-			  const id = a.payload.doc.id;
-			  return { id, ...data };
-			})));	  
+		this.items = this.fs.getUsers();
+		this.getUsers();
+	}
+
+	getUsers() {
+		this.page.init('users', 'rank', { reverse: false, prepend: false });
 	}
 
 	/** LOAD DATA */
 	ngOnInit() {
 		this.getUsersLength();
 		// If the user changes the sort order, reset back to the first page.
-		this.sort.sortChange.subscribe(() => {});
-		this.query.valueChanges.subscribe(value => {
-		});
-		this.block.valueChanges.subscribe(value => {
-		});
-		this.status.valueChanges.subscribe(value => {
-		});
-		this.nextPage.valueChanges.subscribe(value => {
-		});
+
 
 	}
 
-	ngAfterViewInit() {
-		this.loadUsersList(
-			this.nextPage.valueChanges,
-			this.block.valueChanges,
-			this.status.valueChanges,
-			this.query.valueChanges,
-			this.sort.sortChange
-		);
-	}
-
-	loadUsersList(lastMarketId, block, status, query, sortChange = null) {
-		merge(lastMarketId, block, status, query, sortChange)
-			.pipe(
-				startWith({}),
-				switchMap(() => {
-					this.isLoadingResults = true;
-					return this.getUsersListService(
-						this.nextPage.value,
-						this.status.value,
-						this.block.value,
-						this.query.value,
-						this.sort.active,
-						this.sort.direction,
-						this.resultsPerPage
-					);
-				}),
-				map(data => {
-					// Flip flag to show that loading has finished.
-					this.isLoadingResults = false;
-					this.isRateLimitReached = false;
-					return data;
-				}),
-				catchError(() => {
-					this.isLoadingResults = false;
-					// Catch if the API has reached its rate limit. Return empty data.
-					this.isRateLimitReached = true;
-					return observableOf([]);
-				})
-			).subscribe(data => {
-			this.data = data;
-		});
-	}
-
-	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, resultsPerPage): Observable<any> {
-		return this.afs.collection('users', ref => {
-			if (nextPage === 1) {
-				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
-			} else if (nextPage === 0) {
-				if (this.data[0].forward === 1) {
-					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[0].userId);
-				} else {
-					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[this.data.length - 1].userId);
-				}
-			} else {
-				console.log(query);
-				if (status && !block && !query) {
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('verified', '==', status);
-				}
-
-				if (status && block && !query) {
-					block = (block == 'true');
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('blocked', '==', block)
-						.where('verified', '==', status);
-				}
-
-				if (query && status && block) {
-					block = (block == 'true');
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query)
-						.where('blocked', '==', block)
-						.where('verified', '==', status);
-				}
-
-				if (query && status && !block) {
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query)
-						.where('verified', '==', status);
-				}
-
-				if (query && !status && block) {
-					block = (block == 'true');
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query)
-						.where('blocked', '==', block);
-				}
-
-				if (query && !status && !block) {
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query);
-				}
-
-				if (!query && !status && block) {
-					block = (block == 'true');
-					this.hiddenPagination = true;
-					return ref.where('blocked', '==', block);
-				}
-				this.hiddenPagination = false;
-				return ref.limit(resultsPerPage).orderBy('userId', 'asc');
-			}
-		}).snapshotChanges().pipe(
-			map(actions => actions.map(a => {
-				this.data = a.payload.doc.data();
-				this.data['forward'] = nextPage;
-				const id = a.payload.doc.id;
-				return {id, ...this.data};
-			})));
-	}
-
-	/** FILTRATION */
-	filterConfiguration(isGeneralSearch: boolean = true): any {
-		const filter: any = {};
-		const searchText: string = this.searchInput.nativeElement.value;
-
-		if (this.filterStatus && this.filterStatus.length > 0) {
-			filter.status = +this.filterStatus;
-		}
-
-		if (this.filterType && this.filterType.length > 0) {
-			filter.type = +this.filterType;
-		}
-
-		filter.lastName = searchText;
-		if (!isGeneralSearch) {
-			return filter;
-		}
-
-		filter.firstName = searchText;
-		filter.email = searchText;
-		filter.ipAddress = searchText;
-		return filter;
-	}
-
+	
 	/** ACTIONS */
 	/** Delete */
 	deleteCustomer(user) {
@@ -330,7 +187,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 		const _saveMessage = this.translate.instant(saveMessageTranslateParam);
 		const _messageType = customer['userId']? MessageType.Update : MessageType.Create;
 		let customerDoc = this.afs.doc('users/'+customer.id);
-		
+
 		const dialogRef = this.dialog.open(CustomerEditDialogComponent, {data: {customerDoc,customer}});
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
@@ -430,7 +287,12 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 		this.query.setValue(filterValue);
 	}
 
-	onScroll() {
-		console.log('scrolled!!');
+	scrollHandler(e) {
+		if (e === 'bottom') {
+			this.page.more();
+		}
+		// if (e === 'top') {
+		//   this.page.more()
+		// }
 	}
 }

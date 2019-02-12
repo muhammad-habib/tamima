@@ -49,6 +49,7 @@ import { AngularFireModule } from '@angular/fire';
 import {AngularFireMessagingModule} from '@angular/fire/messaging';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireStorageModule} from '@angular/fire/storage';
+import {ScrollableDirective} from './content/pages/components/apps/e-commerce/_shared/scrollable.directive';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	// suppressScrollX: true
