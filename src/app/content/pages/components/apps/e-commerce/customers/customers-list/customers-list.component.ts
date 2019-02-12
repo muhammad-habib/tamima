@@ -69,16 +69,17 @@ export class CustomersListComponent implements OnInit {
 		this.block.setValue('');
 		this.nextPage.setValue('');
 		this.items = this.fs.getUsers();
-		this.getUsers();
 	}
 
 	getUsers() {
-		this.page.init('users', 'rank', { reverse: false, prepend: false });
+		this.page.init('users', 'name', { reverse: false, prepend: false });
 	}
 
 	/** LOAD DATA */
 	ngOnInit() {
 		this.getUsersLength();
+		this.getUsers();
+
 		// If the user changes the sort order, reset back to the first page.
 
 

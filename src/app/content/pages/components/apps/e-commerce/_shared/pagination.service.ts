@@ -103,9 +103,6 @@ export class PaginationService {
 				let values = arr.map(snap => {
 					const data = snap.payload.doc.data();
 					const doc = snap.payload.doc;
-					this._data.subscribe(res => {
-						console.log(res);
-					});
 					return { ...data, doc };
 				});
 
@@ -120,7 +117,7 @@ export class PaginationService {
 				if (!values.length) {
 					this._done.next(true);
 				}
-			})).subscribe();
+			}), take(1)).subscribe();
 
 	}
 
