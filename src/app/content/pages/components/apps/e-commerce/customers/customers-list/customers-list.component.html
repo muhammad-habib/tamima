@@ -139,7 +139,12 @@
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
 					<mat-cell *matCellDef="let customer">{{customer.name}}</mat-cell>
 				</ng-container>
-
+				<ng-container matColumnDef="photo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
+					<mat-cell *matCellDef="let customer">
+						<img width="60" height="50" src="{{customer.photo}}" class="m--img-rounded m--marginless" alt="" />
+					</mat-cell>
+				</ng-container>
 				<ng-container matColumnDef="country">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Country</mat-header-cell>
 					<mat-cell *matCellDef="let customer">{{customer.country}}</mat-cell>

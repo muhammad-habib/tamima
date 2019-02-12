@@ -381,7 +381,7 @@ web-animations-js@2.3.1
 Apache-2.0
 Apache-2.0
 
-zone.js@0.8.28
+zone.js@0.8.27
 MIT
 The MIT License
 
@@ -704,7 +704,7 @@ Apache License
 MIT
 MIT
 
-ngx-permissions@6.0.5
+ngx-permissions@6.0.4
 MIT
 MIT
 

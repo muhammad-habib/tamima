@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 // Material
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
@@ -25,7 +25,7 @@ import {PaginationService} from '../../_shared/pagination.service';
 	styleUrls: ['./customers-list.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomersListComponent implements OnInit, AfterViewInit {
+export class CustomersListComponent implements OnInit {
 	// Table fields
 	// Filter fields
 	@ViewChild('searchInput') searchInput: ElementRef;
@@ -37,8 +37,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
 	customersDoc: AngularFirestoreDocument<any>;
 	customers: Observable<any[]>;
-
-	displayedColumns = ['name', 'country', 'language', 'phone', 'blocked', 'actions'];
+	dataSource;
+	displayedColumns = ['name','photo', 'country', 'language', 'phone', 'blocked', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
@@ -84,7 +84,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
 	}
 
-	
+
 	/** ACTIONS */
 	/** Delete */
 	deleteCustomer(user) {
