@@ -1,7 +1,7 @@
 import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 // Material
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatPaginator, MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
+import {MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
 // RXJS
 import {debounceTime, distinctUntilChanged, tap, map, startWith, switchMap, catchError} from 'rxjs/operators';
 import {fromEvent, merge, forkJoin, Observable, of as observableOf} from 'rxjs';
@@ -15,11 +15,14 @@ import {CustomerModel} from '../../_core/models/customer.model';
 import {CustomerEditDialogComponent} from '../customer-edit/customer-edit.dialog.component';
 import {AngularFirestoreDocument, AngularFirestore} from '@angular/fire/firestore';
 import {FormControl} from '@angular/forms';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
+import {FirebaseService} from '../../_shared/firebase.service';
+import {PaginationService} from '../../_shared/pagination.service';
 
 @Component({
 	selector: 'm-customers-list',
 	templateUrl: './customers-list.component.html',
+	styleUrls: ['./customers-list.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersListComponent implements OnInit {
@@ -34,17 +37,14 @@ export class CustomersListComponent implements OnInit {
 
 	customersDoc: AngularFirestoreDocument<any>;
 	customers: Observable<any[]>;
-
 	dataSource;
 	displayedColumns = ['name','photo', 'country', 'language', 'phone', 'blocked', 'actions'];
-	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
-	@ViewChild(MatTable) myTable: MatTable<any>;
 	public length: number;
 	resultsLength = 0;
 	isLoadingResults = true;
 	isRateLimitReached = false;
-	data: any;
+	data: any[] = [];
 	resultsPerPage = 3;
 	query = new FormControl();
 	block = new FormControl();
@@ -61,171 +61,29 @@ export class CustomersListComponent implements OnInit {
 		private translate: TranslateService,
 		private afs: AngularFirestore,
 		private http: HttpClient,
+		private fs: FirebaseService,
+		public page: PaginationService
 	) {
-		this.dataSource = new MatTableDataSource<any>([]);
 		this.query.setValue('');
 		this.status.setValue('');
 		this.block.setValue('');
 		this.nextPage.setValue('');
-		this.items = this.afs.collection('users').snapshotChanges().pipe(
-			map(actions => actions.map(a => {
-			  const data = a.payload.doc.data();
-			  const id = a.payload.doc.id;
-			  return { id, ...data };
-			})));	  
+		this.items = this.fs.getUsers();
+		this.getUsers();
+	}
+
+	getUsers() {
+		this.page.init('users', 'rank', { reverse: false, prepend: false });
 	}
 
 	/** LOAD DATA */
 	ngOnInit() {
 		this.getUsersLength();
 		// If the user changes the sort order, reset back to the first page.
-		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-		this.query.valueChanges.subscribe(value => {
-		});
-		this.block.valueChanges.subscribe(value => {
-		});
-		this.status.valueChanges.subscribe(value => {
-		});
-		this.nextPage.valueChanges.subscribe(value => {
-		});
-		this.loadUsersList(
-			this.nextPage.valueChanges,
-			this.block.valueChanges,
-			this.status.valueChanges,
-			this.query.valueChanges,
-			this.sort.sortChange,
-			this.paginator.page
-		);
+
+
 	}
 
-	loadUsersList(lastMarketId, block, status, query, sortChange = null, page = null) {
-		merge(lastMarketId, block, status, query, sortChange, page)
-			.pipe(
-				startWith({}),
-				switchMap(() => {
-					this.isLoadingResults = true;
-					return this.getUsersListService(
-						this.nextPage.value,
-						this.status.value,
-						this.block.value,
-						this.query.value,
-						this.sort.active,
-						this.sort.direction,
-						this.paginator.pageIndex + 1,
-						this.resultsPerPage
-					);
-				}),
-				map(data => {
-					// Flip flag to show that loading has finished.
-					this.isLoadingResults = false;
-					this.isRateLimitReached = false;
-					return data;
-				}),
-				catchError(() => {
-					this.isLoadingResults = false;
-					// Catch if the API has reached its rate limit. Return empty data.
-					this.isRateLimitReached = true;
-					return observableOf([]);
-				})
-			).subscribe(data => {
-			this.data = data;
-		});
-	}
-
-	getUsersListService(nextPage: any, status: any, block: any, query: string, sort: string, order: string, page: number, resultsPerPage): Observable<any> {
-		return this.afs.collection('users', ref => {
-			if (nextPage === 1) {
-				return ref.limit(resultsPerPage).orderBy('userId', 'asc').startAfter(this.data[this.data.length - 1].userId);
-			} else if (nextPage === 0) {
-				if (this.data[0].forward === 1) {
-					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[0].userId);
-				} else {
-					return ref.limit(resultsPerPage).orderBy('userId', 'desc').startAfter(this.data[this.data.length - 1].userId);
-				}
-			} else {
-				console.log(query);
-				if (status && !block && !query) {
-						status = (status == 'true');
-						this.hiddenPagination = true;
-						return ref.where('verified', '==', status);
-				}
-
-				if (status && block && !query) {
-					block = (block == 'true');
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('blocked', '==', block)
-						.where('verified', '==', status);
-				}
-
-				if (query && status && block) {
-					block = (block == 'true');
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query)
-						.where('blocked', '==', block)
-						.where('verified', '==', status);
-				}
-
-				if (query && status && !block) {
-					status = (status == 'true');
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query)
-						.where('verified', '==', status);
-				}
-
-				if (query && !status && block) {
-					block = (block == 'true');
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query)
-						.where('blocked', '==', block);
-				}
-
-				if (query && !status && !block) {
-					this.hiddenPagination = true;
-					return ref.where('name', '==', query);
-				}
-
-				if (!query && !status && block) {
-					block = (block == 'true');
-					this.hiddenPagination = true;
-					return ref.where('blocked', '==', block);
-				}
-				this.hiddenPagination = false;
-				return ref.limit(resultsPerPage).orderBy('userId', 'asc');
-			}
-		}).snapshotChanges().pipe(
-			map(actions => actions.map(a => {
-				this.data = a.payload.doc.data();
-				this.data['forward'] = nextPage;
-				const id = a.payload.doc.id;
-				return {id, ...this.data};
-			})));
-	}
-
-	/** FILTRATION */
-	filterConfiguration(isGeneralSearch: boolean = true): any {
-		const filter: any = {};
-		const searchText: string = this.searchInput.nativeElement.value;
-
-		if (this.filterStatus && this.filterStatus.length > 0) {
-			filter.status = +this.filterStatus;
-		}
-
-		if (this.filterType && this.filterType.length > 0) {
-			filter.type = +this.filterType;
-		}
-
-		filter.lastName = searchText;
-		if (!isGeneralSearch) {
-			return filter;
-		}
-
-		filter.firstName = searchText;
-		filter.email = searchText;
-		filter.ipAddress = searchText;
-		return filter;
-	}
 
 	/** ACTIONS */
 	/** Delete */
@@ -235,46 +93,20 @@ export class CustomersListComponent implements OnInit {
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
 
-		// const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
-		// const currThis = this;
-		// dialogRef.afterClosed().subscribe(res => {
-		// 	if (!res) {
-		// 		return;
-		// 	}
-		// 	let customerDoc = this.afs.doc('users/'+user.id);
-
-		// 	currThis.afs.collection( 'users', ref => {
-		// 		ref.doc(user.id).delete().then(function() {
-		// 			currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-		// 		}).catch(function(error) {
-		// 			console.error('Error removing document: ', error);
-		// 		});
-		// 	});
-		// });
-
-
-
 		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		const currThis = this;
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			const idsForDeletion: number[] = [];
-			for (let i = 0; i < this.selection.selected.length; i++) {
-				idsForDeletion.push(this.selection.selected[i].id);
-			}
-
-			let customerDoc = this.afs.doc('users/'+user.id);
-			if(customerDoc){
-				customerDoc.delete().then(d=>{
-					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
-					this.selection.clear();
-				});
-			}
+			// currThis.afs.collection( 'users', ref => {
+			// 	ref.doc(user.id).delete().then(function() {
+			// 		currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
+			// 	}).catch(function(error) {
+			// 		console.error('Error removing document: ', error);
+			// 	});
+			// });
 		});
-
-
-
 	}
 
 	deleteCustomers() {
@@ -355,7 +187,7 @@ export class CustomersListComponent implements OnInit {
 		const _saveMessage = this.translate.instant(saveMessageTranslateParam);
 		const _messageType = customer['userId']? MessageType.Update : MessageType.Create;
 		let customerDoc = this.afs.doc('users/'+customer.id);
-		
+
 		const dialogRef = this.dialog.open(CustomerEditDialogComponent, {data: {customerDoc,customer}});
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
@@ -453,5 +285,14 @@ export class CustomersListComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.query.setValue(filterValue);
+	}
+
+	scrollHandler(e) {
+		if (e === 'bottom') {
+			this.page.more();
+		}
+		// if (e === 'top') {
+		//   this.page.more()
+		// }
 	}
 }
