@@ -4,16 +4,15 @@ import { DashboardComponent } from './dashboard.component';
 import { RouterModule } from '@angular/router';
 import { LayoutModule } from '../../../layout/layout.module';
 import { PartialsModule } from '../../../partials/partials.module';
-import { ListTimelineModule } from '../../../partials/layout/quick-sidebar/list-timeline/list-timeline.module';
-import { WidgetChartsModule } from '../../../partials/content/widgets/charts/widget-charts.module';
+import { MatCardModule ,MatGridListModule} from '@angular/material';
+import { CountService } from './count.serves';
 
 @NgModule({
 	imports: [
 		CommonModule,
 		LayoutModule,
 		PartialsModule,
-		ListTimelineModule,
-		WidgetChartsModule,
+		MatCardModule,MatGridListModule,
 		RouterModule.forChild([
 			{
 				path: '',
@@ -21,7 +20,7 @@ import { WidgetChartsModule } from '../../../partials/content/widgets/charts/wid
 			}
 		])
 	],
-	providers: [],
+	providers: [CountService],
 	declarations: [DashboardComponent]
 })
 export class DashboardModule {}

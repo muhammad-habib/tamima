@@ -45,7 +45,6 @@
     "ngrx-store-freeze": "^0.2.4",
     "ngx-auth": "4.0.0",
     "ngx-highlightjs": "^2.1.1",
-    "ngx-infinite-scroll": "^7.0.1",
     "ngx-perfect-scrollbar": "^6.3.0",
     "ngx-permissions": "^6.0.1",
     "object-path": "^0.11.4",

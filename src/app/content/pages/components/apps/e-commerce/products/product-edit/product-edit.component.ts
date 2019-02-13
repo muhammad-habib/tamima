@@ -56,8 +56,9 @@ export class ProductEditComponent implements OnInit {
 	ngOnInit() {
 		this.loadingSubject.next(true);
 		this.activatedRoute.queryParams.subscribe(params => {
-			const id = +params.id;
-			if (id && id > 0) {
+			const id = params.id;
+			console.log(id);
+			if (id ) {
 				this.productsService.getProductById(id).subscribe(res => {
 					this.product = res;
 					this.oldProduct = Object.assign({}, res);

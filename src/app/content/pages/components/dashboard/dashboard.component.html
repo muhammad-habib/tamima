@@ -1,75 +1,40 @@
-<!--Begin::Section-->
 <div class="row">
 	<div class="col-xl-4">
-		<m-finance-stats></m-finance-stats>
+		<mat-card clas="display-1" >
+				<mat-card-header>
+					orders
+				</mat-card-header> 
+				<mat-card-content>
+					 {{data.requests }}
+				</mat-card-content>
+		</mat-card>
 	</div>
 	<div class="col-xl-4">
-		<m-blog></m-blog>
+		<mat-card> users:{{data?.users}}</mat-card>
 	</div>
 	<div class="col-xl-4">
-		<m-packages></m-packages>
-	</div>
-</div>
-<!--End::Section-->
+		<!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
 
-<!--Begin::Section-->
-<div class="m-portlet">
-	<div class="m-portlet__body m-portlet__body--no-padding">
-		<div class="row m-row--no-padding m-row--col-separator-xl">
-			<div class="col-xl-4">
-				<m-stat></m-stat>
-			</div>
-			<div class="col-xl-4">
-				<m-bar-chart></m-bar-chart>
-			</div>
-			<div class="col-xl-4">
-				<m-doughnut-chart></m-doughnut-chart>
-			</div>
-		</div>
+		<mat-card class="example-card">
+				<mat-card-header>
+				  <mat-card-title>markets</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+						<mat-grid-list cols="3" rowHeight="2:1">
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile>
+										<h1>{{data?.markets}}</h1>
+								</mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+								<mat-grid-tile></mat-grid-tile>
+							  </mat-grid-list>
+				</mat-card-content>
+			  </mat-card>
 	</div>
 </div>
-<!--End::Section-->
 
-<!--Begin::Section-->
-<div class="row">
-	<div class="col-xl-6">
-		<m-tasks></m-tasks>
-	</div>
-	<div class="col-xl-6">
-		<m-support-tickets></m-support-tickets>
-	</div>
-</div>
-<!--End::Section-->
-
-<!--Begin::Section-->
-<div class="row">
-	<div class="col-xl-6">
-		<m-recent-activities></m-recent-activities>
-	</div>
-	<div class="col-xl-6">
-		<m-recent-notifications></m-recent-notifications>
-	</div>
-</div>
-<!--End::Section-->
-
-<!--Begin::Section-->
-<div class="row">
-	<div class="col-xl-8">
-		<m-data-table></m-data-table>
-	</div>
-	<div class="col-xl-4">
-		<m-audit-log></m-audit-log>
-	</div>
-</div>
-<!--End::Section-->
-
-<!--Begin::Section-->
-<div class="row">
-	<div class="col-xl-8">
-		<m-best-seller></m-best-seller>
-	</div>
-	<div class="col-xl-4">
-		<m-author-profit></m-author-profit>
-	</div>
-</div>
-<!--End::Section-->

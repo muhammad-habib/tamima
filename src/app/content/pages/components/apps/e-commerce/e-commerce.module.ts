@@ -61,7 +61,6 @@ import {
 	MatTooltipModule
 } from '@angular/material';
 import { environment } from '../../../../../../environments/environment';
-import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {FirebaseService} from './_shared/firebase.service';
 import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
@@ -133,7 +132,6 @@ const routes: Routes = [
 		MatSnackBarModule,
 		MatTabsModule,
 		MatTooltipModule,
-		InfiniteScrollModule
 	],
 	providers: [
 		// InterceptService,
