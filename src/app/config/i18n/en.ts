@@ -98,6 +98,10 @@ export const locale = {
 					UPDATE_MESSAGE: 'Customer has been updated',
 					ADD_MESSAGE: 'Customer has been created'
 				}
+			},
+			MARKETS: {
+				MARKETS: 'Markets',
+				MARKETS_LIST: 'Markets list',
 			}
 		}
 	}

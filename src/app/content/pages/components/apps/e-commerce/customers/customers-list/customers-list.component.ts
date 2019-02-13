@@ -71,7 +71,8 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	getUsers() {
-		this.page.init('users', 'name', { reverse: false, prepend: false });
+		this.page.init('users', 'userId', { reverse: false, prepend: false });
+
 	}
 
 	/** LOAD DATA */
@@ -148,7 +149,7 @@ export class CustomersListComponent implements OnInit {
 				idsForDeletion.push(this.selection.selected[i].id);
 			}
 
-			let customerDoc = this.afs.doc('users/'+_item.id);
+			let customerDoc = this.afs.doc('users/'+_item['userId']);
 			if(customerDoc){
 				customerDoc.update({'blocked':!_item.blocked}).then(d=>{
 					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
@@ -183,7 +184,7 @@ export class CustomersListComponent implements OnInit {
 		saveMessageTranslateParam += customer['userId']? 'UPDATE_MESSAGE' : 'ADD_MESSAGE';
 		const _saveMessage = this.translate.instant(saveMessageTranslateParam);
 		const _messageType = customer['userId']? MessageType.Update : MessageType.Create;
-		let customerDoc = this.afs.doc('users/'+customer.id);
+		let customerDoc = this.afs.doc('users/'+customer.userId);
 
 		const dialogRef = this.dialog.open(CustomerEditDialogComponent, {data: {customerDoc,customer}});
 		dialogRef.afterClosed().subscribe(res => {

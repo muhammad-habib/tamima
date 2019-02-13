@@ -2,7 +2,7 @@
 <m-portlet [options]="{headLarge: true}">
 		<!-- PORTLET LOADING | Binded to TABLE Datasource -->
 		<!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
-	
+
 		<!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
 		<ng-container mPortletHeadTitle>
 			<div class="m-portlet__head-title">
@@ -13,29 +13,29 @@
 			<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
 			<!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
 		</ng-container>
-	
+
 		<ng-container mPortletHeadTools>
 			<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
 			<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
 		</ng-container>
 		<!-- end::Header -->
-	
+
 		<!-- start::Body (attribute: mPortletBody) -->
 		<ng-container mPortletBody>
 			<!-- start::FILTERS & GROUP ACTIONS -->
 			<!-- end::FILTERS & GROUP ACTIONS -->
-	
+
 			<!-- MATERIAL TABLE | Binded to datasources -->
 			<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-			<div class="example-container mat-elevation-z8" style="height: 200px;overflow-y: scroll;"
+			<div class="example-container mat-elevation-z8" style="height: 37rem;overflow-y: scroll;"
 				 scrollable (scrollPosition)="scrollHandler($event)"
 			>
 				<mat-table class="" [dataSource]="page.data" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
 					<!-- Checkbox Column -->
-	
+
 					<!-- Table with selection -->
 					<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
-	
+
 					<ng-container matColumnDef="select">
 						<mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
 							<mat-checkbox (change)="$event ? masterToggle() : null"
@@ -48,13 +48,13 @@
 							</mat-checkbox>
 						</mat-cell>
 					</ng-container>
-	
+
 						<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
 					<ng-container matColumnDef="id">
 						<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
 						<mat-cell *matCellDef="let market">{{market.id}}</mat-cell>
 					</ng-container>
-	
+
 					<ng-container matColumnDef="name">
 						<mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
 						<mat-cell *matCellDef="let market">{{market.name}}</mat-cell>
@@ -75,19 +75,19 @@
 						<mat-header-cell *matHeaderCellDef mat-sort-header>Country</mat-header-cell>
 						<mat-cell *matCellDef="let market">{{market.country}}</mat-cell>
 					</ng-container>
-		
+
 					<ng-container matColumnDef="phone">
 						<mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
 						<mat-cell *matCellDef="let market">{{market.phone}}</mat-cell>
 					</ng-container>
-	
+
 					<ng-container matColumnDef="blocked">
 						<mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
 						<mat-cell *matCellDef="let market">
 							<span class="m-badge m-badge--{{ getItemCssClassByStatus(market.blocked) }} m-badge--wide">{{  getItemStatusString(market.blocked) }}</span>
 						</mat-cell>
 					</ng-container>
-	
+
 					<ng-container matColumnDef="actions">
 						<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
 						<mat-cell *matCellDef="let market">
@@ -100,15 +100,14 @@
 									<mat-icon >lock</mat-icon></button>
 						</mat-cell>
 					</ng-container>
-	
+
 					<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
 					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 				</mat-table>
 			</div>
 		</ng-container>
 		<!-- end::Body -->
-	
+
 	</m-portlet>
-	
-	
-	
+
+

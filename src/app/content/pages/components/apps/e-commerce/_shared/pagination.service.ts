@@ -27,7 +27,9 @@ export class PaginationService {
 	done: Observable<boolean> = this._done.asObservable();
 	loading: Observable<boolean> = this._loading.asObservable();
 
-	constructor( private afs: AngularFirestore ) { }
+	constructor( private afs: AngularFirestore ) {
+
+	}
 
 	// Initial query sets options and defines the Observable
 	init(path, field, opts?) {
@@ -35,7 +37,7 @@ export class PaginationService {
 		this.query = {
 			path,
 			field,
-			limit: 4,
+			limit: 10,
 			reverse: false,
 			prepend: false,
 			...opts
@@ -53,15 +55,24 @@ export class PaginationService {
 		// Create the observable array for consumption in components
 		this.data = this._data.asObservable().pipe(
 			scan( (acc, val) => {
+				if (acc.length) {
+					let arr3 = [];
+					for(let i in acc){
+						let shared = false;
+						for (let j in val) {
+							if (acc[i][this.query.field] == val[j][this.query.field]) {
+								shared = true;
+								break;
+							}
+						}
+						if(!shared){
+							arr3.push(acc[i]);
+						}
+					}
+					acc = arr3;
+				}
 				return this.query.prepend ? val.concat(acc) : acc.concat(val);
 			}));
-
-		this.data.subscribe( arr => {
-			console.log(arr);
-			}
-		);
-
-
 	}
 
 	// Retrieves additional data from firestore
@@ -90,7 +101,6 @@ export class PaginationService {
 	private mapAndUpdate(col: AngularFirestoreCollection<any>) {
 
 		if (this._done.value || this._loading.value) {
-			console.log("ggg");
 			return;
 		}
 
@@ -100,7 +110,7 @@ export class PaginationService {
 		// Map snapshot with doc ref (needed for cursor)
 		return col.snapshotChanges().pipe(
 			map(arr => {
-				console.log(arr)
+				// console.log(arr)
 				let values = arr.map(snap => {
 					const data = snap.payload.doc.data();
 					const doc = snap.payload.doc;
@@ -118,7 +128,9 @@ export class PaginationService {
 				if (!values.length) {
 					this._done.next(true);
 				}
-			}), take(1)).subscribe();
+			})).subscribe(res => {
+				// console.log(res);
+		});
 
 	}
 
