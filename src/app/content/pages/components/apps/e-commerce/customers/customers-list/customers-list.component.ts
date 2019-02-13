@@ -79,10 +79,7 @@ export class CustomersListComponent implements OnInit {
 	ngOnInit() {
 		this.getUsersLength();
 		this.getUsers();
-
 		// If the user changes the sort order, reset back to the first page.
-
-
 	}
 
 
