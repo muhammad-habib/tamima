@@ -105,16 +105,12 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 200px;overflow-y: scroll;"
+		<div class="example-container mat-elevation-z8" style="height: 37rem;overflow-y: scroll;"
 			 scrollable (scrollPosition)="scrollHandler($event)"
 		>
-<<<<<<< HEAD
-			<mat-table class="" [dataSource]="page.data" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
-=======
 			<mat-table class="" [dataSource]="page.data  | async" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
 
 			>
->>>>>>> 79e9b45431adb8a6ee048b49cef4f0e38082546c
 				<!-- Checkbox Column -->
 
 				<!-- Table with selection -->

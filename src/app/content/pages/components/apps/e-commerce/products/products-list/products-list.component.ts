@@ -67,7 +67,7 @@ export class ProductsListComponent implements OnInit {
 		public page: PaginationService
 	) {
 	}
-	ngOnInit() { 
+	ngOnInit() {
 		this.query.setValue('');
 		this.status.setValue('');
 		this.block.setValue('');
@@ -76,7 +76,7 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	getMarkets() {
-		this.page.init('markets', 'name', { reverse: false, prepend: false });
+		this.page.init('markets', 'marketId', { reverse: false, prepend: false });
 	}
 
 	scrollHandler(e) {

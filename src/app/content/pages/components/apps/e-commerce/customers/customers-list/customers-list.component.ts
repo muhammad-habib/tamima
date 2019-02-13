@@ -72,7 +72,8 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	getUsers() {
-		this.page.init('users', 'name', { reverse: false, prepend: false });
+		this.page.init('users', 'userId', { reverse: false, prepend: false });
+
 	}
 
 	/** LOAD DATA */
