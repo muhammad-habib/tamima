@@ -56,11 +56,7 @@ export class CustomerEditDialogComponent implements OnInit {
 
 	/** UI */
 	getTitle(): string {
-		if (this.customer.id ) {
 			return `Edit customer '${this.customer.name}'`;
-		}
-
-		return 'New customer';
 	}
 
 	isControlInvalid(controlName: string): boolean {

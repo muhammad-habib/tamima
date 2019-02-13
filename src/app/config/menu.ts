@@ -356,7 +356,7 @@ export class MenuConfig implements ConfigModel {
 			// 								},
 			// 								{
 			// 									title: 'Products',
-			// 									page: '/ecommerce/products',
+			// 									page: '/ecommerce/markets',
 			// 									icon: 'flaticon-list-1',
 			// 								}
 			// 							]
@@ -767,7 +767,7 @@ export class MenuConfig implements ConfigModel {
 						title: 'Markets',
 						root: true,
 						icon: 'flaticon-settings',
-						page: '/ecommerce/products'
+						page: '/ecommerce/markets'
 					},
 
 					// {
@@ -786,7 +786,7 @@ export class MenuConfig implements ConfigModel {
 					// 		},
 					// 		{
 					// 			title: 'Products',
-					// 			page: '/ecommerce/products'
+					// 			page: '/ecommerce/markets'
 					// 		},
 					// 	]
 					// },

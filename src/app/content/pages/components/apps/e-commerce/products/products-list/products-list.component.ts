@@ -21,6 +21,7 @@ import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import { FormControl } from '@angular/forms';
+import { MarketEditDialogComponent } from '../product-edit/market-edit.dialog.component';
 
 // Table with EDIT item in new page
 // ARTICLE for table with sort/filter/paginator
@@ -33,7 +34,6 @@ import { FormControl } from '@angular/forms';
 	selector: 'm-products-list',
 	templateUrl: './products-list.component.html',
 	styles: ['table {width: 100%;}'],
-	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductsListComponent implements OnInit {
 
@@ -157,17 +157,17 @@ export class ProductsListComponent implements OnInit {
 		saveMessageTranslateParam += market['marketId']? 'UPDATE_MESSAGE' : 'ADD_MESSAGE';
 		const _saveMessage = this.translate.instant(saveMessageTranslateParam);
 		const _messageType = market['marketId']? MessageType.Update : MessageType.Create;
-		let marketDoc = this.afs.doc('markets/'+market.id);
+		let marketDoc = this.afs.doc('markets/'+market.marketId);
 
-		// const dialogRef = this.dialog.open(MarketEditDialogComponent, {data: {marketDoc,market}});
-		// dialogRef.afterClosed().subscribe(res => {
-		// 	if (!res) {
-		// 		return;
-		// 	}
+		const dialogRef = this.dialog.open(MarketEditDialogComponent, {data: {marketDoc,market}});
+		dialogRef.afterClosed().subscribe(res => {
+			if (!res) {
+				return;
+			}
 
-		// 	this.layoutUtilsService.showActionNotification(_saveMessage, _messageType, 10000, true, false);
-		// 	// this.loadMarketsList();
-		// });
+			this.layoutUtilsService.showActionNotification(_saveMessage, _messageType, 10000, true, false);
+			// this.loadMarketsList();
+		});
 	}
 
 

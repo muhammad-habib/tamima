@@ -14,6 +14,13 @@ import { TypesUtilsService } from '../../_core/utils/types-utils.service';
 import { ListStateModel } from '../../_core/utils/list-state.model';
 import { SubheaderService } from '../../../../../../../core/services/layout/subheader.service';
 import { LayoutUtilsService, MessageType } from '../../_core/utils/layout-utils.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CustomersService } from '../../_core/services/index';
+import { CustomerModel } from '../../_core/models/customer.model';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'm-product-edit',
@@ -21,60 +28,45 @@ import { LayoutUtilsService, MessageType } from '../../_core/utils/layout-utils.
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductEditComponent implements OnInit {
-	product: ProductModel;
+	product;
 	oldProduct: ProductModel;
 	selectedTab: number = 0;
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 	productForm: FormGroup;
 	hasFormErrors: boolean = false;
-	remarksListState: ListStateModel;
-	specsListState: ListStateModel;
-	availableYears: number[] = [];
-	availableColors: string[] =
-		['Red', 'CadetBlue', 'Gold', 'LightSlateGrey', 'RoyalBlue', 'Crimson', 'Blue', 'Sienna', 'Indigo', 'Green', 'Violet',
-			'GoldenRod', 'OrangeRed', 'Khaki', 'Teal', 'Purple', 'Orange', 'Pink', 'Black', 'DarkTurquoise'];
-	filteredColors: Observable<string[]>;
-	availableManufactures: string[] =
-		['Pontiac', 'Subaru', 'Mitsubishi', 'Oldsmobile', 'Chevrolet', 'Chrysler', 'Suzuki', 'GMC', 'Cadillac', 'Mercury', 'Dodge',
-			'Ram', 'Lexus', 'Lamborghini', 'Honda', 'Nissan', 'Ford', 'Hyundai', 'Saab', 'Toyota'];
-	availableSpecificationTypes: SpecificationModel[] = [];
-	filteredManufactures: Observable<string[]>;
+
+	public marketForm: FormGroup;
+	marketDoc ;
+    market;
+
 
 	constructor(private activatedRoute: ActivatedRoute,
 		private router: Router,
 		private productsService: ProductsService,
-		private remarksService: ProductRemarksService,
-		private specificationsService: SpecificationsService,
-		private productSpecificationsService: ProductSpecificationsService,
 		private typesUtilsService: TypesUtilsService,
-		private productFB: FormBuilder,
+		private fb: FormBuilder,
 		public dialog: MatDialog,
+		private afs: AngularFirestore,
 		private subheaderService: SubheaderService,
-		private layoutUtilsService: LayoutUtilsService) { }
+		private layoutUtilsService: LayoutUtilsService) {
+
+			this.loadingSubject.next(true);
+			this.activatedRoute.queryParams.subscribe(params => {
+				const id = params.id;
+				console.log(id);			
+				if (id ) {
+					this.marketDoc = this.afs.doc('markets/'+id);
+					this.marketDoc.valueChanges().subscribe(value=>this.market=value);
+					console.log(this.market);
+							this.createForm();
+				} 
+			});
+	
+
+		 }
 
 	ngOnInit() {
-		this.loadingSubject.next(true);
-		this.activatedRoute.queryParams.subscribe(params => {
-			const id = params.id;
-			console.log(id);
-			if (id ) {
-				this.productsService.getProductById(id).subscribe(res => {
-					this.product = res;
-					this.oldProduct = Object.assign({}, res);
-					this.initProduct();
-				});
-			} else {
-				const newProduct = new ProductModel();
-				newProduct.clear();
-				this.product = newProduct;
-				this.oldProduct = Object.assign({}, newProduct);
-				this.initProduct();
-			}
-		});
-		for (let i = 2018; i > 1945; i--) {
-			this.availableYears.push(i);
-		}
 	}
 
 	initProduct() {
@@ -98,60 +90,26 @@ export class ProductEditComponent implements OnInit {
 	}
 
 	createForm() {
-		this.productForm = this.productFB.group({
-			model: [this.product.model, Validators.required],
-			manufacture: [this.product.manufacture, Validators.required],
-			modelYear: [this.product.modelYear.toString(), Validators.required],
-			mileage: [this.product.mileage, [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-			description: [this.product.description],
-			color: [this.product.color, Validators.required],
-			price: [this.product.price, [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]],
-			condition: [this.product.condition.toString(), [Validators.required, Validators.min(0), Validators.max(1)]],
-			status: [this.product.status.toString(), [Validators.required, Validators.min(0), Validators.max(1)]],
-			VINCode: [this.product.VINCode, Validators.required]
-		});
-
-		this.filteredManufactures = this.productForm.controls.manufacture.valueChanges
-			.pipe(
-				startWith(''),
-				map(val => this.filterManufacture(val.toString()))
-			);
-		this.filteredColors = this.productForm.controls.color.valueChanges
-			.pipe(
-				startWith(''),
-				map(val => this.filterColor(val.toString()))
-		);
-
-		this.specificationsService.getSpecs().subscribe(res => {
-			this.availableSpecificationTypes = res;
+		this.marketForm = this.fb.group({
+			name: [this.market.name, Validators.required],
+			phone: [this.market.phone,Validators.required],
+			userName: [this.market.name, Validators.required],
+			blocked: [this.market.blocked, Validators.required],
+			language: [this.market.language, Validators.required]
 		});
 	}
 
 	loadLists() {
-		this.remarksListState = new ListStateModel(this.product.id);
-		this.specsListState = new ListStateModel(this.product.id);
-	}
-
-	filterManufacture(val: string): string[] {
-		return this.availableManufactures.filter(option =>
-			option.toLowerCase().includes(val.toLowerCase()));
-	}
-
-	filterColor(val: string): string[] {
-		return this.availableColors.filter(option =>
-			option.toLowerCase().includes(val.toLowerCase()));
 	}
 
 	goBack(id = 0) {
-		let _backUrl = 'ecommerce/products';
-		if (id > 0) {
+		let _backUrl = 'ecommerce/markets';
 			_backUrl += '?id=' + id;
-		}
 		this.router.navigateByUrl(_backUrl);
 	}
 
 	refreshProduct(id = 0) {
-		const _refreshUrl = 'ecommerce/products/edit?id=' + id;
+		const _refreshUrl = 'ecommerce/markets/edit?id=' + id;
 		this.router.navigateByUrl(_refreshUrl);
 	}
 
@@ -180,12 +138,7 @@ export class ProductEditComponent implements OnInit {
 
 		// tslint:disable-next-line:prefer-const
 		let editedProduct = this.prepareProduct();
-
-		if (editedProduct.id > 0) {
-			this.updateProduct(editedProduct, withBack);
-			return;
-		}
-		this.addProduct(editedProduct, withBack);
+		this.updateProduct(editedProduct, withBack);
 	}
 
 	prepareProduct(): ProductModel {
@@ -205,8 +158,6 @@ export class ProductEditComponent implements OnInit {
 		_product._userId = 1; // TODO: get version from userId
 		_product._createdDate = this.product._createdDate;
 		_product._updatedDate = this.product._updatedDate;
-		this.remarksListState.prepareState();
-		this.specsListState.prepareState();
 		_product._updatedDate = this.typesUtilsService.getDateStringFromDate();
 		_product._createdDate = this.product.id > 0 ? _product._createdDate : _product._updatedDate;
 		_product._isNew = this.product.id > 0 ? false : true;
@@ -214,69 +165,9 @@ export class ProductEditComponent implements OnInit {
 		return _product;
 	}
 
-	addProduct(_product: ProductModel, withBack: boolean = false) {
-		this.loadingSubject.next(true);
-		this.productsService.createProduct(_product).subscribe(res => {
-			this.loadingSubject.next(false);
-			if (withBack) {
-				this.goBack(res.id);
-			} else {
-				const message = `New product successfully has been added.`;
-				this.layoutUtilsService.showActionNotification(message, MessageType.Create, 10000, true, false);
-				this.refreshProduct(res.id);
-			}
-		});
-	}
-
 	updateProduct(_product: ProductModel, withBack: boolean = false) {
-		this.loadingSubject.next(true);
-		// Update Product
-		// tslint:disable-next-line:prefer-const
-		let tasks$ = [this.productsService.updateProduct(_product)];
-
-		// Update Remarks
-		this.remarksListState.addedItems.forEach(element => {
-			tasks$.push(this.remarksService.createRemark(element));
-		});
-		this.remarksListState.deletedItems.forEach(element => {
-				tasks$.push(this.remarksService.deleteRemark(element));
-		});
-		this.remarksListState.updatedItems.forEach(element => {
-				tasks$.push(this.remarksService.updateRemark(element));
-		});
-
-		// Update Specs
-		this.specsListState.addedItems.forEach(element => {
-			tasks$.push(this.productSpecificationsService.createSpec(element));
-		});
-		this.specsListState.deletedItems.forEach(element => {
-			tasks$.push(this.productSpecificationsService.deleteSpec(element));
-		});
-		this.specsListState.updatedItems.forEach(element => {
-			tasks$.push(this.productSpecificationsService.updateSpec(element));
-		});
-
-		forkJoin(tasks$).subscribe(res => {
-			this.loadingSubject.next(false);
-			if (withBack) {
-				this.goBack(_product.id);
-			} else {
-				const message = `Product successfully has been saved.`;
-				this.layoutUtilsService.showActionNotification(message, MessageType.Update, 10000, true, false);
-				this.refreshProduct(_product.id);
-			}
-		});
 	}
 
-	getComponentTitle() {
-		let result = 'Create product';
-		if (!this.product || !this.product.id) {
-			return result;
-		}
-
-		result = `Edit product - ${this.product.manufacture} ${this.product.model}, ${this.product.modelYear}`;
-		return result;
-	}
 
 	onAlertClose($event) {
 		this.hasFormErrors = false;

@@ -3,7 +3,7 @@
 	<ng-container mPortletHeadTitle>
 		<div class="m-portlet__head-title">
 			<h3 class="m-portlet__head-text">
-				{{ getComponentTitle() }}
+				Edit Market : {{ market?.name }}
 			</h3>
 		</div>
 	</ng-container>
@@ -24,169 +24,111 @@
 		</div>
 	</ng-container>
 	<ng-container mPortletBody>
-		<mat-tab-group [(selectedIndex)]="selectedTab" *ngIf="product">
-			<mat-tab label="Basic info">
-				<ng-template matTabContent>
-					<!--begin::Form-->
-					<form [formGroup]="productForm" class="m-form m-form--group-seperator-dashed">
+			<form class="m-form" [formGroup]="marketForm" enctype="multipart/form-data">
 
-						<m-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
-							Oh snap! Change a few things up and try submitting again.
-						</m-alert>
-
-						<div class="m-form__section m-form__section--first">
-							<div class="m-form__group">
-								<div class="row">
-
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<input matInput placeholder="Enter Model" formControlName="model">
-											<mat-error>
-												Model is
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>Model</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<input matInput placeholder="Enter Manufacture" formControlName="manufacture" [matAutocomplete]="manuf">
-											<mat-autocomplete #manuf="matAutocomplete">
-												<mat-option *ngFor="let manufacture of filteredManufactures | async" [value]="manufacture">
-													{{ manufacture }}
-												</mat-option>
-											</mat-autocomplete>
-											<mat-error>
-												Manufacture is
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>Manufacture</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<mat-select placeholder="Enter Model year" formControlName="modelYear">
-												<mat-option value="{{year}}" *ngFor="let year of availableYears;">{{year}}</mat-option>
-											</mat-select>
-											<mat-error>
-												Model year
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>Model year</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
+				<div class="m-portlet__body">
+						<mat-progress-bar *ngIf='isUploading' mode="buffer"></mat-progress-bar>
+		
+					<div class="m-portlet__body-progress">
+						<mat-spinner [diameter]="uploadPercent | async"></mat-spinner>
+					</div>
+		
+					<m-alert *ngIf="hasFormErrors" type="warn" [duration]="30000" [showCloseButton]="true" (close)="onAlertClose($event)">
+						Oh snap! Change a few things up and try submitting again.
+					</m-alert>
+		
+					<div class="row">
+							<div class="col-lg-4" >
+							
+									<div class="form-group m-form__group row">
+		
+											<div class="col-lg-12 m--margin-bottom-20-mobile">
+							
+												<mat-card class="example-card">
+													<img mat-card-image [src]="tempPhoto" alt="Photo">
+													<mat-card-actions>
+														<input type="file" (change)="uploadFile($event)" />
+													</mat-card-actions>
+												</mat-card>
+							
+							
+											</div>
+											</div>
+		
 								</div>
+							<div class="col-lg-8" >
+							
+									<div class="form-group m-form__group row">
+											<div class="col-lg-6 m--margin-bottom-20-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<input matInput placeholder="Enter First Name" formControlName="name" />
+													<mat-error>Name is
+														<strong>required</strong>
+													</mat-error>
+													<mat-hint align="start">Please enter
+														<strong>Name</strong>
+													</mat-hint>
+												</mat-form-field>
+											</div>
+											<div class="col-lg-6 m--margin-bottom-20-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<mat-select placeholder="blocked" formControlName="blocked">
+														<mat-option value="true">blocked</mat-option>
+														<mat-option value="false">unblocked</mat-option>
+													</mat-select>
+													<mat-hint align="start">
+														<strong>Blocked</strong>
+													</mat-hint>
+												</mat-form-field>
+											</div>
+										</div>
+										<div class="m-separator m-separator--dashed"></div>
+										<div class="form-group m-form__group row">
+											<div class="col-lg-6 m--margin-bottom-20-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<input type="tel" matInput placeholder="Enter Phone" formControlName="phone" />
+													<mat-error>Phone is
+														<strong>required</strong>
+													</mat-error>
+													<mat-hint align="start">Please enter
+														<strong>Phone</strong>
+													</mat-hint>
+												</mat-form-field>
+											</div>
+											<div class="col-lg-6 m--margin-bottom-20-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<mat-select placeholder="Enter Language" formControlName="language">
+														<mat-option value="ar">AR</mat-option>
+														<mat-option value="en">EN</mat-option>
+													</mat-select>
+													<mat-error>Language
+														<strong>required</strong>
+													</mat-error>
+													<!-- <mat-hint align="start">We'll never share market
+														<strong>Language</strong> with anyone else</mat-hint> -->
+												</mat-form-field>
+											</div>
+										</div>
+												
+							
 							</div>
-
-							<div class="m-form__group">
-								<div class="row">
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<input matInput placeholder="Enter Mileage" formControlName="mileage">
-											<mat-error>
-												Mileage is
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>Mileage</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<input matInput placeholder="Enter Color" formControlName="color" [matAutocomplete]="col">
-											<mat-autocomplete #col="matAutocomplete">
-												<mat-option *ngFor="let col of filteredColors | async" [value]="col">
-													{{ col }}
-												</mat-option>
-											</mat-autocomplete>
-											<mat-error>
-												Color
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>Color</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<input matInput placeholder="Enter Price" formControlName="price">
-											<span matPrefix>$&nbsp;</span>
-											<mat-error>
-												Price is
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>Price</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
-								</div>
-
-							</div>
-
-							<div class="m-form__group">
-								<div class="row">
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<input matInput placeholder="Enter VIN code" formControlName="VINCode">
-											<mat-error>
-												VIN Code is
-												<strong>required</strong>
-											</mat-error>
-											<mat-hint align="start">Please enter
-												<strong>VIN Code</strong>
-											</mat-hint>
-										</mat-form-field>
-									</div>
-									<div class="col-md-4 m--margin-bottom-10-mobile">
-										<div>Condition:</div>
-										<mat-radio-group formControlName="condition" class="example-radio-group">
-											<mat-radio-button class="example-radio-button" value="0">New</mat-radio-button>
-											<mat-radio-button class="example-radio-button" value="1">Used</mat-radio-button>
-										</mat-radio-group>
-									</div>
-									<div class="col-md-4">
-										<div>Status:</div>
-										<mat-radio-group formControlName="status" class="example-radio-group">
-											<mat-radio-button class="example-radio-button" value="0">Selling</mat-radio-button>
-											<mat-radio-button class="example-radio-button" value="1">Sold</mat-radio-button>
-										</mat-radio-group>
-									</div>
-								</div>
-							</div>
-
-							<div class="m-form__group">
-								<div class="row">
-									<div class="col-md-12 m--margin-bottom-10-mobile">
-										<mat-form-field class="mat-form-field-fluid">
-											<textarea matInput rows="7" placeholder="Enter Description" formControlName="description"></textarea>
-										</mat-form-field>
-									</div>
-								</div>
+						</div>	
+		
+				</div>
+				<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+					<div class="m-form__actions m-form__actions--solid">
+						<div class="row text-right">
+							<div class="col-lg-12">
+								<button type="button" mat-raised-button  cdkFocusInitial matTooltip="Cancel changes">
+									Cancel
+								</button>&nbsp;
+								<button type="button" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="viewLoading" matTooltip="Save changes">
+									Save
+								</button>
 							</div>
 						</div>
-					</form>
-					<!--end::Form-->
-				</ng-template>
-			</mat-tab>
-			<mat-tab label="Product remarks" [disabled]="!product.id">
-				<ng-template matTabContent>
-					<m-remarks-list [remarksListState]="remarksListState" [(loadingSubject)]="loadingSubject"></m-remarks-list>
-				</ng-template>
-			</mat-tab>
-			<mat-tab label="Product specifications" [disabled]="!product.id">
-				<ng-template matTabContent>
-					<m-specifications-list [specsListState]="specsListState" [(loadingSubject)]="loadingSubject"></m-specifications-list>
-				</ng-template>
-			</mat-tab>
-		</mat-tab-group>
+					</div>
+				</div>
+			</form>
 	</ng-container>
 </m-portlet>

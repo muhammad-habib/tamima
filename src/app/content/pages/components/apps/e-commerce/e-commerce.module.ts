@@ -27,6 +27,8 @@ import { AlertComponent } from './_shared/alert/alert.component';
 // Customers
 import { CustomersListComponent } from './customers/customers-list/customers-list.component';
 import { CustomerEditDialogComponent } from './customers/customer-edit/customer-edit.dialog.component';
+//Markets
+import { MarketEditDialogComponent } from './products/product-edit/market-edit.dialog.component';
 // Products
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
@@ -84,19 +86,19 @@ const routes: Routes = [
 				component: OrdersListComponent
 			},
 			{
-				path: 'products',
+				path: 'markets',
 				component: ProductsListComponent,
 			},
 			{
-				path: 'products/add',
+				path: 'markets/add',
 				component: ProductEditComponent
 			},
 			{
-				path: 'products/edit',
+				path: 'markets/edit',
 				component: ProductEditComponent
 			},
 			{
-				path: 'products/edit/:id',
+				path: 'markets/edit/:id',
 				component: ProductEditComponent
 			},
 		]
@@ -164,6 +166,7 @@ const routes: Routes = [
 	entryComponents: [
 		ActionNotificationComponent,
 		CustomerEditDialogComponent,
+		MarketEditDialogComponent,
 		DeleteEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,
@@ -180,6 +183,7 @@ const routes: Routes = [
 		// Customers
 		CustomersListComponent,
 		CustomerEditDialogComponent,
+		MarketEditDialogComponent,
 		// Orders
 		OrdersListComponent,
 		OrderEditComponent,

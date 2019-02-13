@@ -23,7 +23,6 @@ import {PaginationService} from '../../_shared/pagination.service';
 	selector: 'm-customers-list',
 	templateUrl: './customers-list.component.html',
 	styleUrls: ['./customers-list.component.css'],
-	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersListComponent implements OnInit {
 	// Table fields
