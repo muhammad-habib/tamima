@@ -31,7 +31,6 @@ import { CustomerEditDialogComponent } from './customers/customer-edit/customer-
 import { MarketEditDialogComponent } from './products/product-edit/market-edit.dialog.component';
 // Products
 import { ProductsListComponent } from './products/products-list/products-list.component';
-import { ProductEditComponent } from './products/product-edit/product-edit.component';
 import { RemarksListComponent } from './products/_subs/remarks/remarks-list/remarks-list.component';
 import { SpecificationsListComponent } from './products/_subs/specifications/specifications-list/specifications-list.component';
 import { SpecificationEditDialogComponent } from './products/_subs/specifications/specification-edit/specification-edit-dialog.component';
@@ -88,19 +87,7 @@ const routes: Routes = [
 			{
 				path: 'markets',
 				component: ProductsListComponent,
-			},
-			{
-				path: 'markets/add',
-				component: ProductEditComponent
-			},
-			{
-				path: 'markets/edit',
-				component: ProductEditComponent
-			},
-			{
-				path: 'markets/edit/:id',
-				component: ProductEditComponent
-			},
+			}
 		]
 	}
 ];
@@ -189,7 +176,6 @@ const routes: Routes = [
 		OrderEditComponent,
 		// Products
 		ProductsListComponent,
-		ProductEditComponent,
 		RemarksListComponent,
 		SpecificationsListComponent,
 		SpecificationEditDialogComponent,

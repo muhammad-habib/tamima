@@ -20,7 +20,7 @@ export class MarketEditDialogComponent implements OnInit {
 	viewLoading: boolean = false;
 	loadingAfterSubmit: boolean = false;
 	userDoc:AngularFirestoreDocument<any>;
-	tempPhoto={};
+	tempPhoto={market:'',licence:''};
 
 	constructor(public dialogRef: MatDialogRef<MarketEditDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,

@@ -1,18 +1,29 @@
 <div class="row">
-	<div class="col-xl-4">
+	<div class="col-xl-5">
 		<mat-card clas="display-1" >
 				<mat-card-header>
-					orders
+					<mat-card-title>orders</mat-card-title>
 				</mat-card-header> 
 				<mat-card-content>
-					 {{data.requests }}
+						<h1>{{data?.requests}}</h1>
 				</mat-card-content>
 		</mat-card>
 	</div>
-	<div class="col-xl-4">
-		<mat-card> users:{{data?.users}}</mat-card>
+	<div class="col-xl-5">
+		<mat-card> 
+
+				<mat-card-header>
+						<mat-card-title>users</mat-card-title>
+					  </mat-card-header>
+					  <mat-card-content>
+							  <h1>{{data?.users}}</h1>
+					  </mat-card-content>	  
+		</mat-card>
 	</div>
-	<div class="col-xl-4">
+	<div class="col-xl-12">
+		<br>
+	</div>
+	<div class="col-xl-5">
 		<!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
 
 		<mat-card class="example-card">
@@ -20,19 +31,7 @@
 				  <mat-card-title>markets</mat-card-title>
 				</mat-card-header>
 				<mat-card-content>
-						<mat-grid-list cols="3" rowHeight="2:1">
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile>
-										<h1>{{data?.markets}}</h1>
-								</mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-								<mat-grid-tile></mat-grid-tile>
-							  </mat-grid-list>
+						<h1>{{data?.markets}}</h1>
 				</mat-card-content>
 			  </mat-card>
 	</div>

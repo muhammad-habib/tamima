@@ -10,7 +10,7 @@ export class DashboardComponent implements OnInit {
 	public requests;
 	public users;
 	public markets;
-	public data = {};
+	public data = {markets:'',requests:'',users:''};
 
 	constructor(private http: HttpClient
 	) {
