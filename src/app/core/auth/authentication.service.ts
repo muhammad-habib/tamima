@@ -16,6 +16,7 @@ export class AuthenticationService implements AuthService {
 	API_ENDPOINT_LOGIN = '/login';
 	API_ENDPOINT_REFRESH = '/refresh';
 	API_ENDPOINT_REGISTER = '/register';
+	loggedIn = false;
 
 	public onCredentialUpdated$: Subject<AccessData>;
 
@@ -135,7 +136,8 @@ export class AuthenticationService implements AuthService {
 	 * Logout
 	 */
 	public logout(refresh?: boolean): void {
-		this.tokenStorage.clear();
+		// this.tokenStorage.clear();
+		this.loggedIn = false;
 		if (refresh) {
 			location.reload(true);
 		}
@@ -182,6 +184,11 @@ export class AuthenticationService implements AuthService {
 		return this.http.get(this.API_URL + this.API_ENDPOINT_LOGIN + '?' + this.util.urlParam(credential))
 			.pipe(catchError(this.handleError('forgot-password', []))
 		);
+	}
+
+
+	isLoggedIn() {
+		return this.loggedIn;
 	}
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, Query} from '@angular/fire/firestore';
 import {tap, take, scan, map} from 'rxjs/operators';
 import {BehaviorSubject, Observable} from 'rxjs';
 
@@ -154,11 +154,11 @@ export class PaginationService {
 	handelFilters(filters) {
 		console.log(filters);
 		const first = this.afs.collection(this.query.path, ref => {
-			let nQuery;
+			let nQuery: Query = ref;
 			for (const filter in filters) {
-				ref = ref.where(filter, '==',  filters[filter]);
+				nQuery = ref.where(filter, '==',  filters[filter]);
 			}
-			return ref;
+			return nQuery;
 		});
 		return first;
 	}

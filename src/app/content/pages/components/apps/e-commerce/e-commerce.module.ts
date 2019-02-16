@@ -38,7 +38,7 @@ import { SpecificationEditDialogComponent } from './products/_subs/specification
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { OrderEditComponent } from './orders/order-edit/order-edit.component';
 // Material
-import { MapComponent } from '../../../../../map/map.component'
+import { MapComponent } from '../../../../../map/map.component';
 import {
 	MatInputModule,
 	MatPaginatorModule,
@@ -67,6 +67,10 @@ import {FirebaseService} from './_shared/firebase.service';
 import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
 import { AgmCoreModule } from '@agm/core';
+import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
+import {LoginComponent} from '../../../auth/login/login.component';
+import {AuthGuard} from '../../../auth/auth.guard';
+
 
 const routes: Routes = [
 	{
@@ -75,12 +79,13 @@ const routes: Routes = [
 		children: [
 			{
 				path: '',
-				redirectTo: 'customers',
-				pathMatch: 'full'
+				pathMatch: 'full',
+				// canActivate: [AuthGuard]
 			},
 			{
 				path: 'customers',
-				component: CustomersListComponent
+				component: CustomersListComponent,
+				// canActivate: [AuthGuard]
 			},
 			{
 				path: 'orders',
@@ -89,7 +94,12 @@ const routes: Routes = [
 			{
 				path: 'markets',
 				component: ProductsListComponent,
-			}
+			},
+			{
+				path: 'login',
+				component: LoginComponent,
+			},
+
 		]
 	}
 ];
@@ -151,7 +161,8 @@ const routes: Routes = [
 		ProductsService,
 		SpecificationsService,
 		TypesUtilsService,
-		LayoutUtilsService
+		LayoutUtilsService,
+		AuthGuard,
 	],
 	entryComponents: [
 		ActionNotificationComponent,
@@ -183,7 +194,9 @@ const routes: Routes = [
 		SpecificationsListComponent,
 		SpecificationEditDialogComponent,
 		ScrollableDirective,
-		MapComponent
+		MapComponent,
+		LoginComponent,
+		AuthNoticeComponent
 	]
 })
 export class ECommerceModule { }
