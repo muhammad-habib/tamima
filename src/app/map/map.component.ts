@@ -8,12 +8,15 @@ import { MouseEvent } from '@agm/core';
 })
 export class MapComponent implements OnInit {
 
-  @Input() lat: number  ;
-  @Input() lng: number  ;
+  @Input() latitude: number  ;
+  @Input() longitude: number  ;
   @Input() height:number =100;
   @Input() zoom:number   =10;
   @Input() label;
   @Input() draggable:boolean=true;
+  @Input() editable=true;
+  @Input() markers=[];
+
   marker:Marker;
   @Output() reLocation = new EventEmitter<Marker>();
 
@@ -22,21 +25,23 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.marker={
-      lat : this.lat,
-      lng : this.lng,
-      draggable : this.draggable,
+      latitude : this.latitude,
+      longitude : this.longitude,
+      draggable : this.draggable && this.editable,
       label : this.label 
     }
   }
   mapClicked($event: MouseEvent) {
-    this.marker.lat= $event.coords.lat;
-    this.marker.lng= $event.coords.lng;
-    this.reLocation.emit(this.marker);
+    if(this.editable){
+      this.marker.latitude= $event.coords.lat;
+      this.marker.longitude= $event.coords.lng;
+      this.reLocation.emit(this.marker);  
+    }
   }
   
   markerDragEnd( $event: MouseEvent) {
-    this.marker.lat= $event.coords.lat;
-    this.marker.lng= $event.coords.lng;
+    this.marker.latitude= $event.coords.lat;
+    this.marker.longitude= $event.coords.lng;
     this.reLocation.emit(this.marker);
   }
   
@@ -44,8 +49,8 @@ export class MapComponent implements OnInit {
 }
 
 interface Marker {
-	lat: number;
-	lng: number;
+	latitude: number;
+	longitude: number;
 	label?: string;
 	draggable: boolean;
 }
