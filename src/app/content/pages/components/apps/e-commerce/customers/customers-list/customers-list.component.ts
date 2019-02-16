@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 // Material
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
@@ -265,18 +265,42 @@ export class CustomersListComponent implements OnInit {
 
 
 	verifyChangedHandler($event) {
-		this.filters['verified'] = $event.value;
+		if ($event.value)
+			switch ($event.value) {
+				case 'true':
+					this.filters['verified'] = true;
+					break;
+				case 'false':
+					this.filters['verified'] = false;
+					break;
+			}
+		else
+			delete this.filters['verified'];
 		this.getUsers();
 
 	}
 
 	blockChangedHandler($event) {
-		this.filters['blocked'] = $event.value;
+		if ($event.value)
+			switch ($event.value) {
+				case 'true':
+					this.filters['blocked'] = true;
+					break;
+				case 'false':
+					this.filters['blocked'] = false;
+					break;
+			}
+		else
+			delete this.filters['blocked'];
 		this.getUsers();
 	}
 
 	applyFilter(filterValue: string) {
-		this.query.setValue(filterValue);
+		if (filterValue)
+			this.filters['name'] = filterValue;
+		else
+			delete this.filters['name'];
+		this.getUsers();
 	}
 
 	scrollHandler(e) {
