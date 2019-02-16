@@ -67,6 +67,7 @@ import {FirebaseService} from './_shared/firebase.service';
 import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
 import { AgmCoreModule } from '@agm/core';
+import { ShowOrderOnMapComponent } from './orders/show-order-on-map/show-order-on-map.component';
 
 const routes: Routes = [
 	{
@@ -157,6 +158,7 @@ const routes: Routes = [
 		ActionNotificationComponent,
 		CustomerEditDialogComponent,
 		MarketEditDialogComponent,
+		ShowOrderOnMapComponent,
 		DeleteEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,
@@ -177,6 +179,7 @@ const routes: Routes = [
 		// Orders
 		OrdersListComponent,
 		OrderEditComponent,
+		ShowOrderOnMapComponent,
 		// Products
 		ProductsListComponent,
 		RemarksListComponent,
