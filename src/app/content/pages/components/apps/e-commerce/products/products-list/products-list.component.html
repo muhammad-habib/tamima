@@ -66,6 +66,16 @@
 						</mat-form-field>
 					</div>
 
+
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="Search">
+							<input matInput  placeholder="Search">
+							<mat-hint align="start">
+								<strong>Search</strong> by Mobile</mat-hint>
+						</mat-form-field>
+					</div>
+
 				</div>
 			</div>
 			<!-- end::FILTERS -->

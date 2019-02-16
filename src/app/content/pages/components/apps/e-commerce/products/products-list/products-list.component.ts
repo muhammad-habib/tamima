@@ -206,8 +206,13 @@ export class ProductsListComponent implements OnInit {
 		this.getMarkets();
 	}
 
-
-
+	applyFilterOnMobile(filterValue: string) {
+		if (filterValue)
+			this.filters['phone'] = filterValue;
+		else
+			delete this.filters['phone'];
+		this.getMarkets();
+	}
 
 	sortData($event) {
 		this.sortField = $event.active;
