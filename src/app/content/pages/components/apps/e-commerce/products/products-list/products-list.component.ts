@@ -55,6 +55,8 @@ export class ProductsListComponent implements OnInit {
 	status = new FormControl();
 	nextPage = new FormControl();
 	filters: any = {};
+	sortField = 'name';
+	reverseDir = false;
 
 
 	constructor(
@@ -77,7 +79,7 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	getMarkets() {
-		this.page.init('markets', 'name', 'marketId', { reverse: false, prepend: false, 'filters': this.filters });
+		this.page.init('markets', this.sortField, 'marketId', { reverse: this.reverseDir, prepend: false, 'filters': this.filters });
 	}
 
 	scrollHandler(e) {
@@ -169,6 +171,48 @@ export class ProductsListComponent implements OnInit {
 			this.layoutUtilsService.showActionNotification(_saveMessage, _messageType, 10000, true, false);
 			// this.loadMarketsList();
 		});
+	}
+
+
+	statusChangedHandler($event) {
+		if ($event.value)
+			this.filters['status'] = $event.value;
+		else
+			delete this.filters['status'];
+		this.getMarkets();
+
+	}
+
+	blockChangedHandler($event) {
+		if ($event.value)
+			switch ($event.value) {
+				case 'true':
+					this.filters['blocked'] = true;
+					break;
+				case 'false':
+					this.filters['blocked'] = false;
+					break;
+			}
+		else
+			delete this.filters['blocked'];
+		this.getMarkets();
+	}
+
+	applyFilter(filterValue: string) {
+		if (filterValue)
+			this.filters['name'] = filterValue;
+		else
+			delete this.filters['name'];
+		this.getMarkets();
+	}
+
+
+
+
+	sortData($event) {
+		this.sortField = $event.active;
+		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
+		this.getMarkets();
 	}
 
 
