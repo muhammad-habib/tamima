@@ -7,6 +7,9 @@
 				</span>
 				<h3 class="m-portlet__head-text">{{getTitle()}}</h3>
 			</div>
+			<m-alert *ngIf="hasFormErrors" type="warn" [duration]="30000" [showCloseButton]="true" (close)="onAlertClose($event)">
+				Oh snap! Change a few things up and try submitting again.
+			</m-alert>
 		</div>
 	</div>
 	<form class="m-form" [formGroup]="customerForm" enctype="multipart/form-data">
@@ -18,9 +21,7 @@
 				<mat-spinner [diameter]="uploadPercent | async"></mat-spinner>
 			</div>
 
-			<m-alert *ngIf="hasFormErrors" type="warn" [duration]="30000" [showCloseButton]="true" (close)="onAlertClose($event)">
-				Oh snap! Change a few things up and try submitting again.
-			</m-alert>
+
 
 			<div class="row">
 					<div class="col-lg-4" >
@@ -95,6 +96,11 @@
 									</div>
 								</div>
 										
+					<div>{{customer?.address[0]?.latitude}}
+						<m-map [editable]="false" [height]="200" 
+						[latitude]="customer?.address[0]?.latitude" [longitude]="customer?.address[0]?.longitude"
+						[markers]="customer.address" ></m-map>
+					</div>				
 					
 					</div>
 				</div>	

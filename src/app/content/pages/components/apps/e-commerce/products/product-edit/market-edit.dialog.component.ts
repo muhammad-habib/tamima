@@ -21,7 +21,7 @@ export class MarketEditDialogComponent implements OnInit {
 	loadingAfterSubmit: boolean = false;
 	userDoc:AngularFirestoreDocument<any>;
 	tempPhoto={market:'',licence:''};
-	tempGeo = {lat:'',lng:''};
+	tempGeo = {latitude:'',longitude:''};
 
 	constructor(public dialogRef: MatDialogRef<MarketEditDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,8 +35,8 @@ export class MarketEditDialogComponent implements OnInit {
 		this.createForm();
 		this.tempPhoto['market'] = this.market.photo;
 		this.tempPhoto['licence'] = this.market.licencePhoto;
-		this.tempGeo.lat = this.market.l?this.market.l[0]:'';
-		this.tempGeo.lng = this.market.l?this.market.l[1]:'';
+		this.tempGeo.latitude = this.market.l?this.market.l[0]:'';
+		this.tempGeo.longitude = this.market.l?this.market.l[1]:'';
 		// /* Server loading imitation. Remove this on real code */
 		// this.viewLoading = true;
 		// setTimeout(() => {
@@ -94,7 +94,7 @@ export class MarketEditDialogComponent implements OnInit {
 			language 	: controls['language'].value,
 			photo 		: this.tempPhoto['market']?this.tempPhoto['market']:this.market.photo,
 			licencePhoto: this.tempPhoto['licence']?this.tempPhoto['licence']:this.market.licencePhoto,
-			l 		    : [ this.tempGeo['lat'],this.tempGeo['lng']]
+			l 		    : [ this.tempGeo['latitude'],this.tempGeo['longitude']]
 			});	
 
     	this.dialogRef.close({
@@ -132,8 +132,8 @@ export class MarketEditDialogComponent implements OnInit {
 	  }
 
 	  changeMarketLocation(location){
-			this.tempGeo.lat = location.lat;
-			this.tempGeo.lng = location.lng;
+			this.tempGeo.latitude = location.latitude;
+			this.tempGeo.longitude = location.longitude;
 	  }
 
 
