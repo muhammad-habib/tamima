@@ -266,13 +266,13 @@ export class CustomersListComponent implements OnInit {
 
 	verifyChangedHandler($event) {
 		this.filters['verified'] = $event.value;
-		console.log($event.value);
 		this.getUsers();
 
 	}
 
 	blockChangedHandler($event) {
 		this.filters['blocked'] = $event.value;
+		this.getUsers();
 	}
 
 	applyFilter(filterValue: string) {

@@ -54,6 +54,7 @@ export class ProductsListComponent implements OnInit {
 	block = new FormControl();
 	status = new FormControl();
 	nextPage = new FormControl();
+	filters: any = {};
 
 
 	constructor(
@@ -76,7 +77,7 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	getMarkets() {
-		this.page.init('markets', 'marketId', { reverse: false, prepend: false });
+		this.page.init('markets', 'name', 'marketId', { reverse: false, prepend: false, 'filters': this.filters });
 	}
 
 	scrollHandler(e) {
