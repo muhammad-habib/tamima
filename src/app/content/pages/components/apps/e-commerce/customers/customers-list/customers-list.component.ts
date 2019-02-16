@@ -46,6 +46,8 @@ export class CustomersListComponent implements OnInit {
 	query = new FormControl();
 	nextPage = new FormControl();
 	hiddenPagination = false;
+	sortField = 'name';
+	reverseDir = false;
 
 	constructor(
 		private customersService: CustomersService,
@@ -61,7 +63,7 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	getUsers() {
-		this.page.init('users', 'name', 'userId', { reverse: false, prepend: false, 'filters': this.filters });
+		this.page.init('users', this.sortField, 'userId', { reverse: this.reverseDir, prepend: false, 'filters': this.filters });
 
 	}
 
@@ -310,5 +312,12 @@ export class CustomersListComponent implements OnInit {
 		// if (e === 'top') {
 		//   this.page.more()
 		// }
+	}
+
+	sortData($event) {
+		console.log($event);
+		this.sortField = $event.active;
+		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
+		this.getUsers();
 	}
 }

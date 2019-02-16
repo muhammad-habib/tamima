@@ -109,9 +109,7 @@
 		<div class="example-container mat-elevation-z8" style="height: 37rem;overflow-y: scroll;"
 			 scrollable (scrollPosition)="scrollHandler($event)"
 		>
-			<mat-table class="" [dataSource]="page.data  | async" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
-
-			>
+			<mat-table class="" (matSortChange)="sortData($event)" [dataSource]="page.data  | async" matSort>
 				<!-- Checkbox Column -->
 
 				<!-- Table with selection -->
