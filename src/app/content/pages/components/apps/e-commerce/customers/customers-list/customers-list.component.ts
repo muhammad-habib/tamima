@@ -305,6 +305,14 @@ export class CustomersListComponent implements OnInit {
 		this.getUsers();
 	}
 
+	applyFilterOnMobile(filterValue: string) {
+		if (filterValue)
+			this.filters['phone'] = filterValue;
+		else
+			delete this.filters['phone'];
+		this.getUsers();
+	}
+
 	scrollHandler(e) {
 		if (e === 'bottom') {
 			this.page.more();
