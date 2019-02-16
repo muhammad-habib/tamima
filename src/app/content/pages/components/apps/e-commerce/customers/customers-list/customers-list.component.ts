@@ -28,8 +28,6 @@ export class CustomersListComponent implements OnInit {
 	// Table fields
 	// Filter fields
 	@ViewChild('searchInput') searchInput: ElementRef;
-	filterStatus: string = '';
-	filterType: string = '';
 	// Selection
 	selection = new SelectionModel<CustomerModel>(true, []);
 	customersResult: CustomerModel[] = [];
@@ -44,12 +42,9 @@ export class CustomersListComponent implements OnInit {
 	isLoadingResults = true;
 	isRateLimitReached = false;
 	data: any[] = [];
-	resultsPerPage = 3;
+	filters: any = {};
 	query = new FormControl();
-	block = new FormControl();
-	status = new FormControl();
 	nextPage = new FormControl();
-	items: Observable<any[]>;
 	hiddenPagination = false;
 
 	constructor(
@@ -63,15 +58,10 @@ export class CustomersListComponent implements OnInit {
 		private fs: FirebaseService,
 		public page: PaginationService
 	) {
-		this.query.setValue('');
-		this.status.setValue('');
-		this.block.setValue('');
-		this.nextPage.setValue('');
-		this.items = this.fs.getUsers();
 	}
 
 	getUsers() {
-		this.page.init('users', 'userId', { reverse: false, prepend: false });
+		this.page.init('users', 'name', 'userId', { reverse: false, prepend: false, 'filters': this.filters });
 
 	}
 
@@ -273,12 +263,16 @@ export class CustomersListComponent implements OnInit {
 			});
 	}
 
+
 	verifyChangedHandler($event) {
-		this.status.setValue($event.value);
+		this.filters['verified'] = $event.value;
+		console.log($event.value);
+		this.getUsers();
+
 	}
 
 	blockChangedHandler($event) {
-		this.block.setValue($event.value);
+		this.filters['blocked'] = $event.value;
 	}
 
 	applyFilter(filterValue: string) {

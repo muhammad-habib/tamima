@@ -32,7 +32,7 @@ export class PaginationService {
 	}
 
 	// Initial query sets options and defines the Observable
-	init(path, field, opts?) {
+	init(path, field, syncField, opts?) {
 		this.reset();
 		this.query = {
 			path,
@@ -43,34 +43,27 @@ export class PaginationService {
 			...opts
 		};
 
-		const first = this.afs.collection(this.query.path, ref => {
-			return ref
-				.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
-				.limit(this.query.limit);
-			// .where('categoria','==', 'Herramientas y Construcción' )
-		});
+
+		let first;
+		console.log(this.query['filters'], Object.keys(this.query['filters']).length);
+		if (Object.keys(this.query['filters']).length > 0) {
+			console.log("fff");
+		 	this.handelFilters(this.query['filters']);
+
+		} else {
+			 first = this.afs.collection(this.query.path, ref => {
+				return ref
+					.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+					.limit(this.query.limit);
+			});
+		}
 
 		this.mapAndUpdate(first);
 
 		// Create the observable array for consumption in components
 		this.data = this._data.asObservable().pipe(
 			scan( (acc, val) => {
-				if (acc.length) {
-					let arr3 = [];
-					for(let i in acc){
-						let shared = false;
-						for (let j in val) {
-							if (acc[i][this.query.field] == val[j][this.query.field]) {
-								shared = true;
-								break;
-							}
-						}
-						if(!shared){
-							arr3.push(acc[i]);
-						}
-					}
-					acc = arr3;
-				}
+				acc = this.syncData(acc, val, syncField);
 				return this.query.prepend ? val.concat(acc) : acc.concat(val);
 			}));
 	}
@@ -140,5 +133,43 @@ export class PaginationService {
 		this._done.next(false);
 	}
 
+	// Sync Data
+	syncData(oldData, newData, syncField){
+		if (oldData.length) {
+			const syncedData = [];
+			for (let i in oldData){
+				let shared = false;
+				for (let j in newData) {
+					if (oldData[i][syncField] === newData[j][syncField]) {
+						shared = true;
+						break;
+					}
+				}
+				if (!shared) {
+					syncedData.push(oldData[i]);
+				}
+			}
+			oldData = syncedData;
+		}
+		return oldData;
+	}
 
+	handelFilters(filters) {
+		console.log(filters);
+		const query = this.afs.collection(this.query.path);
+		for (const filter in filters) {
+			console.log(filters[filter]);
+			// query = query.where(...)
+			// query = query.where(...)
+			// query = query.where(...)
+			// query = query.orderBy(...)
+		}
+		// query.get().then(...)
+
+		// const first = this.afs.collection(this.query.path, ref => {
+		// 	return ref
+		// 		.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+		// 		.limit(this.query.limit);
+		// });
+	}
 }
