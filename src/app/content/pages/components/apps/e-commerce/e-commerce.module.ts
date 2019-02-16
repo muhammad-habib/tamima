@@ -38,6 +38,7 @@ import { SpecificationEditDialogComponent } from './products/_subs/specification
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
 import { OrderEditComponent } from './orders/order-edit/order-edit.component';
 // Material
+import { MapComponent } from '../../../../../map/map.component'
 import {
 	MatInputModule,
 	MatPaginatorModule,
@@ -65,6 +66,7 @@ import { environment } from '../../../../../../environments/environment';
 import {FirebaseService} from './_shared/firebase.service';
 import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
+import { AgmCoreModule } from '@agm/core';
 
 const routes: Routes = [
 	{
@@ -121,6 +123,7 @@ const routes: Routes = [
 		MatSnackBarModule,
 		MatTabsModule,
 		MatTooltipModule,
+		AgmCoreModule.forRoot(environment.mapConfig)
 	],
 	providers: [
 		// InterceptService,
@@ -179,7 +182,8 @@ const routes: Routes = [
 		RemarksListComponent,
 		SpecificationsListComponent,
 		SpecificationEditDialogComponent,
-		ScrollableDirective
+		ScrollableDirective,
+		MapComponent
 	]
 })
 export class ECommerceModule { }

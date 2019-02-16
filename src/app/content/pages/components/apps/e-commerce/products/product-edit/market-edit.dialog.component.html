@@ -11,9 +11,7 @@
 		</div>
 		<form class="m-form" [formGroup]="marketForm" enctype="multipart/form-data">
 	
-			<div class="m-portlet__body">
-					<mat-progress-bar *ngIf='isUploading' mode="buffer"></mat-progress-bar>
-	
+			<div class="m-portlet__body">	
 				<div class="m-portlet__body-progress">
 					<mat-spinner [diameter]="uploadPercent | async"></mat-spinner>
 				</div>
@@ -60,10 +58,12 @@
 		
 								</div>
 								<div class="col-lg-12">
-										<br>
+									<br>
+										<mat-progress-bar *ngIf='isUploading' mode="buffer"></mat-progress-bar>
+									<br>
 								</div>
 
-							<div class="col-lg-8" >
+							<div class="col-lg-12" >
 						
 								<div class="form-group m-form__group row">
 										<div class="col-lg-6 m--margin-bottom-20-mobile">
@@ -116,8 +116,41 @@
 											</mat-form-field>
 										</div>
 									</div>
-											
-						
+									<div class="m-separator m-separator--dashed"></div>
+									<div class="form-group m-form__group row">
+										<div class="col-lg-6 m--margin-bottom-20-mobile">
+											<mat-form-field class="mat-form-field-fluid">
+												<input type="text" matInput placeholder="Enter Country" formControlName="country" />
+												<mat-error>Country is
+													<strong>required</strong>
+												</mat-error>
+												<mat-hint align="start">Please enter
+													<strong>Country</strong>
+												</mat-hint>
+											</mat-form-field>
+										</div>
+										<div class="col-lg-6 m--margin-bottom-20-mobile">
+											<mat-form-field class="mat-form-field-fluid">
+												<mat-select placeholder="Enter Status" formControlName="status">
+													<mat-option value="Open">Open</mat-option>
+													<mat-option value="Busy">Busy</mat-option>
+													<mat-option value="Closed">Closed</mat-option>
+												</mat-select>
+												<mat-error>Status
+													<strong>required</strong>
+												</mat-error>
+												<!-- <mat-hint align="start">We'll never share customer
+													<strong>Language</strong> with anyone else</mat-hint> -->
+											</mat-form-field>
+										</div>
+									</div>
+																	
+									
+							<div class="col-lg-12">
+								<m-map [height]="250" [lat]="tempGeo.lat" [lng]="tempGeo.lng"
+									(reLocation)="changeMarketLocation($event)"
+								></m-map>
+							</div>		
 						</div>
 					</div>	
 	

@@ -21,6 +21,7 @@ export class MarketEditDialogComponent implements OnInit {
 	loadingAfterSubmit: boolean = false;
 	userDoc:AngularFirestoreDocument<any>;
 	tempPhoto={market:'',licence:''};
+	tempGeo = {lat:'',lng:''};
 
 	constructor(public dialogRef: MatDialogRef<MarketEditDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,6 +35,8 @@ export class MarketEditDialogComponent implements OnInit {
 		this.createForm();
 		this.tempPhoto['market'] = this.market.photo;
 		this.tempPhoto['licence'] = this.market.licencePhoto;
+		this.tempGeo.lat = this.market.l?this.market.l[0]:'';
+		this.tempGeo.lng = this.market.l?this.market.l[1]:'';
 		// /* Server loading imitation. Remove this on real code */
 		// this.viewLoading = true;
 		// setTimeout(() => {
@@ -48,7 +51,9 @@ export class MarketEditDialogComponent implements OnInit {
 			phone: [this.market.phone,Validators.required],
 			userName: [this.market.name, Validators.required],
 			blocked: [this.market.blocked, Validators.required],
-			language: [this.market.language, Validators.required]
+			language: [this.market.language, Validators.required],
+			status: [this.market.status, Validators.required],
+			country: [this.market.country, Validators.required]
 		});
 	}
 
@@ -83,10 +88,13 @@ export class MarketEditDialogComponent implements OnInit {
 		this.marketDoc.update({
 			name 		: controls['name'].value,
 			phone 		: controls['phone'].value,
+			country 	: controls['country'].value,
+			status 		: controls['status'].value,
 			blocked 	: JSON.parse(controls['blocked'].value),
 			language 	: controls['language'].value,
 			photo 		: this.tempPhoto['market']?this.tempPhoto['market']:this.market.photo,
-			licencePhoto: this.tempPhoto['licence']?this.tempPhoto['licence']:this.market.licencePhoto
+			licencePhoto: this.tempPhoto['licence']?this.tempPhoto['licence']:this.market.licencePhoto,
+			l 		    : [ this.tempGeo['lat'],this.tempGeo['lng']]
 			});	
 
     	this.dialogRef.close({
@@ -121,6 +129,11 @@ export class MarketEditDialogComponent implements OnInit {
 			) )
 		 )
 		.subscribe()
+	  }
+
+	  changeMarketLocation(location){
+			this.tempGeo.lat = location.lat;
+			this.tempGeo.lng = location.lng;
 	  }
 
 

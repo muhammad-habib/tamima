@@ -13,5 +13,8 @@ export const environment = {
     projectId: "tamima-c05fc",
     storageBucket: "tamima-c05fc.appspot.com",
     messagingSenderId: "292755364721"
+  },
+  mapConfig : {
+    apiKey: 'AIzaSyAU9f7luK3J31nurL-Io3taRKF7w9BItQE'
   }
 };
