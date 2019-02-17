@@ -195,8 +195,8 @@ const routes: Routes = [
 		SpecificationEditDialogComponent,
 		ScrollableDirective,
 		MapComponent,
-		LoginComponent,
-		AuthNoticeComponent
+		// LoginComponent,
+		// AuthNoticeComponent
 	]
 })
 export class ECommerceModule { }
