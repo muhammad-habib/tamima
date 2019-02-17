@@ -67,10 +67,14 @@ import {FirebaseService} from './_shared/firebase.service';
 import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
 import { AgmCoreModule } from '@agm/core';
+<<<<<<< HEAD
 import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
 import {LoginComponent} from '../../../auth/login/login.component';
 import {AuthGuard} from '../../../auth/auth.guard';
 
+=======
+import { ShowOrderOnMapComponent } from './orders/show-order-on-map/show-order-on-map.component';
+>>>>>>> 12af04201a4046e0e4619c73adc1d2bb4d56ad4d
 
 const routes: Routes = [
 	{
@@ -168,6 +172,7 @@ const routes: Routes = [
 		ActionNotificationComponent,
 		CustomerEditDialogComponent,
 		MarketEditDialogComponent,
+		ShowOrderOnMapComponent,
 		DeleteEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,
@@ -188,6 +193,7 @@ const routes: Routes = [
 		// Orders
 		OrdersListComponent,
 		OrderEditComponent,
+		ShowOrderOnMapComponent,
 		// Products
 		ProductsListComponent,
 		RemarksListComponent,

@@ -45,8 +45,11 @@ export class PaginationService {
 
 
 		let first;
+		console.log(this.query['filters'], Object.keys(this.query['filters']).length);
 		if (Object.keys(this.query['filters']).length > 0) {
-		 	first = this.handelFilters(this.query['filters']);
+			console.log("fff");
+		 	this.handelFilters(this.query['filters']);
+
 		} else {
 			 first = this.afs.collection(this.query.path, ref => {
 				return ref
@@ -153,6 +156,7 @@ export class PaginationService {
 
 	handelFilters(filters) {
 		console.log(filters);
+<<<<<<< HEAD
 		const first = this.afs.collection(this.query.path, ref => {
 			let nQuery: Query = ref;
 			for (const filter in filters) {
@@ -161,5 +165,22 @@ export class PaginationService {
 			return nQuery;
 		});
 		return first;
+=======
+		const query = this.afs.collection(this.query.path);
+		for (const filter in filters) {
+			console.log(filters[filter]);
+			// query = query.where(...)
+			// query = query.where(...)
+			// query = query.where(...)
+			// query = query.orderBy(...)
+		}
+		// query.get().then(...)
+
+		// const first = this.afs.collection(this.query.path, ref => {
+		// 	return ref
+		// 		.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+		// 		.limit(this.query.limit);
+		// });
+>>>>>>> 12af04201a4046e0e4619c73adc1d2bb4d56ad4d
 	}
 }

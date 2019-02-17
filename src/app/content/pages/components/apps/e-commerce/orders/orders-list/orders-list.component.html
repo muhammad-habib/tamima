@@ -1,3 +1,110 @@
-<p>
-	<b>Orders:</b> - Coming soon in the following update.
-</p>
+<!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
+<m-portlet [options]="{headLarge: true}">
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+
+	<!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
+	<ng-container mPortletHeadTitle>
+		<div class="m-portlet__head-title">
+			<h3 class="m-portlet__head-text">
+				<span translate="ECOMMERCE.MARKETS.MARKETS_LIST">Orders list</span>
+			</h3>
+		</div>
+		<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+		<!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+	</ng-container>
+
+	<ng-container mPortletHeadTools>
+		<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+		<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+	</ng-container>
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: mPortletBody) -->
+	<ng-container mPortletBody>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<!-- end::FILTERS & GROUP ACTIONS -->
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="example-container mat-elevation-z8" style="height: 37rem;overflow-y: scroll;" scrollable
+			(scrollPosition)="scrollHandler($event)">
+			<mat-table class="" [dataSource]="page.data" matSort matSortActive="id" matSortDirection="asc"
+				matSortDisableClear>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+
+				<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+				<ng-container matColumnDef="id">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.id}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="user">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Customer</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order.user.name}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="mobile">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
+					<mat-cell *matCellDef="let order">
+						<img width="60" height="50" src="{{order.user.photo}}" class="m--img-rounded m--marginless" alt="" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="market">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Market</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order.market.name}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="photo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
+					<mat-cell *matCellDef="let order">
+						<img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="price">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order.market.price}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="createdAt">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order.createdAt.toDate() | date: 'M/d/yyyy  -  h:mm a'}}</mat-cell>
+				</ng-container>
+				<!-- <ng-container matColumnDef="photo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<img width="60" height="50" src="{{market.photo}}" class="m--img-rounded m--marginless"
+							alt="" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="licencePhoto">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>licencePhoto</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<img width="60" height="50" src="{{market.licencePhoto}}" class="m--img-rounded m--marginless"
+							alt="" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="rateRatio">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Rate Ratio</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.rateRatio}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="rateCount">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Rate Count</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.rateCount}}</mat-cell>
+				</ng-container> -->
+
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<button mat-icon-button color="primary" matTooltip="show on map" (click)="editOrder(order)"><mat-icon>map</mat-icon></button>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+		</div>
+	</ng-container>
+	<!-- end::Body -->
+
+</m-portlet>
