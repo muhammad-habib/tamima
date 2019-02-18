@@ -49,7 +49,10 @@
 				<ng-container matColumnDef="mobile">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
 					<mat-cell *matCellDef="let order">
-						<img width="60" height="50" src="{{order.user.photo}}" class="m--img-rounded m--marginless" alt="" />
+						<a *ngIf="order.user.photo" target="_blanck" href="{{order?.user?.photo}}}">
+								<mat-icon>link</mat-icon>
+						</a>
+						<!-- <img width="60" height="50" src="{{order.user.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="market">
@@ -59,7 +62,10 @@
 				<ng-container matColumnDef="photo">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
 					<mat-cell *matCellDef="let order">
-						<img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" />
+							<a *ngIf="order.market.photo" target="_blanck" href="{{order?.market?.photo}}}">
+									<mat-icon>link</mat-icon>
+							</a>
+							<!-- <img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="price">
