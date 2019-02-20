@@ -66,6 +66,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		PartialsModule,
 		CoreModule,
 		OverlayModule,
+		AuthenticationModule,
 		NgxPermissionsModule.forRoot(),
 		NgbModule.forRoot(),
 		TranslateModule.forRoot(),

@@ -67,15 +67,12 @@ import {FirebaseService} from './_shared/firebase.service';
 import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
 import { AgmCoreModule } from '@agm/core';
-<<<<<<< HEAD
-import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
 import {LoginComponent} from '../../../auth/login/login.component';
 import {AuthGuard} from '../../../auth/auth.guard';
-
-=======
 import { ShowOrderOnMapComponent } from './orders/show-order-on-map/show-order-on-map.component';
->>>>>>> 12af04201a4046e0e4619c73adc1d2bb4d56ad4d
-
+import {AuthenticationService} from '../../../../../core/auth/authentication.service';
+import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
+import {CoreModule} from '../../../../../core/core.module';
 const routes: Routes = [
 	{
 		path: '',
@@ -137,7 +134,8 @@ const routes: Routes = [
 		MatSnackBarModule,
 		MatTabsModule,
 		MatTooltipModule,
-		AgmCoreModule.forRoot(environment.mapConfig)
+		AgmCoreModule.forRoot(environment.mapConfig),
+		CoreModule
 	],
 	providers: [
 		// InterceptService,
@@ -167,6 +165,7 @@ const routes: Routes = [
 		TypesUtilsService,
 		LayoutUtilsService,
 		AuthGuard,
+		AuthenticationService
 	],
 	entryComponents: [
 		ActionNotificationComponent,
@@ -201,8 +200,8 @@ const routes: Routes = [
 		SpecificationEditDialogComponent,
 		ScrollableDirective,
 		MapComponent,
-		// LoginComponent,
-		// AuthNoticeComponent
+		LoginComponent,
+		AuthNoticeComponent
 	]
 })
 export class ECommerceModule { }

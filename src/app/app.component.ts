@@ -43,7 +43,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private router: Router,
 		private pageConfigService: PageConfigService,
 		private splashScreenService: SplashScreenService,
-		private aclService: AclService
+		// private aclService: AclService
 	) {
 		// subscribe to class update event
 		this.classInitService.onClassesUpdated$.subscribe(classes => {

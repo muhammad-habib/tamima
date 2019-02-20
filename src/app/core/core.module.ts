@@ -17,6 +17,7 @@ import { GetObjectPipe } from './pipes/get-object.pipe';
 import { ConsoleLogPipe } from './pipes/console-log.pipe';
 import { SafePipe } from './pipes/safe.pipe';
 import { PortletDirective } from './directives/portlet.directive';
+import {TranslatePipe} from './pipes/translate.pipe';
 
 @NgModule({
 	imports: [CommonModule],
@@ -39,7 +40,8 @@ import { PortletDirective } from './directives/portlet.directive';
 		JoinPipe,
 		GetObjectPipe,
 		ConsoleLogPipe,
-		SafePipe
+		SafePipe,
+		TranslatePipe
 	],
 	exports: [
 		// directives
@@ -60,7 +62,8 @@ import { PortletDirective } from './directives/portlet.directive';
 		JoinPipe,
 		GetObjectPipe,
 		ConsoleLogPipe,
-		SafePipe
+		SafePipe,
+		TranslatePipe
 	],
 	providers: []
 })
