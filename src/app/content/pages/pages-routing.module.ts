@@ -5,11 +5,13 @@ import { ActionComponent } from './header/action/action.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ProfileComponent } from './header/profile/profile.component';
 import { ErrorPageComponent } from './snippets/error-page/error-page.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
 	{
 		path: '',
 		component: PagesComponent,
+		canActivate: [AuthGuard],
 		children: [
 			{
 				path: '',
@@ -56,6 +58,10 @@ const routes: Routes = [
 				component: ProfileComponent
 			}
 		]
+	},
+	{
+		path: 'login',
+		loadChildren: './auth/auth.module#AuthModule',
 	},
 	{
 		path: '404',

@@ -6,7 +6,7 @@ import * as objectPath from 'object-path';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { PageConfigService } from './core/services/page-config.service';
-import { filter } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { SplashScreenService } from './core/services/splash-screen.service';
 import { AclService } from './core/services/acl.service';
 // language list
@@ -16,6 +16,8 @@ import { locale as esLang } from './config/i18n/es';
 import { locale as jpLang } from './config/i18n/jp';
 import { locale as deLang } from './config/i18n/de';
 import { locale as frLang } from './config/i18n/fr';
+import { AuthenticationService } from './core/auth/authentication.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 // LIST KNOWN ISSUES
 // [Violation] Added non-passive event listener; https://github.com/angular/angular/issues/8866
@@ -34,7 +36,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	@ViewChild('splashScreen', {read: ElementRef})
 	splashScreen: ElementRef;
 	splashScreenImage: string;
-
+	lol;
 	constructor(
 		private layoutConfigService: LayoutConfigService,
 		private classInitService: ClassInitService,
@@ -43,8 +45,23 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private router: Router,
 		private pageConfigService: PageConfigService,
 		private splashScreenService: SplashScreenService,
+		private authenticationService: AuthenticationService,
+		private afAuth:  AngularFireAuth,		
 		// private aclService: AclService
 	) {
+		console.log('1');
+		this.getLoginStatus();
+// 		await this.afAuth.authState.subscribe(user => {
+//             console.log(user);
+// 			if (user){
+// 				this.authenticationService.loggedIn=true;
+// //			  this.user = user;
+// 			  localStorage.setItem('user', JSON.stringify(user));
+// 			} else {
+// 			  localStorage.setItem('user', null);
+// 			}
+// 		  })        
+
 		// subscribe to class update event
 		this.classInitService.onClassesUpdated$.subscribe(classes => {
 			// get body class array, join as string classes and pass to host binding class
@@ -79,6 +96,20 @@ export class AppComponent implements AfterViewInit, OnInit {
 
 	ngOnInit(): void {}
 
+	async getLoginStatus(){
+//		let user  = await this.afAuth.auth..authStat(res=>{ this.lol = res;});
+		const user = await this.isLoggedIn()
+		console.log(user);
+		if(user){
+			this.authenticationService.loggedIn = true;
+		}
+		await setTimeout(() => {
+			console.log(this.lol)
+		},10000 );
+	}
+	isLoggedIn() {
+		return this.afAuth.authState.pipe(first()).toPromise();
+	 }
 	ngAfterViewInit(): void {
 		if (this.splashScreen) {
 			this.splashScreenService.init(this.splashScreen.nativeElement);

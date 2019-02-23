@@ -25,7 +25,7 @@ import { SpinnerButtonOptions } from '../../../partials/content/general/spinner-
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit, OnDestroy {
-	public model: any = { email: 'admin@demo.com', password: 'demo' };
+	public model: any = { email: 'kazafysayed@gmail.com', password: 'admin123' };
 	@HostBinding('class') classes: string = 'm-login__signin';
 	@Output() actionChange = new Subject<string>();
 	public loading = false;
@@ -53,20 +53,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 	) {}
 
 	submit() {
-		this.authService.loggedIn = true;
-		this.router.navigate(['/']);
-		// this.spinner.active = true;
-		// if (this.validate(this.f)) {
-		// 	this.authService.login(this.model).subscribe(response => {
-		// 		if (typeof response !== 'undefined') {
-		// 			this.router.navigate(['/']);
-		// 		} else {
-		// 			this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'), 'error');
-		// 		}
-		// 		this.spinner.active = false;
-		// 		this.cdr.detectChanges();
-		// 	});
-		// }
+		// console.log(this.authService);
+		// this.authService.loggedIn = true;
+		// this.router.navigate(['/']);
+		this.spinner.active = true;
+		if (this.validate(this.f)) {
+			this.authService.login(this.model).then(response => {
+				if (typeof response !== 'undefined') {
+					console.log(response);
+					this.router.navigate(['/']);
+				} else {
+					this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'), 'error');
+				}
+				this.spinner.active = false;
+				this.cdr.detectChanges();
+			});
+		}
 	}
 
 	ngOnInit(): void {
