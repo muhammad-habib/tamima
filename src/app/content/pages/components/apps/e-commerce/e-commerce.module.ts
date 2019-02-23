@@ -21,6 +21,7 @@ import { InterceptService } from './_core/utils/intercept.service';
 // Shared
 import { ActionNotificationComponent } from './_shared/action-natification/action-notification.component';
 import { DeleteEntityDialogComponent } from './_shared/delete-entity-dialog/delete-entity-dialog.component';
+import { BlockEntityDialogComponent } from './_shared/block-entity-dialog/block-entity-dialog.component';
 import { FetchEntityDialogComponent } from './_shared/fetch-entity-dialog/fetch-entity-dialog.component';
 import { UpdateStatusDialogComponent } from './_shared/update-status-dialog/update-status-dialog.component';
 import { AlertComponent } from './_shared/alert/alert.component';
@@ -68,9 +69,8 @@ import {PaginationService} from './_shared/pagination.service';
 import {ScrollableDirective} from './_shared/scrollable.directive';
 import { AgmCoreModule } from '@agm/core';
 import {LoginComponent} from '../../../auth/login/login.component';
-import {AuthGuard} from '../../../auth/auth.guard';
+// import {AuthGuard} from '../../../auth/auth.guard';
 import { ShowOrderOnMapComponent } from './orders/show-order-on-map/show-order-on-map.component';
-import {AuthenticationService} from '../../../../../core/auth/authentication.service';
 import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
 import {CoreModule} from '../../../../../core/core.module';
 const routes: Routes = [
@@ -90,16 +90,18 @@ const routes: Routes = [
 			},
 			{
 				path: 'orders',
-				component: OrdersListComponent
+				component: OrdersListComponent,
+				// canActivate: [AuthGuard]
 			},
 			{
 				path: 'markets',
 				component: ProductsListComponent,
+				// canActivate: [AuthGuard]
 			},
-			{
-				path: 'login',
-				component: LoginComponent,
-			},
+			// {
+			// 	path: 'login',
+			// 	component: LoginComponent,
+			// },
 
 		]
 	}
@@ -164,8 +166,6 @@ const routes: Routes = [
 		SpecificationsService,
 		TypesUtilsService,
 		LayoutUtilsService,
-		AuthGuard,
-		AuthenticationService
 	],
 	entryComponents: [
 		ActionNotificationComponent,
@@ -173,6 +173,7 @@ const routes: Routes = [
 		MarketEditDialogComponent,
 		ShowOrderOnMapComponent,
 		DeleteEntityDialogComponent,
+		BlockEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,
 		SpecificationEditDialogComponent
@@ -182,6 +183,7 @@ const routes: Routes = [
 		// Shared
 		ActionNotificationComponent,
 		DeleteEntityDialogComponent,
+		BlockEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,
 		AlertComponent,
@@ -200,8 +202,8 @@ const routes: Routes = [
 		SpecificationEditDialogComponent,
 		ScrollableDirective,
 		MapComponent,
-		LoginComponent,
-		AuthNoticeComponent
+		// LoginComponent,
+		// AuthNoticeComponent
 	]
 })
 export class ECommerceModule { }

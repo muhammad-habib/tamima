@@ -126,12 +126,12 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	toggleCustomerBlock(_item: CustomerModel){
-		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.TITLE');
-		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.DESCRIPTION');
-		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.WAIT_DESCRIPTION');
-		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_MULTY.MESSAGE');
+		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.TITLE');
+		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.DESCRIPTION');
+		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
+		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.MESSAGE');
 
-		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption);
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;

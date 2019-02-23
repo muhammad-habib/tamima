@@ -50,6 +50,8 @@ import {AngularFireMessagingModule} from '@angular/fire/messaging';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {ScrollableDirective} from './content/pages/components/apps/e-commerce/_shared/scrollable.directive';
+import { AuthGuard } from './content/pages/auth/auth.guard';
+import { AuthenticationService } from './core/auth/authentication.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	// suppressScrollX: true
@@ -93,6 +95,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		QuickSearchService,
 		DataTableService,
 		SplashScreenService,
+		AuthGuard,
+		AuthenticationService,
 		{
 			provide: PERFECT_SCROLLBAR_CONFIG,
 			useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

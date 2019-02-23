@@ -9,8 +9,11 @@ import { TokenStorage } from './token-storage.service';
 import { UtilsService } from '../services/utils.service';
 import { AccessData } from './access-data';
 import { Credential } from './credential';
+import { AngularFireAuth } from '@angular/fire/auth';
 
-@Injectable()
+@Injectable({
+    providedIn:  'root'
+})
 export class AuthenticationService implements AuthService {
 	API_URL = 'api';
 	API_ENDPOINT_LOGIN = '/login';
@@ -23,7 +26,8 @@ export class AuthenticationService implements AuthService {
 	constructor(
 		private http: HttpClient,
 		private tokenStorage: TokenStorage,
-		private util: UtilsService
+		private util: UtilsService,
+		private afAuth:  AngularFireAuth,
 	) {
 		this.onCredentialUpdated$ = new Subject();
 	}
@@ -100,20 +104,45 @@ export class AuthenticationService implements AuthService {
 	 * @param {Credential} credential
 	 * @returns {Observable<any>}
 	 */
-	public login(credential: Credential): Observable<any> {
+	public login(credential: Credential): Promise<any> {
+
+		return this.afAuth.auth.signInWithEmailAndPassword(credential.email,credential.password).
+		then(res=>{
+			console.log(res);
+			if(res && res.user.refreshToken){
+				this.loggedIn = true;
+				// accessToken = res.user.;
+				let accessData={
+					accessToken: res.user.refreshToken,
+					refreshToken: res.user.refreshToken,
+					roles: ['ADMIN']
+				}
+				this.tokenStorage
+					.setAccessToken(accessData.accessToken)
+					.setRefreshToken(accessData.refreshToken)
+					.setUserRoles(['ADMIN']);
+				this.onCredentialUpdated$.next(accessData);
+				return res;
+			}
+			else
+				return 'undefined'
+
+		}).catch(
+			err=>{return'undefined'}
+		);
 		// Expecting response from API
 		// tslint:disable-next-line:max-line-length
 		// {"id":1,"username":"admin","password":"demo","email":"admin@demo.com","accessToken":"access-token-0.022563452858263444","refreshToken":"access-token-0.9348573301432961","roles":["ADMIN"],"pic":"./assets/app/media/img/users/user4.jpg","fullname":"Mark Andre"}
-		return this.http.get<AccessData>(this.API_URL + this.API_ENDPOINT_LOGIN + '?' + this.util.urlParam(credential)).pipe(
-			map((result: any) => {
-				if (result instanceof Array) {
-					return result.pop();
-				}
-				return result;
-			}),
-			tap(this.saveAccessData.bind(this)),
-			catchError(this.handleError('login', []))
-		);
+		// return this.http.get<AccessData>(this.API_URL + this.API_ENDPOINT_LOGIN + '?' + this.util.urlParam(credential)).pipe(
+		// 	map((result: any) => {
+		// 		if (result instanceof Array) {
+		// 			return result.pop();
+		// 		}
+		// 		return result;
+		// 	}),
+		// 	tap(this.saveAccessData.bind(this)),
+		// 	catchError(this.handleError('login', []))
+		// );
 	}
 
 	/**
@@ -137,7 +166,9 @@ export class AuthenticationService implements AuthService {
 	 */
 	public logout(refresh?: boolean): void {
 		// this.tokenStorage.clear();
-		this.loggedIn = false;
+		this.afAuth.auth.signOut().then(
+			()=>this.loggedIn =false
+		)
 		if (refresh) {
 			location.reload(true);
 		}

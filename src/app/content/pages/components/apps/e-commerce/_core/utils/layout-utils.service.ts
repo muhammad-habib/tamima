@@ -3,6 +3,7 @@ import { ActionNotificationComponent } from '../../_shared/action-natification/a
 import { MatSnackBar, MatDialog } from '@angular/material';
 
 import { DeleteEntityDialogComponent } from '../../_shared/delete-entity-dialog/delete-entity-dialog.component';
+import { BlockEntityDialogComponent } from '../../_shared/block-entity-dialog/block-entity-dialog.component';
 import { FetchEntityDialogComponent } from '../../_shared/fetch-entity-dialog/fetch-entity-dialog.component';
 import { UpdateStatusDialogComponent } from '../../_shared/update-status-dialog/update-status-dialog.component';
 
@@ -52,7 +53,12 @@ export class LayoutUtilsService {
 			width: '440px'
 		});
 	}
-
+	blockElement(title: string = '', description: string = '', waitDesciption: string = '') {
+		return this.dialog.open(BlockEntityDialogComponent, {
+			data: { title, description, waitDesciption },
+			width: '440px'
+		});
+	}
 	// Method returns instance of MatDialog
 	fetchElements(_data) {
 		return this.dialog.open(FetchEntityDialogComponent, {
