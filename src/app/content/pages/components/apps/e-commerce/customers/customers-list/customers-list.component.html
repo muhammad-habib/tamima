@@ -7,7 +7,7 @@
 	<ng-container mPortletHeadTitle>
 		<div class="m-portlet__head-title">
 			<h3 class="m-portlet__head-text">
-				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">Customers list</span>
+				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">{{ 'CUSTOMER_LIST' | translate }}</span>
 			</h3>
 		</div>
 		<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
@@ -22,7 +22,6 @@
 
 	<!-- start::Body (attribute: mPortletBody) -->
 	<ng-container mPortletBody>
-		{{'WAITING' | translate }}
 		<!-- start::FILTERS & GROUP ACTIONS -->
 		<div class="m-form">
 			<!-- start::FILTERS -->

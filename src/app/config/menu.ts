@@ -748,23 +748,22 @@ export class MenuConfig implements ConfigModel {
 					// 		}
 					// 	]
 					// },
-					{section: 'Applications'},
 					{
-						title: 'Customers',
+						title: 'المستخدمين',
 						root: true,
 						icon: 'flaticon-profile-1',
 						page: '/ecommerce/customers',
 
 					},
 					{
-						title: 'Orders',
+						title: 'الطلبات',
 						root: true,
 						icon: 'flaticon-lifebuoy',
 						page: '/ecommerce/orders'
 
 					},
 					{
-						title: 'Markets',
+						title: 'الاسواق',
 						root: true,
 						icon: 'flaticon-settings',
 						page: '/ecommerce/markets'
