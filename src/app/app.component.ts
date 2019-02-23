@@ -16,6 +16,7 @@ import { locale as esLang } from './config/i18n/es';
 import { locale as jpLang } from './config/i18n/jp';
 import { locale as deLang } from './config/i18n/de';
 import { locale as frLang } from './config/i18n/fr';
+import { locale as arLang } from './config/i18n/ar';
 import { AuthenticationService } from './core/auth/authentication.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -46,7 +47,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private pageConfigService: PageConfigService,
 		private splashScreenService: SplashScreenService,
 		private authenticationService: AuthenticationService,
-		private afAuth:  AngularFireAuth,		
+		private afAuth:  AngularFireAuth,
 		// private aclService: AclService
 	) {
 		console.log('1');
@@ -60,7 +61,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 // 			} else {
 // 			  localStorage.setItem('user', null);
 // 			}
-// 		  })        
+// 		  })
 
 		// subscribe to class update event
 		this.classInitService.onClassesUpdated$.subscribe(classes => {
@@ -84,7 +85,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 		});
 
 		// register translations
-		this.translationService.loadTranslations(enLang, chLang, esLang, jpLang, deLang, frLang);
+		this.translationService.loadTranslations(arLang);
 
 		// override config by router change from pages config
 		this.router.events

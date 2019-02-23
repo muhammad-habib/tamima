@@ -60,6 +60,7 @@ export class CustomersListComponent implements OnInit {
 		private fs: FirebaseService,
 		public page: PaginationService
 	) {
+		console.log(this.translate.getDefaultLang());
 	}
 
 	getUsers() {
