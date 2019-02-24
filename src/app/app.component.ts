@@ -18,6 +18,7 @@ import { locale as deLang } from './config/i18n/de';
 import { locale as frLang } from './config/i18n/fr';
 import { AuthenticationService } from './core/auth/authentication.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { MessagingService } from "./core/services/messaging.service";
 
 // LIST KNOWN ISSUES
 // [Violation] Added non-passive event listener; https://github.com/angular/angular/issues/8866
@@ -36,6 +37,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	@ViewChild('splashScreen', {read: ElementRef})
 	splashScreen: ElementRef;
 	splashScreenImage: string;
+	message;
 	lol;
 	constructor(
 		private layoutConfigService: LayoutConfigService,
@@ -46,7 +48,8 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private pageConfigService: PageConfigService,
 		private splashScreenService: SplashScreenService,
 		private authenticationService: AuthenticationService,
-		private afAuth:  AngularFireAuth,		
+		private afAuth:  AngularFireAuth,
+		private messagingService: MessagingService		
 		// private aclService: AclService
 	) {
 		console.log('1');
@@ -94,7 +97,12 @@ export class AppComponent implements AfterViewInit, OnInit {
 			});
 	}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		const userId = 'user001';
+		this.messagingService.requestPermission(userId)
+		this.messagingService.receiveMessage()
+		this.message = this.messagingService.currentMessage
+	}
 
 	async getLoginStatus(){
 //		let user  = await this.afAuth.auth..authStat(res=>{ this.lol = res;});
