@@ -60,8 +60,13 @@ export class PaginationService {
 		// Create the observable array for consumption in components
 		this.data = this._data.asObservable().pipe(
 			scan( (acc, val) => {
-				acc = this.syncData(acc, val, syncField);
-				return this.query.prepend ? val.concat(acc) : acc.concat(val);
+				console.log(acc, val);
+				if (Object.keys(this.query['filters']).length > 0) {
+					return this.syncFilteredData(acc, val, this.query['filters'], syncField);
+				} else {
+					acc = this.syncData(acc, val, syncField);
+					return this.query.prepend ? val.concat(acc) : acc.concat(val);
+				}
 			}));
 	}
 
@@ -160,5 +165,38 @@ export class PaginationService {
 			return nQuery;
 		});
 		return first;
+	}
+
+	// Sync filtered Data
+	syncFilteredData(oldData, newData, filters, syncField) {
+		console.log(newData, filters);
+
+		const syncedData = [];
+		let oldAndNewData = [];
+		for (let i in oldData){
+			let shared = false;
+			for (let j in newData) {
+				if (oldData[i][syncField] === newData[j][syncField]) {
+					shared = true;
+					break;
+				}
+			}
+			if (!shared) {
+				syncedData.push(oldData[i]);
+			}
+		}
+		oldAndNewData = syncedData.concat(newData);
+		for (const filter in filters) {
+			const filteredArr =  [];
+
+			for (const i in oldAndNewData) {
+				if (oldAndNewData[i][filter] === filters[filter]) {
+					filteredArr.push(oldAndNewData[i]);
+				}
+			}
+			oldAndNewData = filteredArr;
+			console.log(oldAndNewData);
+		}
+		return oldAndNewData;
 	}
 }

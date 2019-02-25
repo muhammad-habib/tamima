@@ -7,7 +7,7 @@
 	<ng-container mPortletHeadTitle>
 		<div class="m-portlet__head-title">
 			<h3 class="m-portlet__head-text">
-				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">Customers list</span>
+				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">{{ 'CUSTOMER_LIST' | translate }}</span>
 			</h3>
 		</div>
 		<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
@@ -22,7 +22,6 @@
 
 	<!-- start::Body (attribute: mPortletBody) -->
 	<ng-container mPortletBody>
-		{{'WAITING' | translate }}
 		<!-- start::FILTERS & GROUP ACTIONS -->
 		<div class="m-form">
 			<!-- start::FILTERS -->
@@ -34,12 +33,12 @@
 						<div class="m-form__control">
 							<mat-form-field class="mat-form-field-fluid">
 								<mat-select (selectionChange)="verifyChangedHandler($event)">
-									<mat-option value="">All</mat-option>
-									<mat-option value="false">Un Verified</mat-option>
-									<mat-option value="true">Verified</mat-option>
+									<mat-option value="">الكل</mat-option>
+									<mat-option value="false">غير متحقق منه</mat-option>
+									<mat-option value="true">متحقق منه</mat-option>
 								</mat-select>
 								<mat-hint align="start">
-									<strong>Filter</strong> by Verified</mat-hint>
+									التصفية بواسطه <strong>المتحقق منهم</strong></mat-hint>
 							</mat-form-field>
 						</div>
 					</div>
@@ -48,31 +47,31 @@
 						<div class="m-form__control">
 							<mat-form-field class="mat-form-field-fluid">
 								<mat-select (selectionChange)="blockChangedHandler($event)">
-									<mat-option value="">All</mat-option>
-									<mat-option value="false">Un Blocked</mat-option>
-									<mat-option value="true">Blocked</mat-option>
+									<mat-option value="">الكل</mat-option>
+									<mat-option value="false">غير محظور</mat-option>
+									<mat-option value="true">محظور</mat-option>
 								</mat-select>
 								<mat-hint align="start">
-									<strong>Filter</strong> by Blocking</mat-hint>
+									   التصفية بواسطه <strong>المحظورين</strong></mat-hint>
 							</mat-form-field>
 						</div>
 					</div>
 
 					<div class="col-md-2 m--margin-bottom-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
-							<input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="Search">
-							<input matInput  placeholder="Search">
+							<input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="البحث">
+							<input matInput  placeholder="البحث">
 							<mat-hint align="start">
-								<strong>Search</strong> by name</mat-hint>
+								البحث بواسطه <strong>الاسم</strong></mat-hint>
 						</mat-form-field>
 					</div>
 
 					<div class="col-md-2 m--margin-bottom-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
-							<input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="Search">
-							<input matInput  placeholder="Search">
+							<input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="البحث">
+							<input matInput  placeholder="البحث">
 							<mat-hint align="start">
-								<strong>Search</strong> by Mobile</mat-hint>
+								البحث بواسطه <strong>الموبايل</strong></mat-hint>
 						</mat-form-field>
 					</div>
 
@@ -145,11 +144,11 @@
 				</ng-container>
 
 				<ng-container matColumnDef="name">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الاسم</mat-header-cell>
 					<mat-cell *matCellDef="let customer">{{customer.name}}</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="photo">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الصوره</mat-header-cell>
 					<mat-cell *matCellDef="let customer">
 						<!-- <img width="60" height="50" src="{{customer.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
 						<a *ngIf="customer.photo" target="_blanck" href="{{customer?.photo}}}">
@@ -158,31 +157,31 @@
 				</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="country">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Country</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الدولة</mat-header-cell>
 					<mat-cell *matCellDef="let customer">{{customer.country}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="language">
-					<mat-header-cell *matHeaderCellDef mat-sort-header class="email-cell">Language</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header class="email-cell">اللغة</mat-header-cell>
 					<mat-cell *matCellDef="let customer">
 						{{customer.language}}
 					</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="phone">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الموبايل</mat-header-cell>
 					<mat-cell *matCellDef="let customer">{{customer.phone}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="blocked">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الحالة</mat-header-cell>
 					<mat-cell *matCellDef="let customer">
 						<span class="m-badge m-badge--{{ getItemCssClassByStatus(customer.blocked) }} m-badge--wide">{{  getItemStatusString(customer.blocked) }}</span>
 					</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="actions">
-					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+					<mat-header-cell *matHeaderCellDef>العمليات</mat-header-cell>
 					<mat-cell *matCellDef="let customer">
 						<button mat-icon-button color="primary" matTooltip="Edit customer" (click)="editCustomer(customer)"><mat-icon>create</mat-icon></button>&nbsp;
 						<button mat-icon-button color="warn" matTooltip="Delete customer" type="button" (click)="deleteCustomer(customer)"><mat-icon>delete</mat-icon></button>&nbsp;
