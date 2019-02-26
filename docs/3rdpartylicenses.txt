@@ -148,6 +148,10 @@ maintained libraries used by this software which have their own
 licenses; we recommend you read them, as their terms may differ from the
 terms above.
 
+firebase@5.8.2
+Apache-2.0
+Apache-2.0
+
 material-design-icons@3.0.1
 Apache-2.0
 Apache License
@@ -917,7 +921,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-@firebase/app@0.3.8
+@firebase/database@0.3.11
 Apache-2.0
 Apache-2.0
 
@@ -925,19 +929,19 @@ Apache-2.0
 Apache-2.0
 Apache-2.0
 
-@firebase/firestore@1.0.2
-Apache-2.0
-Apache-2.0
-
 @firebase/logger@0.1.5
 Apache-2.0
 Apache-2.0
 
-@firebase/webchannel-wrapper@0.2.12
+@firebase/app@0.3.8
 Apache-2.0
 Apache-2.0
 
-firebase@5.8.2
+@firebase/firestore@1.0.2
+Apache-2.0
+Apache-2.0
+
+@firebase/webchannel-wrapper@0.2.12
 Apache-2.0
 Apache-2.0
 
