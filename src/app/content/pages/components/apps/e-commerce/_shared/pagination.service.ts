@@ -19,6 +19,7 @@ export class PaginationService {
 	private _done = new BehaviorSubject(false);
 	private _loading = new BehaviorSubject(false);
 	private _data = new BehaviorSubject([]);
+	public deletedDoc: any =  {};
 
 	private query: QueryConfig;
 
@@ -28,6 +29,7 @@ export class PaginationService {
 	loading: Observable<boolean> = this._loading.asObservable();
 
 	constructor( private afs: AngularFirestore ) {
+		console.log('hh');
 
 	}
 
@@ -37,7 +39,7 @@ export class PaginationService {
 		this.query = {
 			path,
 			field,
-			limit: 10,
+			limit: 3,
 			reverse: false,
 			prepend: false,
 			...opts
@@ -60,7 +62,11 @@ export class PaginationService {
 		// Create the observable array for consumption in components
 		this.data = this._data.asObservable().pipe(
 			scan( (acc, val) => {
-				console.log(acc, val);
+				console.log(acc,this.deletedDoc);
+				if (this.deletedDoc) {
+					acc = acc.filter(item => item.doc.id !== this.deletedDoc.id);
+					this.deletedDoc = {};
+				}
 				if (Object.keys(this.query['filters']).length > 0) {
 					return this.syncFilteredData(acc, val, this.query['filters'], syncField);
 				} else {
@@ -105,7 +111,7 @@ export class PaginationService {
 		// Map snapshot with doc ref (needed for cursor)
 		return col.snapshotChanges().pipe(
 			map(arr => {
-				// console.log(arr)
+				console.log(arr)
 				let values = arr.map(snap => {
 					const data = snap.payload.doc.data();
 					const doc = snap.payload.doc;
