@@ -27,9 +27,11 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 37rem;overflow-y: scroll;" scrollable
+		<div class="example-container mat-elevation-z8" style="height: 15rem;overflow-y: scroll;" scrollable
 			(scrollPosition)="scrollHandler($event)">
-			<mat-table class="" [dataSource]="page.data" matSort matSortActive="id" matSortDirection="asc"
+			<mat-table class="" [dataSource]="page.data"
+					   (matSortChange)="sortData($event)"
+					   matSort matSortActive="id" matSortDirection="asc"
 				matSortDisableClear>
 				<!-- Checkbox Column -->
 
@@ -57,12 +59,12 @@
 				</ng-container>
 				<ng-container matColumnDef="market">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>السوق</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order.market.name}}</mat-cell>
+					<mat-cell *matCellDef="let order">{{order?.market?.name}}</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="photo">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة السوق</mat-header-cell>
 					<mat-cell *matCellDef="let order">
-							<a *ngIf="order.market.photo" target="_blanck" href="{{order?.market?.photo}}}">
+							<a *ngIf="order?.market?.photo" target="_blanck" href="{{order?.market?.photo}}}">
 									<mat-icon>link</mat-icon>
 							</a>
 							<!-- <img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
@@ -70,11 +72,11 @@
 				</ng-container>
 				<ng-container matColumnDef="price">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>السعر</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order.market.price}}</mat-cell>
+					<mat-cell *matCellDef="let order">{{order?.market?.price}}</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="createdAt">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>التاريخ</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order.createdAt.toDate() | date: 'M/d/yyyy  -  h:mm a'}}</mat-cell>
+					<mat-cell *matCellDef="let order">{{order?.createdAt?.toDate() | date: 'M/d/yyyy  -  h:mm a'}}</mat-cell>
 				</ng-container>
 				<!-- <ng-container matColumnDef="photo">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>

@@ -10,15 +10,10 @@ import { filter, first } from 'rxjs/operators';
 import { SplashScreenService } from './core/services/splash-screen.service';
 import { AclService } from './core/services/acl.service';
 // language list
-import { locale as enLang } from './config/i18n/en';
-import { locale as chLang } from './config/i18n/ch';
-import { locale as esLang } from './config/i18n/es';
-import { locale as jpLang } from './config/i18n/jp';
-import { locale as deLang } from './config/i18n/de';
-import { locale as frLang } from './config/i18n/fr';
 import { locale as arLang } from './config/i18n/ar';
 import { AuthenticationService } from './core/auth/authentication.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { MessagingService } from "./core/services/messaging.service";
 
 // LIST KNOWN ISSUES
 // [Violation] Added non-passive event listener; https://github.com/angular/angular/issues/8866
@@ -37,6 +32,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	@ViewChild('splashScreen', {read: ElementRef})
 	splashScreen: ElementRef;
 	splashScreenImage: string;
+	message;
 	lol;
 	constructor(
 		private layoutConfigService: LayoutConfigService,
@@ -48,6 +44,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private splashScreenService: SplashScreenService,
 		private authenticationService: AuthenticationService,
 		private afAuth:  AngularFireAuth,
+		private messagingService: MessagingService
 		// private aclService: AclService
 	) {
 		console.log('1');
@@ -95,10 +92,15 @@ export class AppComponent implements AfterViewInit, OnInit {
 			});
 	}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		const userId = 'user001';
+		this.messagingService.requestPermission(userId)
+		this.messagingService.receiveMessage()
+		this.message = this.messagingService.currentMessage
+	}
 
 	async getLoginStatus(){
-//		let user  = await this.afAuth.auth..authStat(res=>{ this.lol = res;});
+ 		// let user  = await this.afAuth.auth..authStat(res=>{ this.lol = res;});
 		const user = await this.isLoggedIn()
 		console.log(user);
 		if(user){

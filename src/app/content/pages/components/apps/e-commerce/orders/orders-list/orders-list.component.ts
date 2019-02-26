@@ -4,7 +4,6 @@ import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firest
 import { Observable } from 'rxjs';
 import { MatSort, MatDialog, MatSnackBar } from '@angular/material';
 import { FormControl } from '@angular/forms';
-import { LayoutUtilsService } from '../../_core/utils/layout-utils.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../_shared/firebase.service';
@@ -25,9 +24,11 @@ export class OrdersListComponent implements OnInit {
 	// customersResult: CustomerModel[] = [];
 
 	customersDoc: AngularFirestoreDocument<any>;
+	sortField = 'createdAt';
+	reverseDir = false;
 	customers: Observable<any[]>;
 	dataSource;
-	displayedColumns = ['user','mobile','market','photo','price','createdAt'];
+	displayedColumns = ['user', 'mobile', 'market', 'photo', 'price', 'createdAt'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
@@ -60,7 +61,7 @@ export class OrdersListComponent implements OnInit {
 		// If the user changes the sort order, reset back to the first page.
 	}
 	getOrders() {
-		this.page.init('requests', 'createdAt', 'id', { reverse: false, prepend: false, 'filters': this.filters });
+		this.page.init('requests', this.sortField, 'id', { reverse: this.reverseDir, prepend: false, 'filters': this.filters });
 	}
 	getOrdersLength() {
 		const url = 'https://us-central1-tamima-c05fc.cloudfunctions.net/countCollection?name=requests';
@@ -70,9 +71,9 @@ export class OrdersListComponent implements OnInit {
 			});
 	}
 
-	editOrder(order){
+	editOrder(order) {
 
-		const dialogRef = this.dialog.open(ShowOrderOnMapComponent,{data: {order}});
+		const dialogRef = this.dialog.open(ShowOrderOnMapComponent, {data: {order}});
 
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
@@ -90,6 +91,12 @@ export class OrdersListComponent implements OnInit {
 		// if (e === 'top') {
 		//   this.page.more()
 		// }
+	}
+
+	sortData($event) {
+		this.sortField = $event.active;
+		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
+		this.getOrders();
 	}
 
 }

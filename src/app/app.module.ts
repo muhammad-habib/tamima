@@ -46,12 +46,15 @@ import { SplashScreenService } from './core/services/splash-screen.service';
 import { DataTableService } from './core/services/datatable.service';
 import {AngularFirestoreModule, FirestoreSettingsToken} from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
-import {AngularFireMessagingModule} from '@angular/fire/messaging';
+import {AngularFireMessagingModule, AngularFireMessaging} from '@angular/fire/messaging';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {ScrollableDirective} from './content/pages/components/apps/e-commerce/_shared/scrollable.directive';
 import { AuthGuard } from './content/pages/auth/auth.guard';
 import { AuthenticationService } from './core/auth/authentication.service';
+import { MessagingService } from './core/services/messaging.service';
+import { AsyncPipe } from '@angular/common';
+import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	// suppressScrollX: true
@@ -77,7 +80,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		AngularFirestoreModule, // imports firebase/firestore, only needed for database features
 		AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
 		AngularFireStorageModule, // imports firebase/storage only needed for storage features
-
+		AngularFireDatabaseModule,
+		AngularFireAuthModule,
+		AngularFireMessagingModule
 	],
 	providers: [
 		AclService,
@@ -97,6 +102,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		SplashScreenService,
 		AuthGuard,
 		AuthenticationService,
+		AngularFireMessaging,
+		AngularFireDatabase,
+		MessagingService, 
+		AsyncPipe,
 		{
 			provide: PERFECT_SCROLLBAR_CONFIG,
 			useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
