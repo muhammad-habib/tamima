@@ -229,7 +229,6 @@ export class NgbdPaginationConfig {
 @Component({
 	selector: 'm-pagination',
 	templateUrl: './pagination.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent implements OnInit {
 

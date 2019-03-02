@@ -4,7 +4,6 @@ import { ExternalCodeExample } from '../../../../core/models/external-code-examp
 @Component({
 	selector: 'm-ngbootstrap',
 	templateUrl: './ngbootstrap.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgbootstrapComponent implements OnInit {
 

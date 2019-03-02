@@ -7,7 +7,6 @@ import { MessagingService } from '../../../../../core/services/messaging.service
 @Component({
 	selector: 'm-user-profile',
 	templateUrl: './user-profile.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserProfileComponent implements OnInit {
 	@HostBinding('class')
@@ -20,7 +19,10 @@ export class UserProfileComponent implements OnInit {
 	@Input() avatarBg: SafeStyle = '';
 
 	@ViewChild('mProfileDropdown') mProfileDropdown: ElementRef;
-	messages=[1];
+	messages = [
+		{body: "Order 29 has been created",
+		title: "Tamima order 29"}
+	];
 	constructor (
 		private router: Router,
 		private authService: AuthenticationService,
@@ -28,16 +30,19 @@ export class UserProfileComponent implements OnInit {
 		private messagingService: MessagingService		
 
 	) {
+		this.messagingService.receiveMessage();
 		this.messagingService.currentMessage.subscribe(message=>{
-			console.log(message);
-			this.messages.push(message)
+			if(message != null){
+				this.messages.push(message.notification)
+				console.log(this.messages);
+			}
 		})
 	}
 
 	ngOnInit (): void {
-		if (!this.avatarBg) {
-			this.avatarBg = this.sanitizer.bypassSecurityTrustStyle('url(./assets/app/media/img/misc/user_profile_bg.jpg)');
-		}
+		// if (!this.avatarBg) {
+		// 	this.avatarBg = this.sanitizer.bypassSecurityTrustStyle('url(./assets/app/media/img/misc/user_profile_bg.jpg)');
+		// }
 	}
 
 	public logout () {

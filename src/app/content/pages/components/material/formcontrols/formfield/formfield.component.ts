@@ -479,7 +479,6 @@ span {
 @Component({
 	selector: 'm-formfield',
 	templateUrl: './formfield.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-container {
 		display: flex;

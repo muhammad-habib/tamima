@@ -15,7 +15,6 @@ export class State {
 @Component({
 	selector: 'm-default-forms',
 	templateUrl: './default-forms.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-container {
 		display: flex;

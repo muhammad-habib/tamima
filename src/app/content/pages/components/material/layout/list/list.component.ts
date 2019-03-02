@@ -129,7 +129,6 @@ export class ListSectionsExample {
 @Component({
 	selector: 'm-list',
 	templateUrl: './list.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.mat-list-icon {
 		color: rgba(0, 0, 0, 0.54);

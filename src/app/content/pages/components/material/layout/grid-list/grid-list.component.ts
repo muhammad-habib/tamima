@@ -74,7 +74,6 @@ background: lightblue;
 @Component({
 	selector: 'm-grid-list',
 	templateUrl: './grid-list.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	mat-grid-tile {
 		background: lightblue;

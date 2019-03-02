@@ -164,7 +164,6 @@ export class MenuCustomizingExample {}
 @Component({
 	selector: 'm-menu',
 	templateUrl: './menu.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent implements OnInit {
 

@@ -180,7 +180,6 @@ export class NgbdDropdownConfig {
 @Component({
 	selector: 'm-dropdown',
 	templateUrl: './dropdown.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [NgbDropdownConfig] // add NgbDropdownConfig to the component providers
 })
 export class DropdownComponent implements OnInit {

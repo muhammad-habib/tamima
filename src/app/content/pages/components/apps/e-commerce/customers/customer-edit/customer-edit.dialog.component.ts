@@ -44,7 +44,7 @@ export class CustomerEditDialogComponent implements OnInit {
 	}
 
 	createForm() {
-		console.log(this.customer);
+		// console.log(this.customer);
 		this.customerForm = this.fb.group({
 			name: [this.customer.name, Validators.required],
 			phone: [this.customer.phone,Validators.required],
@@ -74,7 +74,7 @@ export class CustomerEditDialogComponent implements OnInit {
 		_customer.phone = controls['phone'].value;
 		_customer.blocked = controls['blocked'].value;
 		_customer.language = controls['language'].value;
-		console.log('_customer', _customer);
+		// console.log('_customer', _customer);
 		return _customer;
 	}
 
@@ -93,7 +93,7 @@ export class CustomerEditDialogComponent implements OnInit {
 		}
 
 		// const editedCustomer = this.prepareCustomer();
-		console.log(controls['blocked'].value);
+		// console.log(controls['blocked'].value);
 
 		this.customerDoc.update({
 			name 		: controls['name'].value,

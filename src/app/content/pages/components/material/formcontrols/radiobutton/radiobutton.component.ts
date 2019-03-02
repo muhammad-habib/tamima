@@ -168,7 +168,6 @@ export class RadioChangeEventExample {
 @Component({
 	selector: 'm-radiobutton',
 	templateUrl: './radiobutton.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	mat-radio-button {
 		padding-right: 16px;

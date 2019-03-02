@@ -110,7 +110,7 @@ export class AuthenticationService implements AuthService {
 
 		return this.afAuth.auth.signInWithEmailAndPassword(credential.email,credential.password).
 		then(res=>{
-			console.log(res);
+			// console.log(res);
 			if(res && res.user.refreshToken){
 				this.loggedIn = true;
 				// accessToken = res.user.;

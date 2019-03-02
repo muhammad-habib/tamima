@@ -270,7 +270,6 @@ constructor(config: NgbPopoverConfig) {
 @Component({
 	selector: 'm-popover',
 	templateUrl: './popover.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	// styles: [`.card { padding: 50px 0; text-align: center; overflow:hidden }`],
 	providers: [NgbPopoverConfig] // add NgbPopoverConfig to the component providers
 })

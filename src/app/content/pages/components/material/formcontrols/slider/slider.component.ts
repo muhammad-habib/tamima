@@ -167,7 +167,6 @@ export class SliderChangeEventExample {\n
 @Component({
 	selector: 'm-slider',
 	templateUrl: './slider.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.mat-slider {
 		width: 300px;
@@ -213,6 +212,6 @@ export class SliderComponent implements OnInit {
 	}
 
 	changeSlider() {
-		console.log('myValue', this.myValue);
+		// console.log('myValue', this.myValue);
 	}
 }

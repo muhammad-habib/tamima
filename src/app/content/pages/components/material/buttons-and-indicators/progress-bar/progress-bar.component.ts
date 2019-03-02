@@ -173,7 +173,6 @@ export class ProgressBarConfigurableExample {
 @Component({
 	selector: 'm-progress-bar',
 	templateUrl: './progress-bar.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-h2 {
 		margin: 10px;

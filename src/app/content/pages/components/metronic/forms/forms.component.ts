@@ -13,7 +13,6 @@ export class State {
 @Component({
 	selector: 'm-forms',
 	templateUrl: './forms.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 		.example-container {
 			display: flex;

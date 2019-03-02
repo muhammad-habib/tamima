@@ -94,7 +94,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 	ngOnInit(): void {
 		const userId = 'user001';
 		this.messagingService.requestPermission(userId)
-		this.messagingService.receiveMessage()
 	}
 
 	async getLoginStatus(){

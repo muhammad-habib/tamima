@@ -45,7 +45,7 @@ export class MarketEditDialogComponent implements OnInit {
 	}
 
 	createForm() {
-		console.log(this.market);
+		// console.log(this.market);
 		this.marketForm = this.fb.group({
 			name: [this.market.name, Validators.required],
 			phone: [this.market.phone,Validators.required],
@@ -84,7 +84,7 @@ export class MarketEditDialogComponent implements OnInit {
 		}
 
 		// const editedMarket = this.prepareMarket();
-		console.log(controls['blocked'].value);
+		// console.log(controls['blocked'].value);
 
 		this.marketDoc.update({
 			name 		: controls['name'].value,
