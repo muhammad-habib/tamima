@@ -39,7 +39,6 @@ export class NgbdCollapseBasic {
 @Component({
 	selector: 'm-collapse',
 	templateUrl: './collapse.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CollapseComponent implements OnInit {
 

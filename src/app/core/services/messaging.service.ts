@@ -22,6 +22,7 @@ export class MessagingService {
     private angularFireMessaging: AngularFireMessaging) {
     this.angularFireMessaging.messaging.subscribe(
       (_messaging) => {
+        console.log("new message received. ", _messaging);
         _messaging.onMessage = _messaging.onMessage.bind(_messaging);
         _messaging.onTokenRefresh = _messaging.onTokenRefresh.bind(_messaging);
       }
@@ -38,7 +39,6 @@ export class MessagingService {
     // we can change this function to request our backend service
     this.angularFireAuth.authState.pipe(take(1)).subscribe(
       (data) => {
-        console.log('data :: ',data.uid);
         let tokenCollection = this.afs.collection('portals_tokens');
         tokenCollection.doc(data.uid).set({
           token:token
@@ -57,7 +57,7 @@ export class MessagingService {
   requestPermission(userId) {
     this.angularFireMessaging.requestToken.subscribe(
       (token) => {
-        console.log(token);
+        // console.log(token);
         this.updateToken(userId, token);
       },
       (err) => {
@@ -70,7 +70,8 @@ export class MessagingService {
    * hook method when new notification received in foreground
    */
   receiveMessage() {
-    this.angularFireMessaging.messages.subscribe(
+    console.log('Sub')
+  this.angularFireMessaging.messages.subscribe(
       (payload) => {
         console.log("new message received. ", payload);
         this.currentMessage.next(payload);

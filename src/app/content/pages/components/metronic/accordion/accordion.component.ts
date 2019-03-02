@@ -428,7 +428,6 @@ export class DefaultSolidBackgroundSecondAccordions {
 @Component({
 	selector: 'm-accordion',
 	templateUrl: './accordion.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccordionComponent implements OnInit {
 

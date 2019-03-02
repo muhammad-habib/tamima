@@ -89,7 +89,7 @@ export class CustomersListComponent implements OnInit {
 				return;
 			}
 			const customerDoc = this.afs.doc('users/' + user.userId);
-			console.log(customerDoc);
+			// console.log(customerDoc);
 			if (customerDoc) {
 				this.page.deletedDoc = user.doc;
 				customerDoc.delete().then(d => {
@@ -237,7 +237,7 @@ export class CustomersListComponent implements OnInit {
 	}
 
 	sortData($event) {
-		console.log($event);
+		// console.log($event);
 		this.sortField = $event.active;
 		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
 		this.getUsers();

@@ -470,7 +470,6 @@ const moment = _rollupMoment || _moment;
 @Component({
 	selector: 'm-datepicker',
 	templateUrl: './datepicker.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-events {
 		width: 400px;

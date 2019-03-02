@@ -18,9 +18,9 @@ export class MenuConfigService {
 		this.router.events
 			.pipe(filter(event => event instanceof NavigationStart))
 			.subscribe(event => {
-				console.log('menu updated');
+				// console.log('menu updated');
 				if (this.menuHasChanged) {
-					console.log('menu changed');
+					// console.log('menu changed');
 					this.resetModel();
 				}
 			});

@@ -265,7 +265,6 @@ export class SelectMultipleExample {
 
 const selectWithCustomTriggerText = {
 	beforeCodeTitle: 'Select with custom trigger text',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	htmlCode: `
 <mat-form-field>
   <mat-select placeholder="Toppings" [formControl]="toppings" multiple>

@@ -139,7 +139,6 @@ export class ChipsStackedExample {
 @Component({
 	selector: 'm-chips',
 	templateUrl: './chips.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.demo-chip-list {
 		width: 100%;

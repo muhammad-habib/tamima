@@ -15,7 +15,7 @@ export class MenuAsideToggleDirective implements AfterViewInit, OnDestroy {
 		});
 
 		this.el.nativeElement.addEventListener('toggle', e => {
-			console.log(e);
+			// console.log(e);
 		});
 	}
 

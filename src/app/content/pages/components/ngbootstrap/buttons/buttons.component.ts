@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 const checkboxButtons = {
 	beforeCodeTitle: 'Checkbox buttons',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	htmlCode: `
 <div class="m-section">
   <span class="m-section__sub">

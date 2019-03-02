@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
 		this.http.get(url).subscribe(
 			data => {
 				this.data[collection] = data['length'];
-				console.log(this.data[collection],data);
+//				console.log(this.data[collection],data);
 			});
 	}
 

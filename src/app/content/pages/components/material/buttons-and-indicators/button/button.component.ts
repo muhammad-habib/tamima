@@ -178,7 +178,6 @@ export class ButtonTypesExample {}`,
 @Component({
 	selector: 'm-button',
 	templateUrl: './button.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-button-row {
 		display: flex;

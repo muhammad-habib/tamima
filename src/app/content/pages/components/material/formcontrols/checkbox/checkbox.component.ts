@@ -138,7 +138,6 @@ export class CheckboxChangeEventExample {
 @Component({
 	selector: 'm-checkbox',
 	templateUrl: './checkbox.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [
 		`
 		.example-h2 {

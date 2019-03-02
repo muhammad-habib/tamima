@@ -190,7 +190,6 @@ export class ExpansionStepsExample {
 @Component({
 	selector: 'm-expansion-panel',
 	templateUrl: './expansion-panel.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {

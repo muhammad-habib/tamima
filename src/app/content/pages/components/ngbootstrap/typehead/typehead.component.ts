@@ -518,7 +518,6 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 	selector: 'm-typehead',
 	templateUrl: './typehead.component.html',
 	styles: [`.form-control { width: 300px; }`],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [WikipediaService, NgbTypeaheadConfig],
 })
 export class TypeheadComponent implements OnInit {

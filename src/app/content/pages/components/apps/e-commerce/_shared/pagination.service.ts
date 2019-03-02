@@ -29,7 +29,7 @@ export class PaginationService {
 	loading: Observable<boolean> = this._loading.asObservable();
 
 	constructor( private afs: AngularFirestore ) {
-		console.log('hh');
+		// console.log('hh');
 
 	}
 
@@ -62,7 +62,7 @@ export class PaginationService {
 		// Create the observable array for consumption in components
 		this.data = this._data.asObservable().pipe(
 			scan( (acc, val) => {
-				console.log(acc,this.deletedDoc);
+				// console.log(acc,this.deletedDoc);
 				if (this.deletedDoc) {
 					acc = acc.filter(item => item.doc.id !== this.deletedDoc.id);
 					this.deletedDoc = {};
@@ -111,7 +111,7 @@ export class PaginationService {
 		// Map snapshot with doc ref (needed for cursor)
 		return col.snapshotChanges().pipe(
 			map(arr => {
-				console.log(arr)
+				// console.log(arr)
 				let values = arr.map(snap => {
 					const data = snap.payload.doc.data();
 					const doc = snap.payload.doc;

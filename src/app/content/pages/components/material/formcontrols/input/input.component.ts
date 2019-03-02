@@ -433,7 +433,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
 	selector: 'm-input',
 	templateUrl: './input.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-form {
 		min-width: 150px;

@@ -106,7 +106,6 @@ export class SidenavAutosizeExample {
 @Component({
 	selector: 'm-sidenav',
 	templateUrl: './sidenav.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-container {
 		width: 400px;

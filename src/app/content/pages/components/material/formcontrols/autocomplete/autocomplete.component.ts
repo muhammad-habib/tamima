@@ -466,7 +466,6 @@ export interface StateGroup {
 @Component({
 	selector: 'm-autocomplete',
 	templateUrl: './autocomplete.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-form {
 		min-width: 150px;

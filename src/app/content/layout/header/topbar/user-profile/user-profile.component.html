@@ -43,10 +43,10 @@
 						</span>
 					</li>
 					<li *ngFor="let message of messages" class="m-nav__item">
-						<a routerLink="/profile" class="m-nav__link">
+						<a *ngIf="message" routerLink="/ecommerce/orders/{{message?.id}}" class="m-nav__link">
 							<i class="m-nav__link-icon flaticon-share"></i>
 							<span class="m-nav__link-text">
-								{{message  }}
+								{{message?.title + " " + message?.body }}
 							</span>
 						</a>
 					</li>
@@ -60,3 +60,8 @@
 	</div>
 </div>
 <!-- </li> -->
+<div>
+	<p *ngFor="let message of messages">
+		{{message}}
+	</p>
+</div>

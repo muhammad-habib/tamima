@@ -103,7 +103,6 @@ export class ToolbarMultiExample {}
 @Component({
 	selector: 'm-toolbar',
 	templateUrl: './toolbar.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-icon {
 		padding: 0 14px;

@@ -286,7 +286,6 @@ export class NgbdTimepickerConfig {
 @Component({
 	selector: 'm-timepicker',
 	templateUrl: './timepicker.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [NgbTimepickerConfig] // add NgbTimepickerConfig to the component providers
 })
 export class TimepickerComponent implements OnInit {

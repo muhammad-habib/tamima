@@ -101,7 +101,6 @@ export class CardImageExample {}
 @Component({
 	selector: 'm-card',
 	templateUrl: './card.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	styles: [`
 	.example-card {
 		max-width: 400px;
