@@ -52,8 +52,7 @@ export class PaginationService {
 		} else {
 			first = this.afs.collection(this.query.path, ref => {
 				return ref
-					.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
-					.limit(this.query.limit);
+					.where('createdAt', '>', 1551045600);
 			});
 		}
 

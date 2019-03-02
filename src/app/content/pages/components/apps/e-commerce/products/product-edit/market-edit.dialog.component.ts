@@ -130,7 +130,7 @@ export class MarketEditDialogComponent implements OnInit {
 				}
 			) )
 		 )
-		.subscribe()
+		.subscribe();
 	  }
 
 	  changeMarketLocation(location){
