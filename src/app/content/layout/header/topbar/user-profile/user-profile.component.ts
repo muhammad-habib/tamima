@@ -20,7 +20,7 @@ export class UserProfileComponent implements OnInit {
 	@Input() avatarBg: SafeStyle = '';
 
 	@ViewChild('mProfileDropdown') mProfileDropdown: ElementRef;
-	messages=[];
+	messages=[1];
 	constructor (
 		private router: Router,
 		private authService: AuthenticationService,
@@ -28,7 +28,10 @@ export class UserProfileComponent implements OnInit {
 		private messagingService: MessagingService		
 
 	) {
-		this.messagingService.currentMessage.subscribe(message=>this.messages.push(message))
+		this.messagingService.currentMessage.subscribe(message=>{
+			console.log(message);
+			this.messages.push(message)
+		})
 	}
 
 	ngOnInit (): void {

@@ -24,6 +24,7 @@ export const locale = {
 				PRIVACY: 'Privacy',
 				LEGAL: 'Legal',
 				CONTACT: 'Contact',
+				NOTIFICATION:'إشعارات'
 			},
 			LOGIN: {
 				TITLE: 'Login Account',
