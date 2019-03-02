@@ -52,7 +52,8 @@ export class PaginationService {
 		} else {
 			first = this.afs.collection(this.query.path, ref => {
 				return ref
-					.where('createdAt', '>', 1551045600);
+					.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+					.limit(this.query.limit);
 			});
 		}
 
@@ -165,7 +166,11 @@ export class PaginationService {
 		const first = this.afs.collection(this.query.path, ref => {
 			let nQuery: Query = ref;
 			for (const filter in filters) {
-				nQuery = nQuery.where(filter, '==',  filters[filter]);
+				if (filter == 'createdAt') {
+					nQuery = nQuery.where(filter, '>',  filters[filter]);
+				} else {
+					nQuery = nQuery.where(filter, '==',  filters[filter]);
+				}
 			}
 			return nQuery;
 		});
@@ -191,16 +196,27 @@ export class PaginationService {
 			}
 		}
 		oldAndNewData = syncedData.concat(newData);
+		if (filters['createdAt'])
+		{
+			var  nextday = new Date(filters['createdAt'].getFullYear(), filters['createdAt'].getMonth(), filters['createdAt'].getDate() + 1);
+		}
+		console.log(nextday);
 		for (const filter in filters) {
 			const filteredArr =  [];
-
 			for (const i in oldAndNewData) {
 				if (oldAndNewData[i][filter] === filters[filter]) {
 					filteredArr.push(oldAndNewData[i]);
 				}
+
+				if (filter === 'createdAt') {
+					if (new Date(oldAndNewData[i][filter].seconds * 1000) > filters[filter]
+						&& new Date(oldAndNewData[i][filter].seconds * 1000) < nextday
+					) {
+						filteredArr.push(oldAndNewData[i]);
+					}
+				}
 			}
 			oldAndNewData = filteredArr;
-			console.log(oldAndNewData);
 		}
 		return oldAndNewData;
 	}

@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import { ShowOrderOnMapComponent } from '../show-order-on-map/show-order-on-map.component';
+import {getType} from '@angular/core/src/errors';
 
 @Component({
 	selector: 'm-orders-list',
@@ -96,6 +97,15 @@ export class OrdersListComponent implements OnInit {
 	sortData($event) {
 		this.sortField = $event.active;
 		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
+		this.getOrders();
+	}
+
+	dateHandeler($event) {
+		if ($event.value) {
+			this.filters['createdAt'] = $event.value;
+		}
+		else
+			delete this.filters['createdAt'];
 		this.getOrders();
 	}
 
