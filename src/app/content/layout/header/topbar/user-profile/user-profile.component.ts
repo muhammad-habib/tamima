@@ -2,6 +2,7 @@ import { AuthenticationService } from '../../../../../core/auth/authentication.s
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { MessagingService } from '../../../../../core/services/messaging.service';
 
 @Component({
 	selector: 'm-user-profile',
@@ -19,12 +20,16 @@ export class UserProfileComponent implements OnInit {
 	@Input() avatarBg: SafeStyle = '';
 
 	@ViewChild('mProfileDropdown') mProfileDropdown: ElementRef;
-
+	messages=[];
 	constructor (
 		private router: Router,
 		private authService: AuthenticationService,
-		private sanitizer: DomSanitizer
-	) {}
+		private sanitizer: DomSanitizer,
+		private messagingService: MessagingService		
+
+	) {
+		this.messagingService.currentMessage.subscribe(message=>this.messages.push(message))
+	}
 
 	ngOnInit (): void {
 		if (!this.avatarBg) {

@@ -10,6 +10,7 @@ import { UtilsService } from '../services/utils.service';
 import { AccessData } from './access-data';
 import { Credential } from './credential';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn:  'root'
@@ -28,6 +29,7 @@ export class AuthenticationService implements AuthService {
 		private tokenStorage: TokenStorage,
 		private util: UtilsService,
 		private afAuth:  AngularFireAuth,
+		private router:Router
 	) {
 		this.onCredentialUpdated$ = new Subject();
 	}
@@ -169,8 +171,9 @@ export class AuthenticationService implements AuthService {
 		this.afAuth.auth.signOut().then(
 			()=>this.loggedIn =false
 		)
+		localStorage.removeItem('user');
 		if (refresh) {
-			location.reload(true);
+			this.router.navigate(['/login'])
 		}
 	}
 
@@ -219,6 +222,9 @@ export class AuthenticationService implements AuthService {
 
 
 	isLoggedIn() {
+		if(!this.loggedIn && localStorage.getItem('user') != 'null'){
+			this.loggedIn=true;
+		}
 		return this.loggedIn;
 	}
 

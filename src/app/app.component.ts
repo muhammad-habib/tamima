@@ -52,7 +52,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private messagingService: MessagingService		
 		// private aclService: AclService
 	) {
-		console.log('1');
 		this.getLoginStatus();
 // 		await this.afAuth.authState.subscribe(user => {
 //             console.log(user);
@@ -101,7 +100,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 		const userId = 'user001';
 		this.messagingService.requestPermission(userId)
 		this.messagingService.receiveMessage()
-		this.message = this.messagingService.currentMessage
 	}
 
 	async getLoginStatus(){
@@ -110,10 +108,11 @@ export class AppComponent implements AfterViewInit, OnInit {
 		console.log(user);
 		if(user){
 			this.authenticationService.loggedIn = true;
-		}
-		await setTimeout(() => {
-			console.log(this.lol)
-		},10000 );
+			  localStorage.setItem('user', JSON.stringify(user));
+			} else {
+			  localStorage.setItem('user', null);
+			}
+
 	}
 	isLoggedIn() {
 		return this.afAuth.authState.pipe(first()).toPromise();
