@@ -56,7 +56,7 @@ export class CustomerEditDialogComponent implements OnInit {
 
 	/** UI */
 	getTitle(): string {
-			return `Edit customer '${this.customer.name}'`;
+			return ` تعديل المستخدم  '${this.customer.name}'`;
 	}
 
 	isControlInvalid(controlName: string): boolean {
@@ -101,7 +101,7 @@ export class CustomerEditDialogComponent implements OnInit {
 			blocked 	: JSON.parse(controls['blocked'].value),
 			language 	: controls['language'].value,
 			photo 		: this.tempPhoto?this.tempPhoto:this.customer.photo
-			});	
+			});
 
     	this.dialogRef.close({
 				'customer':this.customer,
@@ -149,7 +149,7 @@ export class CustomerEditDialogComponent implements OnInit {
 		const filePath = 'profile_images/profile_'+this.customer.userId+(new Date()).getTime;
 		const fileRef = this.storage.ref(filePath);
 		const task = this.storage.upload(filePath, file);
-	
+
 		// observe percentage changes
 		this.uploadPercent = task.percentageChanges();
 		// get notified when the download URL is available

@@ -10,12 +10,7 @@ import { filter, first } from 'rxjs/operators';
 import { SplashScreenService } from './core/services/splash-screen.service';
 import { AclService } from './core/services/acl.service';
 // language list
-import { locale as enLang } from './config/i18n/en';
-import { locale as chLang } from './config/i18n/ch';
-import { locale as esLang } from './config/i18n/es';
-import { locale as jpLang } from './config/i18n/jp';
-import { locale as deLang } from './config/i18n/de';
-import { locale as frLang } from './config/i18n/fr';
+import { locale as arLang } from './config/i18n/ar';
 import { AuthenticationService } from './core/auth/authentication.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MessagingService } from "./core/services/messaging.service";
@@ -49,7 +44,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 		private splashScreenService: SplashScreenService,
 		private authenticationService: AuthenticationService,
 		private afAuth:  AngularFireAuth,
-		private messagingService: MessagingService		
+		private messagingService: MessagingService
 		// private aclService: AclService
 	) {
 		this.getLoginStatus();
@@ -62,7 +57,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 // 			} else {
 // 			  localStorage.setItem('user', null);
 // 			}
-// 		  })        
+// 		  })
 
 		// subscribe to class update event
 		this.classInitService.onClassesUpdated$.subscribe(classes => {
@@ -86,7 +81,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 		});
 
 		// register translations
-		this.translationService.loadTranslations(enLang, chLang, esLang, jpLang, deLang, frLang);
+		this.translationService.loadTranslations(arLang);
 
 		// override config by router change from pages config
 		this.router.events
@@ -103,7 +98,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	}
 
 	async getLoginStatus(){
-//		let user  = await this.afAuth.auth..authStat(res=>{ this.lol = res;});
+ 		// let user  = await this.afAuth.auth..authStat(res=>{ this.lol = res;});
 		const user = await this.isLoggedIn()
 		console.log(user);
 		if(user){

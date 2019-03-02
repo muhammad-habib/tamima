@@ -115,17 +115,18 @@ export class ProductsListComponent implements OnInit {
 	deleteMarket(market) {
 		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.TITLE');
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.DESCRIPTION');
-		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
+		const _waitDescription: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
 
-		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDescription);
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			let customerDoc = this.afs.doc('markets/'+market.marketId);
-			if(customerDoc){
-				customerDoc.delete().then(d=>{
+			const customerDoc = this.afs.doc('markets/'+market.marketId);
+			if (customerDoc) {
+				this.page.deletedDoc = market.doc;
+				customerDoc.delete().then(d => {
 					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
 				});
 			}

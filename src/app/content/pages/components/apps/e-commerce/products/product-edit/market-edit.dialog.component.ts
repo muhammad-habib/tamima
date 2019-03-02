@@ -51,6 +51,7 @@ export class MarketEditDialogComponent implements OnInit {
 			phone: [this.market.phone,Validators.required],
 			userName: [this.market.name, Validators.required],
 			blocked: [this.market.blocked, Validators.required],
+			verified: [this.market.verified, Validators.required],
 			language: [this.market.language, Validators.required],
 			status: [this.market.status, Validators.required],
 			country: [this.market.country, Validators.required]
@@ -91,11 +92,12 @@ export class MarketEditDialogComponent implements OnInit {
 			country 	: controls['country'].value,
 			status 		: controls['status'].value,
 			blocked 	: JSON.parse(controls['blocked'].value),
+			verified 	: JSON.parse(controls['verified'].value),
 			language 	: controls['language'].value,
 			photo 		: this.tempPhoto['market']?this.tempPhoto['market']:this.market.photo,
 			licencePhoto: this.tempPhoto['licence']?this.tempPhoto['licence']:this.market.licencePhoto,
 			l 		    : [ this.tempGeo['latitude'],this.tempGeo['longitude']]
-			});	
+			});
 
     	this.dialogRef.close({
 				'market':this.market,
@@ -116,7 +118,7 @@ export class MarketEditDialogComponent implements OnInit {
 		const filePath = 'profile_images/'+imageType+'_profile_'+this.market.userId+(new Date()).getTime;
 		const fileRef = this.storage.ref(filePath);
 		const task = this.storage.upload(filePath, file);
-	
+
 		// observe percentage changes
 		this.uploadPercent = task.percentageChanges();
 		// get notified when the download URL is available
@@ -128,7 +130,7 @@ export class MarketEditDialogComponent implements OnInit {
 				}
 			) )
 		 )
-		.subscribe()
+		.subscribe();
 	  }
 
 	  changeMarketLocation(location){

@@ -3,7 +3,7 @@ import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatSort, MatSnackBar, MatDialog, MatTable, MatTableDataSource} from '@angular/material';
 // RXJS
-import {debounceTime, distinctUntilChanged, tap, map, startWith, switchMap, catchError} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, tap, map, startWith, switchMap, catchError, scan} from 'rxjs/operators';
 import {fromEvent, merge, forkJoin, Observable, of as observableOf} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 // Services
@@ -45,7 +45,6 @@ export class CustomersListComponent implements OnInit {
 	filters: any = {};
 	query = new FormControl();
 	nextPage = new FormControl();
-	hiddenPagination = false;
 	sortField = 'name';
 	reverseDir = false;
 
@@ -80,94 +79,45 @@ export class CustomersListComponent implements OnInit {
 	deleteCustomer(user) {
 		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.TITLE');
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.DESCRIPTION');
-		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
+		const _waitDescription: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
 
-		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
-		const currThis = this;
+		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDescription);
+
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			// currThis.afs.collection( 'users', ref => {
-			// 	ref.doc(user.id).delete().then(function() {
-			// 		currThis.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-			// 	}).catch(function(error) {
-			// 		console.error('Error removing document: ', error);
-			// 	});
-			// });
-		});
-	}
-
-	deleteCustomers() {
-		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_MULTY.TITLE');
-		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_MULTY.DESCRIPTION');
-		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_MULTY.WAIT_DESCRIPTION');
-		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_MULTY.MESSAGE');
-
-		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
-		dialogRef.afterClosed().subscribe(res => {
-			if (!res) {
-				return;
-			}
-
-			const idsForDeletion: number[] = [];
-			for (let i = 0; i < this.selection.selected.length; i++) {
-				idsForDeletion.push(this.selection.selected[i].id);
-			}
-			this.customersService
-				.deleteCustomers(idsForDeletion)
-				.subscribe(() => {
+			const customerDoc = this.afs.doc('users/' + user.userId);
+			console.log(customerDoc);
+			if (customerDoc) {
+				this.page.deletedDoc = user.doc;
+				customerDoc.delete().then(d => {
 					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-					// this.loadCustomersList();
-					this.selection.clear();
 				});
+			}
 		});
 	}
 
 	toggleCustomerBlock(_item: CustomerModel){
 		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.TITLE');
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.DESCRIPTION');
-		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
+		const _waitDescription: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.MESSAGE');
 
-		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption);
+		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDescription);
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
 			}
-			const idsForDeletion: number[] = [];
-			for (let i = 0; i < this.selection.selected.length; i++) {
-				idsForDeletion.push(this.selection.selected[i].id);
-			}
 
-			let customerDoc = this.afs.doc('users/'+_item['userId']);
-			if(customerDoc){
-				customerDoc.update({'blocked':!_item.blocked}).then(d=>{
+			const customerDoc = this.afs.doc('users/' + _item['userId']);
+			if (customerDoc) {
+				customerDoc.update({'blocked': !_item.blocked}).then(d => {
 					this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Update);
-					this.selection.clear();
 				});
 			}
 		});
-	}
-
-	/** Fetch */
-	fetchCustomers() {
-		const messages = [];
-		this.selection.selected.forEach(elem => {
-			messages.push({
-				text: `${elem.lastName}, ${elem.firstName}`,
-				id: elem.id.toString(),
-				status: elem.status
-			});
-		});
-		this.layoutUtilsService.fetchElements(messages);
-	}
-
-	addCustomer() {
-		const newCustomer = new CustomerModel();
-		newCustomer.clear(); // Set all defaults fields
-		this.editCustomer(newCustomer);
 	}
 
 	/** Edit */
@@ -189,12 +139,6 @@ export class CustomersListComponent implements OnInit {
 		});
 	}
 
-	/** SELECTION */
-	isAllSelected(): boolean {
-		const numSelected = this.selection.selected.length;
-		const numRows = this.customersResult.length;
-		return numSelected === numRows;
-	}
 
 	masterToggle() {
 		if (this.selection.selected.length === this.customersResult.length) {
@@ -225,36 +169,6 @@ export class CustomersListComponent implements OnInit {
 				return 'Un Blocked';
 		}
 		return '';
-	}
-
-	getItemCssClassByType(status: number = 0): string {
-		switch (status) {
-			case 0:
-				return 'accent';
-			case 1:
-				return 'primary';
-			case 2:
-				return '';
-		}
-		return '';
-	}
-
-	getItemTypeString(status: number = 0): string {
-		switch (status) {
-			case 0:
-				return 'Business';
-			case 1:
-				return 'Individual';
-		}
-		return '';
-	}
-
-	onPaginateChange(event) {
-		if (event.pageIndex > event.previousPageIndex) {
-			this.nextPage.setValue(1);
-		} else if (event.pageIndex < event.previousPageIndex) {
-			this.nextPage.setValue(0);
-		}
 	}
 
 	getUsersLength() {
