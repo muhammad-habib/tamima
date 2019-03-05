@@ -44,7 +44,7 @@ exports.createOrder = functions.firestore
                     console.error("Error updating document: ", error);
             });
         
-            const payload = {
+            let payload = {
                 notification: {
                     title: 'Tamima order '+order_code,
                     body: 'Order '+order_code+ ' has been created'
@@ -79,6 +79,7 @@ exports.createOrder = functions.firestore
                     type:'orders',
                     id:context.params.requestId,
                     body:'تم اضاقه طلب جديد برقم '+'  '+order_code,
+                    type:'orders',
                     createdAt:Date.now()
                 });
 
@@ -107,7 +108,41 @@ exports.createOrder = functions.firestore
     exports.createMessage = functions.firestore
     .document('messages/{id}/messages_threads/{threadId}')
     .onCreate((snap, context) => {
-        console.log(snap.data(),context.params)
+        console.log(snap.data(),context.params);
+        // switch(snap.data().content.type){
+        //     case 'text':
+        //             break;
+        //     case 'image':
+        //             break;
+        //     case 'voice':
+        //             break;
+        //     case 'invoice':
+        //             break;
+        // }
+        let payload = {
+            notification: {
+                title: snap.data().content.text,
+                body: snap.data().content.text
+            },
+            data:{
+                id:snap.data().requestId
+            }
+        };
+        if(snap.data().token)
+            admin.messaging().sendToDevice(snap.data().token, payload);
+
+            let collection = 'users';
+            if(snap.data().userType == 'type_user' ){
+                collection = 'markets'
+            }
+
+        db.collection(collection).add({
+            orderId:snap.data().requestId,
+            payload:payload,
+            createdAt:Date.now()
+        });
+
+
     });
 
 
@@ -134,7 +169,7 @@ exports.createOrder = functions.firestore
         db.collection('portal_notifications').add({
             type:'markets',
             id:context.params.id,
-            body:'تم اضافه متجر جديد '+context.params.id,
+            body:'تم اضافه متجر جديد ',
             createdAt:Date.now()
         });
         

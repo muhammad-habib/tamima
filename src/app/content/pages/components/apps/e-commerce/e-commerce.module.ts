@@ -103,6 +103,11 @@ const routes: Routes = [
 				component: ProductsListComponent,
 				// canActivate: [AuthGuard]
 			},
+			{
+				path: 'markets/:id',
+				component: ProductsListComponent,
+				// canActivate: [AuthGuard]
+			},
 			// {
 			// 	path: 'login',
 			// 	component: LoginComponent,

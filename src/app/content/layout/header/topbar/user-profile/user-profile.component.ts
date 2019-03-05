@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
 
 	@ViewChild('mProfileDropdown') mProfileDropdown: ElementRef;
 	messages = [];
-	sortField = 'name';
+	sortField = 'createdAt';
 	reverseDir = false;
 	filters: any = {};
 
@@ -45,7 +45,8 @@ export class UserProfileComponent implements OnInit {
 	}
 
 	ngOnInit (): void {
-		this.page.init('portal_notifications', this.sortField, 'id', { reverse: this.reverseDir, prepend: false, 'filters': this.filters });
+		this.page.init('portal_notifications', this.sortField, 'id', { reverse: true, prepend: false, 'filters': this.filters });
+		this.page.data.subscribe(data=>{console.log(data)})
 		// if (!this.avatarBg) {
 		// 	this.avatarBg = this.sanitizer.bypassSecurityTrustStyle('url(./assets/app/media/img/misc/user_profile_bg.jpg)');
 		// }

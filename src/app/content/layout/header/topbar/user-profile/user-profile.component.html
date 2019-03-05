@@ -42,11 +42,11 @@
 							Section
 						</span>
 					</li>
-					<li *ngFor="let message of messages" class="m-nav__item">
-						<a *ngIf="message" routerLink="/ecommerce/orders/{{message?.data?.id}}" class="m-nav__link">
+					<li *ngFor="let message of (page.data | async)  " class="m-nav__item">
+						<a *ngIf="message" routerLink="/ecommerce/{{message?.type}}/{{message?.id}}" class="m-nav__link">
 							<i class="m-nav__link-icon flaticon-share"></i>
 							<span class="m-nav__link-text">
-								{{message?.notification?.title + " " + message?.notification?.body }}
+								{{message?.body }}
 							</span>
 						</a>
 					</li>
