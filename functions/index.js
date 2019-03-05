@@ -109,20 +109,29 @@ exports.createOrder = functions.firestore
     .document('messages/{id}/messages_threads/{threadId}')
     .onCreate((snap, context) => {
         console.log(snap.data(),context.params);
-        // switch(snap.data().content.type){
-        //     case 'text':
-        //             break;
-        //     case 'image':
-        //             break;
-        //     case 'voice':
-        //             break;
-        //     case 'invoice':
-        //             break;
-        // }
+        let title='';
+        let body='';
+        switch(snap.data().content.type){
+            case 'text':
+                    title = body = snap.data().content.text;
+                    break;
+            case 'image':                   
+                         title = "Image sent";
+                         body = 'click to open image'
+                    break;
+            case 'voice':
+                        title = "voice sent";
+                        body = 'click to open voice'
+                    break;
+            case 'invoice':
+                        title = "invoice image sent";
+                        body = 'click to open image'
+                    break;
+            }
         let payload = {
             notification: {
-                title: snap.data().content.text,
-                body: snap.data().content.text
+                title: title,
+                body: body
             },
             data:{
                 id:snap.data().requestId
