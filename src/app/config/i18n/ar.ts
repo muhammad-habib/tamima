@@ -14,6 +14,7 @@ export const locale = {
 			DASHBOARD: 'Dashboard'
 		},
 		AUTH: {
+			LOGOUT:'تسجيل خروج',
 			GENERAL: {
 				OR: 'Or',
 				SUBMIT_BUTTON: 'Submit',

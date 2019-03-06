@@ -54,6 +54,13 @@ export class OrdersReportsComponent implements OnInit {
 	ngOnInit() {
 		this.getOrdersLength();
 		this.getOrders();
+		this.page.data.subscribe(res => {
+			this.totalPrice = 0;
+			for (let obj of res) {
+				if (obj.price)
+					this.totalPrice += parseFloat(obj.price);
+			}
+		});
 
 		// If the user changes the sort order, reset back to the first page.
 	}
@@ -83,17 +90,23 @@ export class OrdersReportsComponent implements OnInit {
 	}
 
 	applyFilterOnMobile(filterValue: string) {
-		if (filterValue)
-			this.filters['user.id'] = filterValue;
-		else
-			delete this.filters['user.id'];
+		if (filterValue) {
+			this.filters['user.phone'] = filterValue;
+			this.filters['market.phone'] = filterValue;
+		}
+		else {
+			delete this.filters['user.phone'];
+			delete this.filters['market.phone'];
+		}
 		this.getOrders();
-		this.page.data.subscribe(res => {
-			for (let obj of res) {
-				if (obj.price)
-					this.totalPrice += parseFloat(obj.price);
-			}
-		});
+	}
+
+	orderStatusHandler(event) {
+		if (event.value)
+			this.filters['status.code'] = parseInt(event.value);
+		else
+			delete this.filters['status.code'];
+		this.getOrders();
 	}
 
 }

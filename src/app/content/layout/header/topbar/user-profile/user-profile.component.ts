@@ -1,8 +1,9 @@
 import { AuthenticationService } from '../../../../../core/auth/authentication.service';
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { MessagingService } from '../../../../../core/services/messaging.service';
+import { PaginationService } from '../../../../pages/components/apps/e-commerce/_shared/pagination.service';
 
 @Component({
 	selector: 'm-user-profile',
@@ -19,27 +20,33 @@ export class UserProfileComponent implements OnInit {
 	@Input() avatarBg: SafeStyle = '';
 
 	@ViewChild('mProfileDropdown') mProfileDropdown: ElementRef;
-	messages = [
-		{body: "Order 29 has been created",
-		title: "Tamima order 29"}
-	];
+	messages = [];
+	sortField = 'createdAt';
+	reverseDir = false;
+	filters: any = {};
+
 	constructor (
 		private router: Router,
 		private authService: AuthenticationService,
 		private sanitizer: DomSanitizer,
-		private messagingService: MessagingService		
-
+		private messagingService: MessagingService,		
+		private ref: ChangeDetectorRef,
+		public page: PaginationService
 	) {
 		this.messagingService.receiveMessage();
 		this.messagingService.currentMessage.subscribe(message=>{
 			if(message != null){
-				this.messages.push(message.notification)
+				this.messages.push(message)
+				this.messages = this.messages.slice();
+				this.ref.markForCheck();
 				console.log(this.messages);
 			}
 		})
 	}
 
 	ngOnInit (): void {
+		this.page.init('portal_notifications', this.sortField, 'id', { reverse: true, prepend: false, 'filters': this.filters });
+		this.page.data.subscribe(data=>{console.log(data)})
 		// if (!this.avatarBg) {
 		// 	this.avatarBg = this.sanitizer.bypassSecurityTrustStyle('url(./assets/app/media/img/misc/user_profile_bg.jpg)');
 		// }

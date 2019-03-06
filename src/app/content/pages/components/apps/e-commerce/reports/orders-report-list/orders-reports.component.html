@@ -35,6 +35,24 @@
 								البحث بواسطه <strong>الموبايل</strong></mat-hint>
 						</mat-form-field>
 					</div>
+
+
+
+					<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+					<div class="m-form__control">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select (selectionChange)="orderStatusHandler($event)">
+								<mat-option value="">الكل</mat-option>
+								<mat-option value="1">جديد</mat-option>
+								<mat-option value="2">جارى التحضير</mat-option>
+								<mat-option value="3">تم الاستلام</mat-option>
+								<mat-option value="4">تم الالغاء</mat-option>
+							</mat-select>
+							<mat-hint align="start">
+								اختر حالة <strong> الطلب</strong></mat-hint>
+						</mat-form-field>
+					</div>
+
 					<p style="margin-right: 90%"> المجموع : {{totalPrice}}</p>
 				</div>
 			</div>
@@ -76,7 +94,7 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 15rem;overflow-y: scroll;" scrollable
+		<div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;" scrollable
 			(scrollPosition)="scrollHandler($event)">
 			<mat-table class="" [dataSource]="page.data"
 					   (matSortChange)="sortData($event)"

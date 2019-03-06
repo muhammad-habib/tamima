@@ -39,7 +39,7 @@ export class PaginationService {
 		this.query = {
 			path,
 			field,
-			limit: 3,
+			limit: 10,
 			reverse: false,
 			prepend: false,
 			...opts
@@ -205,7 +205,8 @@ export class PaginationService {
 			for (const i in oldAndNewData) {
 				if (oldAndNewData[i][filter] == undefined) {
 					 const filterArr = filter.split('.');
-					if (oldAndNewData[i][filterArr[0]][filterArr[1]] === filters[filter]) {
+					 console.log(oldAndNewData[i], oldAndNewData[i][filterArr[0]][filterArr[1]], filters[filter])
+					if (oldAndNewData[i][filterArr[0]][filterArr[1]] == filters[filter]) {
 						filteredArr.push(oldAndNewData[i]);
 					}
 				}
