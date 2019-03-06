@@ -115,7 +115,7 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;"
+		<div class="example-container mat-elevation-z8" appSimpleBar style="height: 35rem;overflow-y: scroll;"
 			 scrollable (scrollPosition)="scrollHandler($event)"
 		>
 			<mat-table class="" (matSortChange)="sortData($event)" [dataSource]="page.data  | async" matSort>
