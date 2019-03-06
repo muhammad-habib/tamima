@@ -73,6 +73,7 @@ import {LoginComponent} from '../../../auth/login/login.component';
 import { ShowOrderOnMapComponent } from './orders/show-order-on-map/show-order-on-map.component';
 import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
 import {CoreModule} from '../../../../../core/core.module';
+import {OrdersReportsComponent} from './reports/orders-report-list/orders-reports.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -97,6 +98,10 @@ const routes: Routes = [
 				path: 'markets',
 				component: ProductsListComponent,
 				// canActivate: [AuthGuard]
+			},
+			{
+				path: 'orders-reports',
+				component: OrdersReportsComponent,
 			},
 			// {
 			// 	path: 'login',
@@ -198,6 +203,9 @@ const routes: Routes = [
 		// Products
 		ProductsListComponent,
 		RemarksListComponent,
+		// reports
+		OrdersReportsComponent,
+		//////////
 		SpecificationsListComponent,
 		SpecificationEditDialogComponent,
 		ScrollableDirective,

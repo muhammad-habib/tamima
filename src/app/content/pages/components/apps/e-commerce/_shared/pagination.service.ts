@@ -200,13 +200,21 @@ export class PaginationService {
 		{
 			var  nextday = new Date(filters['createdAt'].getFullYear(), filters['createdAt'].getMonth(), filters['createdAt'].getDate() + 1);
 		}
-		console.log(nextday);
 		for (const filter in filters) {
 			const filteredArr =  [];
 			for (const i in oldAndNewData) {
+				if (oldAndNewData[i][filter] == undefined) {
+					 const filterArr = filter.split('.');
+					if (oldAndNewData[i][filterArr[0]][filterArr[1]] === filters[filter]) {
+						filteredArr.push(oldAndNewData[i]);
+					}
+				}
+
 				if (oldAndNewData[i][filter] === filters[filter]) {
 					filteredArr.push(oldAndNewData[i]);
 				}
+
+
 
 				if (filter === 'createdAt') {
 					if (new Date(oldAndNewData[i][filter].seconds * 1000) > filters[filter]
