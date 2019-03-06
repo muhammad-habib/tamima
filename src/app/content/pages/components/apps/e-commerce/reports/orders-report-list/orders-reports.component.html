@@ -1,0 +1,189 @@
+<!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
+<m-portlet [options]="{headLarge: true}">
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+
+	<!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
+	<ng-container mPortletHeadTitle>
+		<div class="m-portlet__head-title">
+			<h3 class="m-portlet__head-text">
+				<span>قائمة الطلبات</span>
+			</h3>
+		</div>
+		<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+		<!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+	</ng-container>
+
+	<ng-container mPortletHeadTools>
+		<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+		<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+	</ng-container>
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: mPortletBody) -->
+	<ng-container mPortletBody>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<div class="m-form">
+			<!-- start::FILTERS -->
+			<div class="m-form__filtration">
+				<div class="row align-items-center">
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="البحث">
+							<input matInput  placeholder="البحث">
+							<mat-hint align="start">
+								البحث بواسطه <strong>الموبايل</strong></mat-hint>
+						</mat-form-field>
+					</div>
+
+
+
+					<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+					<div class="m-form__control">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select (selectionChange)="orderStatusHandler($event)">
+								<mat-option value="">الكل</mat-option>
+								<mat-option value="1">جديد</mat-option>
+								<mat-option value="2">جارى التحضير</mat-option>
+								<mat-option value="3">تم الاستلام</mat-option>
+								<mat-option value="4">تم الالغاء</mat-option>
+							</mat-select>
+							<mat-hint align="start">
+								اختر حالة <strong> الطلب</strong></mat-hint>
+						</mat-form-field>
+					</div>
+
+					<p style="margin-right: 90%"> المجموع : {{totalPrice}}</p>
+				</div>
+			</div>
+			<!-- end::FILTERS -->
+
+			<!-- start::GROUP ACTIONS -->
+			<!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
+			<!-- Group actions are shared for all LISTS | See '../../_shared' folder -->
+			<!--<div class="row align-items-center collapse m-form__group-actions m&#45;&#45;margin-top-20 m&#45;&#45;margin-bottom-20"-->
+			<!--[ngClass]="{'show' : selection.selected.length > 0}">&lt;!&ndash; We show 'Group Actions' div if smth are selected &ndash;&gt;-->
+			<!--<div class="col-xl-12">-->
+			<!--<div class="m-form__group m-form__group&#45;&#45;inline">-->
+			<!--<div class="m-form__label m-form__label-no-wrap">-->
+			<!--<label class="m&#45;&#45;font-bold m&#45;&#45;font-danger-">-->
+			<!--<span translate="ECOMMERCE.COMMON.SELECTED_RECORDS_COUNT"></span> {{ selection.selected.length }}-->
+			<!--</label>-->
+			<!--&lt;!&ndash; selectedCountsTitle => function from codeBehind (customer-list.component.ts file) &ndash;&gt;-->
+			<!--&lt;!&ndash; selectedCountsTitle => just returns title of selected items count &ndash;&gt;-->
+			<!--&lt;!&ndash; for example: Selected records count: 4 &ndash;&gt;-->
+			<!--</div>-->
+			<!--<div class="m-form__control m-form__group&#45;&#45;inline">-->
+			<!--<button (click)="deleteCustomers()" mat-raised-button color="accent" matTooltip="Delete selected customers">-->
+			<!--<mat-icon>delete</mat-icon> Delete All-->
+			<!--</button>&nbsp;&lt;!&ndash; Call 'delete-entity-dialog' from _shared folder &ndash;&gt;-->
+			<!--<button  (click)="fetchCustomers()" mat-raised-button matTooltip="Fetch selected customers">-->
+			<!--<mat-icon>clear_all</mat-icon> Fetch Selected-->
+			<!--</button>&nbsp;&lt;!&ndash; Call 'fetch-entity-dialog' from _shared folder &ndash;&gt;-->
+			<!--<button (click)="updateStatusForCustomers()" mat-raised-button matTooltip="Update status for selected customers">-->
+			<!--<mat-icon>update</mat-icon> Update status-->
+			<!--</button>&lt;!&ndash; Call 'update-stated-dialog' from _shared folder &ndash;&gt;-->
+			<!--</div>-->
+			<!--</div>-->
+			<!--</div>-->
+			<!--</div>-->
+			<!-- end::GROUP ACTIONS -->
+		</div>
+
+		<!-- end::FILTERS & GROUP ACTIONS -->
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;" scrollable
+			(scrollPosition)="scrollHandler($event)">
+			<mat-table class="" [dataSource]="page.data"
+					   (matSortChange)="sortData($event)"
+					   matSort matSortActive="id" matSortDirection="asc"
+				matSortDisableClear>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+
+				<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+				<ng-container matColumnDef="id">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.id}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="user">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order.user.name}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="mobile">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة المستخدم</mat-header-cell>
+					<mat-cell *matCellDef="let order">
+						<a *ngIf="order.user.photo" target="_blanck" href="{{order?.user?.photo}}}">
+								<mat-icon>link</mat-icon>
+						</a>
+						<!-- <img width="60" height="50" src="{{order.user.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="market">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>السوق</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order?.market?.name}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="photo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة السوق</mat-header-cell>
+					<mat-cell *matCellDef="let order">
+							<a *ngIf="order?.market?.photo" target="_blanck" href="{{order?.market?.photo}}}">
+									<mat-icon>link</mat-icon>
+							</a>
+							<!-- <img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="price">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>السعر</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order?.price}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="createdAt">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>التاريخ</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order?.createdAt?.toDate() | date: 'M/d/yyyy  -  h:mm a'}}</mat-cell>
+				</ng-container>
+				<!-- <ng-container matColumnDef="photo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<img width="60" height="50" src="{{market.photo}}" class="m--img-rounded m--marginless"
+							alt="" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="licencePhoto">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>licencePhoto</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<img width="60" height="50" src="{{market.licencePhoto}}" class="m--img-rounded m--marginless"
+							alt="" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="rateRatio">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Rate Ratio</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.rateRatio}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="rateCount">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Rate Count</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.rateCount}}</mat-cell>
+				</ng-container> -->
+
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>العمليات</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<button mat-icon-button color="primary" matTooltip="show on map" (click)="editOrder(order)"><mat-icon>map</mat-icon></button>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+		</div>
+	</ng-container>
+	<!-- end::Body -->
+	<div class="row align-items-center">
+		<div class="col-md-2 m--margin-bottom-10-mobile">
+			<span>المجموع : {{totalPrice}}</span>
+		</div>
+	</div>
+</m-portlet>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -8,21 +8,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
-import { ShowOrderOnMapComponent } from '../show-order-on-map/show-order-on-map.component';
+import {reduce} from 'rxjs/operators';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
-	selector: 'm-orders-list',
-	templateUrl: './orders-list.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush
+	templateUrl: './orders-reports.component.html',
 })
-export class OrdersListComponent implements OnInit {
+export class OrdersReportsComponent implements OnInit {
 	// Table fields
 	// Filter fields
 	@ViewChild('searchInput') searchInput: ElementRef;
 	// Selection
 	selection = new SelectionModel<any>(true, []);
 	// customersResult: CustomerModel[] = [];
-
 	customersDoc: AngularFirestoreDocument<any>;
 	sortField = 'createdAt';
 	reverseDir = false;
@@ -35,6 +33,7 @@ export class OrdersListComponent implements OnInit {
 	isLoadingResults = true;
 	isRateLimitReached = false;
 	data: any[] = [];
+	totalPrice = 0;
 	filters: any = {};
 	query = new FormControl();
 	nextPage = new FormControl();
@@ -51,12 +50,17 @@ export class OrdersListComponent implements OnInit {
 	) {
 	}
 
-
-
 	/** LOAD DATA */
 	ngOnInit() {
 		this.getOrdersLength();
 		this.getOrders();
+		this.page.data.subscribe(res => {
+			this.totalPrice = 0;
+			for (let obj of res) {
+				if (obj.price)
+					this.totalPrice += parseFloat(obj.price);
+			}
+		});
 
 		// If the user changes the sort order, reset back to the first page.
 	}
@@ -71,26 +75,12 @@ export class OrdersListComponent implements OnInit {
 			});
 	}
 
-	editOrder(order) {
-
-		const dialogRef = this.dialog.open(ShowOrderOnMapComponent, {data: {order}});
-
-		dialogRef.afterClosed().subscribe(res => {
-			if (!res) {
-				return;
-			}
-			// this.layoutUtilsService.showActionNotification(_saveMessage, _messageType, 10000, true, false);
-		});
-
-	}
 
 	scrollHandler(e) {
 		if (e === 'bottom') {
 			this.page.more();
 		}
-		// if (e === 'top') {
-		//   this.page.more()
-		// }
+
 	}
 
 	sortData($event) {
@@ -99,12 +89,23 @@ export class OrdersListComponent implements OnInit {
 		this.getOrders();
 	}
 
-	dateHandeler($event) {
-		if ($event.value) {
-			this.filters['createdAt'] = $event.value;
+	applyFilterOnMobile(filterValue: string) {
+		if (filterValue) {
+			this.filters['user.phone'] = filterValue;
+			this.filters['market.phone'] = filterValue;
 		}
+		else {
+			delete this.filters['user.phone'];
+			delete this.filters['market.phone'];
+		}
+		this.getOrders();
+	}
+
+	orderStatusHandler(event) {
+		if (event.value)
+			this.filters['status.code'] = parseInt(event.value);
 		else
-			delete this.filters['createdAt'];
+			delete this.filters['status.code'];
 		this.getOrders();
 	}
 

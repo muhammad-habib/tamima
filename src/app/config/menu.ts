@@ -768,6 +768,18 @@ export class MenuConfig implements ConfigModel {
 						icon: 'flaticon-settings',
 						page: '/ecommerce/markets'
 					},
+					{
+						title: 'التقارير',
+						bullet: 'dot',
+						icon: 'flaticon-business',
+						root: true,
+						submenu: [
+							{
+								title: 'الطلبات',
+								page: '/ecommerce/orders-reports'
+							},
+						]
+					},
 
 					// {
 					// 	title: 'eCommerce',
