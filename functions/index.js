@@ -18,7 +18,7 @@ exports.countCollection = functions.https.onRequest((req, res) => {
     const collection_name = req.query.name;
     cors(req, res, () => {
         return db.collection(collection_name).get().then(snap => {
-            res.status(200).send({ length: snap.size });
+            res.status(200).send({ length: snap.size?snap.size:0 });
         });
     });
 });
@@ -27,11 +27,16 @@ exports.createOrder = functions.firestore
     .document('requests/{requestId}')
     .onCreate((snap, context) => {
         
-        var order_indexRef = db.collection('incremental_index').doc('rO49bWFR3640YvPvvm2T');    
+        var order_indexRef = db.collection('incremental_index').doc('order-index');    
         order_indexRef.get().then(indexOrder=>{
-            var order_code = 0 ;
-            order_code = indexOrder.data().order;
-            order_indexRef.update({order: ++order_code})
+            var order_code = 1 ;
+            if(indexOrder.exists){
+                order_code = indexOrder.data().order;
+                order_indexRef.update({order: ++order_code})
+            }else{
+                order_indexRef.set({order:1})                
+            }
+
 
             var orderRef = db.collection("requests").doc(context.params.requestId);
             orderRef.update({
@@ -137,7 +142,8 @@ exports.createOrder = functions.firestore
                 body: body
             },
             data:{
-                id:snap.data().requestId
+                id:snap.data().requestId,
+                'userType':snap.data().userType
             }
         };
 

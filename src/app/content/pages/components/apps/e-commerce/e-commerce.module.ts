@@ -21,6 +21,7 @@ import { InterceptService } from './_core/utils/intercept.service';
 // Shared
 import { ActionNotificationComponent } from './_shared/action-natification/action-notification.component';
 import { DeleteEntityDialogComponent } from './_shared/delete-entity-dialog/delete-entity-dialog.component';
+import { VerifyEntityDialogComponent } from './_shared/verify-entity-dialog/verify-entity-dialog.component';
 import { BlockEntityDialogComponent } from './_shared/block-entity-dialog/block-entity-dialog.component';
 import { FetchEntityDialogComponent } from './_shared/fetch-entity-dialog/fetch-entity-dialog.component';
 import { UpdateStatusDialogComponent } from './_shared/update-status-dialog/update-status-dialog.component';
@@ -188,6 +189,7 @@ const routes: Routes = [
 		MarketEditDialogComponent,
 		ShowOrderOnMapComponent,
 		DeleteEntityDialogComponent,
+		VerifyEntityDialogComponent,
 		BlockEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,
@@ -198,6 +200,7 @@ const routes: Routes = [
 		// Shared
 		ActionNotificationComponent,
 		DeleteEntityDialogComponent,
+		VerifyEntityDialogComponent,
 		BlockEntityDialogComponent,
 		FetchEntityDialogComponent,
 		UpdateStatusDialogComponent,

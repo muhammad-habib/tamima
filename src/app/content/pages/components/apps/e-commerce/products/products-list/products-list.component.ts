@@ -113,10 +113,10 @@ export class ProductsListComponent implements OnInit {
 
 	/** Delete */
 	deleteMarket(market) {
-		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.TITLE');
-		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.DESCRIPTION');
-		const _waitDescription: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
-		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_CUSTOMER_SIMPLE.MESSAGE');
+		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_MARKET_SIMPLE.TITLE');
+		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_MARKET_SIMPLE.DESCRIPTION');
+		const _waitDescription: string = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_MARKET_SIMPLE.WAIT_DESCRIPTION');
+		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.DELETE_MARKET_SIMPLE.MESSAGE');
 
 		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDescription);
 		dialogRef.afterClosed().subscribe(res => {
@@ -134,10 +134,10 @@ export class ProductsListComponent implements OnInit {
 
 	}
 	toggleMarketBlock(_item){
-		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.TITLE');
-		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.DESCRIPTION');
-		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.WAIT_DESCRIPTION');
-		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_CUSTOMER_SIMPLE.MESSAGE');
+		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.TITLE');
+		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.DESCRIPTION');
+		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.WAIT_DESCRIPTION');
+		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.MESSAGE');
 
 		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption);
 		dialogRef.afterClosed().subscribe(res => {
@@ -153,6 +153,25 @@ export class ProductsListComponent implements OnInit {
 		});
 	}
 
+	toggleMarketVerified(_item){
+		const _title: string = this.translate.instant('ECOMMERCE.CUSTOMERS.VERIFY_MARKET_SIMPLE.TITLE');
+		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.VERIFY_MARKET_SIMPLE.DESCRIPTION');
+		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.VERIFY_MARKET_SIMPLE.WAIT_DESCRIPTION');
+		const _verifiedMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.VERIFY_MARKET_SIMPLE.MESSAGE');
+
+		const dialogRef = this.layoutUtilsService.verifyElement(_title, _description, _waitDesciption);
+		dialogRef.afterClosed().subscribe(res => {
+			if (!res) {
+				return;
+			}
+			let marketDoc = this.afs.doc('markets/'+_item.marketId);
+			if(marketDoc){
+				marketDoc.update({'verified':!_item.verified}).then(d=>{
+					this.layoutUtilsService.showActionNotification(_verifiedMessage, MessageType.Update);
+				});
+			}
+		});
+	}
 
 
 	/** Edit */
@@ -219,6 +238,23 @@ export class ProductsListComponent implements OnInit {
 		this.sortField = $event.active;
 		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
 		this.getMarkets();
+	}
+
+
+	verifyChangedHandler($event) {
+		if ($event.value)
+			switch ($event.value) {
+				case 'true':
+					this.filters['verified'] = true;
+					break;
+				case 'false':
+					this.filters['verified'] = false;
+					break;
+			}
+		else
+			delete this.filters['verified'];
+		this.getMarkets();
+
 	}
 
 
