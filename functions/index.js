@@ -53,12 +53,15 @@ exports.createOrder = functions.firestore
                     id:context.params.requestId
                 }
             };
-            if(snap.data().user && snap.data().user.token)
-                admin.messaging().sendToDevice(snap.data().user.token, payload);
+            // if(snap.data().user && snap.data().user.token)
+            //     admin.messaging().sendToDevice(snap.data().user.token, payload);
 
-            if(snap.data().market && snap.data().market.token)
-                admin.messaging().sendToDevice(snap.data().market.token, payload);                
-
+            let market_indexRef = db.collection("markets").doc(snap.data().market.id);    
+            market_indexRef.get().then(market=>{
+                if(market.data().notification && market.data().token)
+                    admin.messaging().sendToDevice(market.data().token, payload);                
+            })
+            
             db.collection('users_notifications').add({
                     userId:snap.data().user.id,
                     orderId:context.params.requestId,
@@ -137,19 +140,31 @@ exports.createOrder = functions.firestore
                 id:snap.data().requestId
             }
         };
-        if(snap.data().token)
-            admin.messaging().sendToDevice(snap.data().token, payload);
 
-            let collection = 'users';
+            let collection ='';
             if(snap.data().userType == 'type_user' ){
                 collection = 'markets'
+            }else{
+                collection = 'users';                
             }
 
-        db.collection(collection).add({
+            console.log(collection);
+        var receiver_indexRef = db.collection(collection).doc(snap.data().receiverId);    
+        
+        return receiver_indexRef.get().then(receiver=>{
+            console.log(receiver.data().token);
+            if(receiver.data() && receiver.data().notification && receiver.data().token)
+                admin.messaging().sendToDevice(receiver.data().token, payload);
+
+        db.collection(collection+'_notifications').add({
             orderId:snap.data().requestId,
             payload:payload,
             createdAt:Date.now()
         });
+            
+
+        })
+
 
 
     });

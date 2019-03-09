@@ -28,8 +28,8 @@ export const locale = {
 				NOTIFICATION:'إشعارات'
 			},
 			LOGIN: {
-				TITLE: 'Login Account',
-				BUTTON: 'Sign In',
+				TITLE: 'تسجيل الدخول',
+				BUTTON: 'تسجيل الدخول',
 			},
 			FORGOT: {
 				TITLE: 'Forgotten Password?',
@@ -41,9 +41,9 @@ export const locale = {
 				SUCCESS: 'Your account has been successfuly registered. Please use your registered account to login.'
 			},
 			INPUT: {
-				EMAIL: 'Email',
+				EMAIL: 'البريد الاليكترونى',
 				FULLNAME: 'Fullname',
-				PASSWORD: 'Password',
+				PASSWORD: 'كلمه السر',
 				CONFIRM_PASSWORD: 'Confirm Password',
 			},
 			VALIDATION: {
