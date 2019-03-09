@@ -1,39 +1,38 @@
-<div class="row">
-	<div class="col-xl-5">
-		<mat-card clas="display-1" >
-				<mat-card-header>
-					<mat-card-title>الطلبات</mat-card-title>
-				</mat-card-header>
-				<mat-card-content>
-						<h1>{{data?.requests}}</h1>
-				</mat-card-content>
-		</mat-card>
-	</div>
-	<div class="col-xl-5">
-		<mat-card>
+<div class="row dashboard">
+    <div class="col-xl-5">
+        <mat-card clas="display-1">
+            <mat-card-header>
+                <mat-card-title>الطلبات</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h1>{{data?.requests}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-5">
+        <mat-card>
 
-				<mat-card-header>
-						<mat-card-title>المستخدمين</mat-card-title>
-					  </mat-card-header>
-					  <mat-card-content>
-							  <h1>{{data?.users}}</h1>
-					  </mat-card-content>
-		</mat-card>
-	</div>
-	<div class="col-xl-12">
-		<br>
-	</div>
-	<div class="col-xl-5">
-		<!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
+            <mat-card-header>
+                <mat-card-title>المستخدمين</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h1>{{data?.users}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-12">
+        <br>
+    </div>
+    <div class="col-xl-5">
+        <!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
 
-		<mat-card class="example-card">
-				<mat-card-header>
-				  <mat-card-title>الاسواق</mat-card-title>
-				</mat-card-header>
-				<mat-card-content>
-						<h1>{{data?.markets}}</h1>
-				</mat-card-content>
-			  </mat-card>
-	</div>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>الاسواق</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h1>{{data?.markets}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
-
