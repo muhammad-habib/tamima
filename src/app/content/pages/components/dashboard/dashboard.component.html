@@ -36,42 +36,42 @@
 </div> -->
 
 <div class="row dashboard ">
-		<div class="col-xl-3">
-			<mat-card clas="display-1" >
-					<mat-toolbar>
-							<span>الطلبات</span>
-					</mat-toolbar>					
-					<br />
-					<mat-card-content>
-							<app-counter *ngIf="data?.requests" [circleColor]="'#044AF7'"  [from]=0 [to]="data?.requests" [of]="data?.requests"  ></app-counter>
-						</mat-card-content>
-			</mat-card>
-		</div>
-		<div class="col-xl-3">
-			<mat-card>
-					<mat-toolbar>
-							<span>المستخدمين</span>
-					</mat-toolbar>
-					<br />
-					<mat-card-content>
-						<app-counter *ngIf="data?.users" [circleColor]="'#F74E04'" [from]=0 [to]="data?.users" [of]="data?.users"  ></app-counter>
-					</mat-card-content>
-			</mat-card>
-		</div>
-		<div class="col-xl-12">
-			<br>
-		</div>
-		<div class="col-xl-3">
-			<!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
-	
-			<mat-card class="example-card">
-					<mat-toolbar>
-							<span>الاسواق</span>
-					</mat-toolbar>
-					<br />
-					<mat-card-content>
-							<app-counter *ngIf="data?.markets" [circleColor]="'#0B4902'" [from]=0 [to]="data?.markets" [of]="data?.markets"  ></app-counter>
-					</mat-card-content>
-				  </mat-card>
-		</div>
-	</div>
+    <div class="col-xl-3">
+        <mat-card clas="display-1">
+            <mat-toolbar>
+                <span>الطلبات</span>
+            </mat-toolbar>
+            <br />
+            <mat-card-content>
+                <app-counter *ngIf="data?.requests" [circleColor]="'#59C089'" [from]=0 [to]="data?.requests" [of]="data?.requests"></app-counter>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-3">
+        <mat-card>
+            <mat-toolbar>
+                <span>المستخدمين</span>
+            </mat-toolbar>
+            <br />
+            <mat-card-content>
+                <app-counter *ngIf="data?.users" [circleColor]="'#FEDF40'" [from]=0 [to]="data?.users" [of]="data?.users"></app-counter>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-12">
+        <br>
+    </div>
+    <div class="col-xl-3">
+        <!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
+
+        <mat-card class="example-card">
+            <mat-toolbar>
+                <span>الاسواق</span>
+            </mat-toolbar>
+            <br />
+            <mat-card-content>
+                <app-counter *ngIf="data?.markets" [circleColor]="'#E54443'" [from]=0 [to]="data?.markets" [of]="data?.markets"></app-counter>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

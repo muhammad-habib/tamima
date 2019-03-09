@@ -194,6 +194,10 @@
         border-right: 2px solid #E24646;
     }
     
+    .notification-link:hover {
+        background: gainsboro;
+    }
+    
     @media (min-width: 1025px) {
         .m-header {
             display: table !important;
