@@ -28,7 +28,7 @@ export class OrdersListComponent implements OnInit {
 	reverseDir = false;
 	customers: Observable<any[]>;
 	dataSource;
-	displayedColumns = ['user', 'mobile', 'market', 'photo', 'price', 'createdAt'];
+	displayedColumns = ['user', 'mobile', 'market', 'photo', 'price' ,'status', 'createdAt'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
@@ -39,7 +39,7 @@ export class OrdersListComponent implements OnInit {
 	query = new FormControl();
 	nextPage = new FormControl();
 	hiddenPagination = false;
-
+	statusColor=['','','metal','success','danger']
 	constructor(
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,

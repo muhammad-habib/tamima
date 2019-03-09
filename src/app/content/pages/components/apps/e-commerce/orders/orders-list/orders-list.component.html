@@ -123,6 +123,13 @@
 					<mat-header-cell *matHeaderCellDef mat-sort-header>السعر</mat-header-cell>
 					<mat-cell *matCellDef="let order">{{order?.market?.price}}</mat-cell>
 				</ng-container>
+				<ng-container matColumnDef="status">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>الحاله</mat-header-cell>
+						<mat-cell *matCellDef="let order">
+								<span *ngIf="order?.status"
+									class="m-badge m-badge--{{statusColor[order?.status?.code] }} m-badge--wide">{{ order?.status?.name }}</span>
+							</mat-cell>
+					</ng-container>
 				<ng-container matColumnDef="createdAt">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>التاريخ</mat-header-cell>
 					<mat-cell *matCellDef="let order">{{order?.createdAt?.toDate() | date: 'M/d/yyyy  -  h:mm a'}}</mat-cell>
