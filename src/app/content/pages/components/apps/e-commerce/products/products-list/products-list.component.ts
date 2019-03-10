@@ -138,8 +138,8 @@ export class ProductsListComponent implements OnInit {
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.DESCRIPTION');
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.MESSAGE');
-
-		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption);
+		const _blockOrUnBlock = _item.blocked?'فك الحظر':'حظر';
+		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption,_blockOrUnBlock);
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;

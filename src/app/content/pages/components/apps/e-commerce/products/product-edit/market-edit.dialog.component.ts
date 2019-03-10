@@ -32,6 +32,7 @@ export class MarketEditDialogComponent implements OnInit {
 	ngOnInit() {
 		this.market = this.data.market;
 		this.marketDoc = this.data.marketDoc;
+		console.log(this.market)
 		this.createForm();
 		this.tempPhoto['market'] = this.market.photo;
 		this.tempPhoto['licence'] = this.market.licencePhoto;
