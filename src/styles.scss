@@ -198,6 +198,18 @@
         background: gainsboro;
     }
     
+    .m-portlet__body {
+        padding-top: 5px !important;
+    }
+    
+    .mat-form-field-subscript-wrapper {
+        font-size: 90% !important;
+    }
+    
+    .mat-sort-header-container {
+        font-size: 14px !important;
+    }
+    
     @media (min-width: 1025px) {
         .m-header {
             display: table !important;

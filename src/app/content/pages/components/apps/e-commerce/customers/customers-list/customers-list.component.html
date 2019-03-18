@@ -1,35 +1,35 @@
 <!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
 <m-portlet [options]="{headLarge: true}">
-	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
-	<!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+    <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
 
-	<!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
-	<ng-container mPortletHeadTitle>
-		<div class="m-portlet__head-title">
-			<h3 class="m-portlet__head-text">
-				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">{{ 'CUSTOMER_LIST' | translate }}</span>
-			</h3>
-		</div>
-		<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
-		<!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
-	</ng-container>
+    <!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
+    <ng-container mPortletHeadTitle>
+        <div class="m-portlet__head-title">
+            <h3 class="m-portlet__head-text">
+                <span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">{{ 'CUSTOMER_LIST' | translate }}</span>
+            </h3>
+        </div>
+        <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+        <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+    </ng-container>
 
-	<ng-container mPortletHeadTools>
-		<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
-		<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
-	</ng-container>
-	<!-- end::Header -->
+    <ng-container mPortletHeadTools>
+        <!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+        <!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+    </ng-container>
+    <!-- end::Header -->
 
-	<!-- start::Body (attribute: mPortletBody) -->
-	<ng-container mPortletBody>
-		<!-- start::FILTERS & GROUP ACTIONS -->
-		<div class="m-form">
-			<!-- start::FILTERS -->
-			<div class="m-form__filtration">
-				<div class="row align-items-center">
+    <!-- start::Body (attribute: mPortletBody) -->
+    <ng-container mPortletBody>
+        <!-- start::FILTERS & GROUP ACTIONS -->
+        <div class="m-form">
+            <!-- start::FILTERS -->
+            <div class="m-form__filtration">
+                <div class="row align-items-center">
 
-						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
-						<!-- <div class="col-md-2 m--margin-bottom-10-mobile">
+                    <!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+                    <!-- <div class="col-md-2 m--margin-bottom-10-mobile">
 						<div class="m-form__control">
 							<mat-form-field class="mat-form-field-fluid">
 								<mat-select (selectionChange)="verifyChangedHandler($event)">
@@ -79,36 +79,6 @@
 			</div>
 			<!-- end::FILTERS -->
 
-			<!-- start::GROUP ACTIONS -->
-			<!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
-			<!-- Group actions are shared for all LISTS | See '../../_shared' folder -->
-			<!--<div class="row align-items-center collapse m-form__group-actions m&#45;&#45;margin-top-20 m&#45;&#45;margin-bottom-20"-->
-			<!--[ngClass]="{'show' : selection.selected.length > 0}">&lt;!&ndash; We show 'Group Actions' div if smth are selected &ndash;&gt;-->
-			<!--<div class="col-xl-12">-->
-			<!--<div class="m-form__group m-form__group&#45;&#45;inline">-->
-			<!--<div class="m-form__label m-form__label-no-wrap">-->
-			<!--<label class="m&#45;&#45;font-bold m&#45;&#45;font-danger-">-->
-			<!--<span translate="ECOMMERCE.COMMON.SELECTED_RECORDS_COUNT"></span> {{ selection.selected.length }}-->
-			<!--</label>-->
-			<!--&lt;!&ndash; selectedCountsTitle => function from codeBehind (customer-list.component.ts file) &ndash;&gt;-->
-			<!--&lt;!&ndash; selectedCountsTitle => just returns title of selected items count &ndash;&gt;-->
-			<!--&lt;!&ndash; for example: Selected records count: 4 &ndash;&gt;-->
-			<!--</div>-->
-			<!--<div class="m-form__control m-form__group&#45;&#45;inline">-->
-			<!--<button (click)="deleteCustomers()" mat-raised-button color="accent" matTooltip="Delete selected customers">-->
-			<!--<mat-icon>delete</mat-icon> Delete All-->
-			<!--</button>&nbsp;&lt;!&ndash; Call 'delete-entity-dialog' from _shared folder &ndash;&gt;-->
-			<!--<button  (click)="fetchCustomers()" mat-raised-button matTooltip="Fetch selected customers">-->
-			<!--<mat-icon>clear_all</mat-icon> Fetch Selected-->
-			<!--</button>&nbsp;&lt;!&ndash; Call 'fetch-entity-dialog' from _shared folder &ndash;&gt;-->
-			<!--<button (click)="updateStatusForCustomers()" mat-raised-button matTooltip="Update status for selected customers">-->
-			<!--<mat-icon>update</mat-icon> Update status-->
-			<!--</button>&lt;!&ndash; Call 'update-stated-dialog' from _shared folder &ndash;&gt;-->
-			<!--</div>-->
-			<!--</div>-->
-			<!--</div>-->
-			<!--</div>-->
-			<!-- end::GROUP ACTIONS -->
 		</div>
 
 		<!-- end::FILTERS & GROUP ACTIONS -->
@@ -190,16 +160,14 @@
 								<mat-icon >lock_open</mat-icon></button>
 						<button *ngIf="!customer.blocked"  mat-icon-button color="warn" matTooltip="حظر المستخدم" type="button" (click)="toggleCustomerBlock(customer)">
 								<mat-icon >lock</mat-icon></button>
-					</mat-cell>
-				</ng-container>
+                    </mat-cell>
+                </ng-container>
 
-				<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-			</mat-table>
-		</div>
-	</ng-container>
-	<!-- end::Body -->
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </ng-container>
+    <!-- end::Body -->
 
 </m-portlet>
-
-
