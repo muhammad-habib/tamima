@@ -18,7 +18,7 @@ exports.countCollection = functions.https.onRequest((req, res) => {
     const collection_name = req.query.name;
     cors(req, res, () => {
         return db.collection(collection_name).get().then(snap => {
-            res.status(200).send({ length: snap.size });
+            res.status(200).send({ length: snap.size?snap.size:0 });
         });
     });
 });
@@ -27,11 +27,16 @@ exports.createOrder = functions.firestore
     .document('requests/{requestId}')
     .onCreate((snap, context) => {
         
-        var order_indexRef = db.collection('incremental_index').doc('rO49bWFR3640YvPvvm2T');    
+        var order_indexRef = db.collection('incremental_index').doc('order-index');    
         order_indexRef.get().then(indexOrder=>{
-            var order_code = 0 ;
-            order_code = indexOrder.data().order;
-            order_indexRef.update({order: ++order_code})
+            var order_code = 1 ;
+            if(indexOrder.exists){
+                order_code = indexOrder.data().order;
+                order_indexRef.update({order: ++order_code})
+            }else{
+                order_indexRef.set({order:1})                
+            }
+
 
             var orderRef = db.collection("requests").doc(context.params.requestId);
             orderRef.update({
@@ -53,12 +58,15 @@ exports.createOrder = functions.firestore
                     id:context.params.requestId
                 }
             };
-            if(snap.data().user && snap.data().user.token)
-                admin.messaging().sendToDevice(snap.data().user.token, payload);
+            // if(snap.data().user && snap.data().user.token)
+            //     admin.messaging().sendToDevice(snap.data().user.token, payload);
 
-            if(snap.data().market && snap.data().market.token)
-                admin.messaging().sendToDevice(snap.data().market.token, payload);                
-
+            let market_indexRef = db.collection("markets").doc(snap.data().market.id);    
+            market_indexRef.get().then(market=>{
+                if(market.data().notification && market.data().token)
+                    admin.messaging().sendToDevice(market.data().token, payload);                
+            })
+            
             db.collection('users_notifications').add({
                     userId:snap.data().user.id,
                     orderId:context.params.requestId,
@@ -109,38 +117,60 @@ exports.createOrder = functions.firestore
     .document('messages/{id}/messages_threads/{threadId}')
     .onCreate((snap, context) => {
         console.log(snap.data(),context.params);
-        // switch(snap.data().content.type){
-        //     case 'text':
-        //             break;
-        //     case 'image':
-        //             break;
-        //     case 'voice':
-        //             break;
-        //     case 'invoice':
-        //             break;
-        // }
+        let title='';
+        let body='';
+        switch(snap.data().content.type){
+            case 'text':
+                    title = body = snap.data().content.text;
+                    break;
+            case 'image':                   
+                         title = "Image sent";
+                         body = 'click to open image'
+                    break;
+            case 'voice':
+                        title = "voice sent";
+                        body = 'click to open voice'
+                    break;
+            case 'invoice':
+                        title = "invoice image sent";
+                        body = 'click to open image'
+                    break;
+            }
         let payload = {
             notification: {
-                title: snap.data().content.text,
-                body: snap.data().content.text
+                title: title,
+                body: body
             },
             data:{
-                id:snap.data().requestId
+                id:snap.data().requestId,
+                'userType':snap.data().userType
             }
         };
-        if(snap.data().token)
-            admin.messaging().sendToDevice(snap.data().token, payload);
 
-            let collection = 'users';
+            let collection ='';
             if(snap.data().userType == 'type_user' ){
                 collection = 'markets'
+            }else{
+                collection = 'users';                
             }
 
-        db.collection(collection).add({
+            console.log(collection);
+        var receiver_indexRef = db.collection(collection).doc(snap.data().receiverId);    
+        
+        return receiver_indexRef.get().then(receiver=>{
+            console.log(receiver.data().token);
+            if(receiver.data() && receiver.data().notification && receiver.data().token)
+                admin.messaging().sendToDevice(receiver.data().token, payload);
+
+        db.collection(collection+'_notifications').add({
             orderId:snap.data().requestId,
             payload:payload,
             createdAt:Date.now()
         });
+            
+
+        })
+
 
 
     });

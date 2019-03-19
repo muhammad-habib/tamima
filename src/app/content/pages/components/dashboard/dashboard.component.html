@@ -1,39 +1,77 @@
-<div class="row">
-	<div class="col-xl-5">
-		<mat-card clas="display-1" >
-				<mat-card-header>
-					<mat-card-title>الطلبات</mat-card-title>
-				</mat-card-header>
-				<mat-card-content>
-						<h1>{{data?.requests}}</h1>
-				</mat-card-content>
-		</mat-card>
-	</div>
-	<div class="col-xl-5">
-		<mat-card>
+<!-- <div class="row dashboard">
+    <div class="col-xl-5">
+        <mat-card clas="display-1">
+            <mat-card-header>
+                <mat-card-title>الطلبات</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h1>{{data?.requests}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-5">
+        <mat-card>
 
-				<mat-card-header>
-						<mat-card-title>المستخدمين</mat-card-title>
-					  </mat-card-header>
-					  <mat-card-content>
-							  <h1>{{data?.users}}</h1>
-					  </mat-card-content>
-		</mat-card>
-	</div>
-	<div class="col-xl-12">
-		<br>
-	</div>
-	<div class="col-xl-5">
-		<!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
+            <mat-card-header>
+                <mat-card-title>المستخدمين</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h1>{{data?.users}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-12">
+        <br>
+    </div>
+    <div class="col-xl-5">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>الاسواق</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h1>{{data?.markets}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div> -->
 
-		<mat-card class="example-card">
-				<mat-card-header>
-				  <mat-card-title>الاسواق</mat-card-title>
-				</mat-card-header>
-				<mat-card-content>
-						<h1>{{data?.markets}}</h1>
-				</mat-card-content>
-			  </mat-card>
-	</div>
+<div class="row dashboard ">
+    <div class="col-xl-3">
+        <mat-card clas="display-1" class="text-center">
+            <mat-toolbar>
+                <span>الطلبات</span>
+            </mat-toolbar>
+            <br />
+            <mat-card-content>
+                <app-counter *ngIf="data?.requests" [circleColor]="'#59C089'" [from]=0 [to]="data?.requests" [of]="data?.requests"></app-counter>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-xl-3">
+        <mat-card class="text-center">
+            <mat-toolbar>
+                <span>المستخدمين</span>
+            </mat-toolbar>
+            <br />
+            <mat-card-content>
+                <app-counter *ngIf="data?.users" [circleColor]="'#FEDF40'" [from]=0 [to]="data?.users" [of]="data?.users"></app-counter>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <!-- <div class="col-xl-12">
+        <br>
+    </div> -->
+    <div class="col-xl-3">
+        <!-- <mat-card>markets:{{data?.markets}}</mat-card> -->
+
+        <mat-card class="example-card text-center">
+            <mat-toolbar class="text-center">
+                <span class="text-center" >الاسواق</span>
+            </mat-toolbar>
+            <br />
+            <mat-card-content>
+                <app-counter *ngIf="data?.markets" [circleColor]="'#E54443'" [from]=0 [to]="data?.markets" [of]="data?.markets"></app-counter>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
-

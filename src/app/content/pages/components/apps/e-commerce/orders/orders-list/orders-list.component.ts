@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import { ShowOrderOnMapComponent } from '../show-order-on-map/show-order-on-map.component';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
 	selector: 'm-orders-list',
@@ -28,7 +29,7 @@ export class OrdersListComponent implements OnInit {
 	reverseDir = false;
 	customers: Observable<any[]>;
 	dataSource;
-	displayedColumns = ['user', 'mobile', 'market', 'photo', 'price', 'createdAt'];
+	displayedColumns = ['user', 'mobile', 'market', 'photo', 'price' ,'status', 'createdAt'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
@@ -39,7 +40,7 @@ export class OrdersListComponent implements OnInit {
 	query = new FormControl();
 	nextPage = new FormControl();
 	hiddenPagination = false;
-
+	statusColor=['','','metal','success','danger']
 	constructor(
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,
@@ -47,7 +48,8 @@ export class OrdersListComponent implements OnInit {
 		private afs: AngularFirestore,
 		private http: HttpClient,
 		private fs: FirebaseService,
-		public page: PaginationService
+		public page: PaginationService,
+		private route: ActivatedRoute
 	) {
 	}
 
@@ -55,9 +57,16 @@ export class OrdersListComponent implements OnInit {
 
 	/** LOAD DATA */
 	ngOnInit() {
+		this.route.paramMap.subscribe(params => {
+			const order_id = params.get('id');
+			if (order_id) {
+				this.filters['id'] = order_id;
+				this.getOrders();
+			}
+		});
+
 		this.getOrdersLength();
 		this.getOrders();
-
 		// If the user changes the sort order, reset back to the first page.
 	}
 	getOrders() {

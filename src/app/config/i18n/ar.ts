@@ -13,6 +13,7 @@ export const locale = {
 			APPS: 'Apps',
 			DASHBOARD: 'Dashboard'
 		},
+
 		AUTH: {
 			LOGOUT:'تسجيل خروج',
 			GENERAL: {
@@ -25,11 +26,15 @@ export const locale = {
 				PRIVACY: 'Privacy',
 				LEGAL: 'Legal',
 				CONTACT: 'Contact',
-				NOTIFICATION:'إشعارات'
+				NOTIFICATION:'إشعارات',
+				CANCEL:'الغاء',
+				VERIFY:'اعتماد',
+				DELETE:'مسح',
+				BLOCK:'حظر',
 			},
 			LOGIN: {
-				TITLE: 'Login Account',
-				BUTTON: 'Sign In',
+				TITLE: 'تسجيل الدخول',
+				BUTTON: 'تسجيل الدخول',
 			},
 			FORGOT: {
 				TITLE: 'Forgotten Password?',
@@ -41,9 +46,9 @@ export const locale = {
 				SUCCESS: 'Your account has been successfuly registered. Please use your registered account to login.'
 			},
 			INPUT: {
-				EMAIL: 'Email',
+				EMAIL: 'البريد الاليكترونى',
 				FULLNAME: 'Fullname',
-				PASSWORD: 'Password',
+				PASSWORD: 'كلمه السر',
 				CONFIRM_PASSWORD: 'Confirm Password',
 			},
 			VALIDATION: {
@@ -80,6 +85,30 @@ export const locale = {
 					WAIT_DESCRIPTION: 'جارى حذف المستخدم',
 					MESSAGE: 'تم حذف المستخدم'
 				},
+				BLOCK_CUSTOMER_SIMPLE: {
+					TITLE: 'حظر مستخدم',
+					DESCRIPTION: 'هل انت متاكد من حظر المستخدم',
+					WAIT_DESCRIPTION: 'جارى حظر المستخدم',
+					MESSAGE: 'تم حظر المستخدم'
+				},	
+				DELETE_MARKET_SIMPLE: {
+					TITLE: 'حذف مستخدم',
+					DESCRIPTION: 'هل انت متاكد من حذف المستخدم',
+					WAIT_DESCRIPTION: 'جارى حذف المستخدم',
+					MESSAGE: 'تم حذف المستخدم'
+				},
+				BLOCK_MARKET_SIMPLE: {
+					TITLE: 'حظر المتجر',
+					DESCRIPTION: 'هل انت متاكد من حظر المتجر',
+					WAIT_DESCRIPTION: 'جارى حظر المتجر',
+					MESSAGE: 'تم حظر المتجر'
+				},							
+				VERIFY_MARKET_SIMPLE: {
+					TITLE: 'اعتماد المتجر',
+					DESCRIPTION: 'هل انت متاكد من اعتماد المتجر',
+					WAIT_DESCRIPTION: 'جارى اعتماد المتجر',
+					MESSAGE: 'تم اعتماد المتجر'
+				},				
 				DELETE_CUSTOMER_MULTY: {
 					TITLE: 'Customers Delete',
 					DESCRIPTION: 'Are you sure to permanently delete selected customers?',
