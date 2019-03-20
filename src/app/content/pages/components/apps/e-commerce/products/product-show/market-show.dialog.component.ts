@@ -51,13 +51,12 @@ export class MarketShowDialogComponent implements OnInit {
 			name: [this.market.name, Validators.required],
 			phone: [this.market.phone,Validators.required],
 			userName: [this.market.name, Validators.required],
-			blocked: [this.market.blocked, Validators.required],
-			verified: [this.market.verified, Validators.required],
+			blocked: [this.market.blocked ? 'true' : 'false', Validators.required],
+			verified: [this.market.verified ? 'true' : 'false', Validators.required],
 			language: [this.market.language, Validators.required],
 			status: [this.market.status, Validators.required],
 			country: [this.market.country, Validators.required]
 		});
-		this.marketForm.get(name).disable();
 
 	}
 

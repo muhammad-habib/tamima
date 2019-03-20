@@ -44,7 +44,7 @@
 							<div class="form-group m-form__group row">
 									<div class="col-lg-6 m--margin-bottom-20-mobile" style="pointer-events:none;">
 										<mat-form-field class="mat-form-field-fluid">
-											<input matInput formControlName="name" />
+											<input matInput placeholder="الاسم "  formControlName="name" />
 											<mat-error>
 												<strong>ضرورى</strong>
 											</mat-error>
@@ -53,13 +53,10 @@
 									<div class="col-lg-6 m--margin-bottom-20-mobile" style="pointer-events:none;">
 										<mat-form-field class="mat-form-field-fluid">
 											<p></p>
-											<mat-select placeholder="الحظر" formControlName="blocked">
+											<mat-select  placeholder="حاله الحظر" formControlName="blocked">
 												<mat-option value="true">محظور</mat-option>
 												<mat-option value="false">غير محظور</mat-option>
 											</mat-select>
-											<mat-hint align="start">
-												<strong>محظور</strong>
-											</mat-hint>
 										</mat-form-field>
 									</div>
 								</div>
@@ -67,13 +64,7 @@
 								<div class="form-group m-form__group row" style="pointer-events:none;">
 									<div class="col-lg-6 m--margin-bottom-20-mobile">
 										<mat-form-field class="mat-form-field-fluid">
-											<input type="tel" matInput placeholder="Enter Phone" formControlName="phone" />
-											<mat-error>
-												<strong>ضرورى</strong>
-											</mat-error>
-											<mat-hint align="start"> من فضلك ادخل
-												<strong>الموبايل</strong>
-											</mat-hint>
+											<input type="tel" matInput placeholder="رقم التليفون" formControlName="phone" />
 										</mat-form-field>
 									</div>
 									<div class="col-lg-6 m--margin-bottom-20-mobile">
@@ -89,7 +80,7 @@
 									</div>
 								</div>
 
-					<div style="pointer-events:none;" >{{customer?.address[0]?.latitude}}
+					<div style="pointer-events:none;" >
 						<m-map [editable]="false" [height]="200"
 						[latitude]="customer?.address[0]?.latitude" [longitude]="customer?.address[0]?.longitude"
 						[markers]="customer.address" ></m-map>

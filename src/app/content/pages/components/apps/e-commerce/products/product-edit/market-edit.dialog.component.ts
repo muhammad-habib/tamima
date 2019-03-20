@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TypesUtilsService } from '../../_core/utils/types-utils.service';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -13,21 +12,24 @@ import { finalize } from 'rxjs/operators';
 	// changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MarketEditDialogComponent implements OnInit {
-	market;
-	marketDoc;
-	marketForm: FormGroup;
-	hasFormErrors: boolean = false;
-	viewLoading: boolean = false;
-	loadingAfterSubmit: boolean = false;
-	userDoc:AngularFirestoreDocument<any>;
-	tempPhoto={market:'',licence:''};
-	tempGeo = {latitude:'',longitude:''};
 
 	constructor(public dialogRef: MatDialogRef<MarketEditDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private fb: FormBuilder,
 		private storage: AngularFireStorage,
 		private typesUtilsService: TypesUtilsService) { }
+	market;
+	marketDoc;
+	marketForm: FormGroup;
+	hasFormErrors: boolean = false;
+	viewLoading: boolean = false;
+	loadingAfterSubmit: boolean = false;
+	tempPhoto = { market: '', licence: ''};
+	tempGeo = { latitude: '', longitude: ''};
+
+	uploadPercent: Observable<number>;
+	downloadURL: Observable<string>;
+	isUploading = false;
 	/** LOAD DATA */
 	ngOnInit() {
 		this.market = this.data.market;
@@ -36,8 +38,8 @@ export class MarketEditDialogComponent implements OnInit {
 		this.createForm();
 		this.tempPhoto['market'] = this.market.photo;
 		this.tempPhoto['licence'] = this.market.licencePhoto;
-		this.tempGeo.latitude = this.market.l?this.market.l[0]:'';
-		this.tempGeo.longitude = this.market.l?this.market.l[1]:'';
+		this.tempGeo.latitude = this.market.l ? this.market.l[0] : '';
+		this.tempGeo.longitude = this.market.l ? this.market.l[1] : '';
 		// /* Server loading imitation. Remove this on real code */
 		// this.viewLoading = true;
 		// setTimeout(() => {
@@ -46,13 +48,13 @@ export class MarketEditDialogComponent implements OnInit {
 	}
 
 	createForm() {
-		// console.log(this.market);
+		console.log(this.market);
 		this.marketForm = this.fb.group({
 			name: [this.market.name, Validators.required],
-			phone: [this.market.phone,Validators.required],
+			phone: [this.market.phone, Validators.required],
 			userName: [this.market.name, Validators.required],
-			blocked: [this.market.blocked, Validators.required],
-			verified: [this.market.verified, Validators.required],
+			blocked: [this.market.blocked ? 'true' : 'false', Validators.required],
+			verified: [this.market.verified ? 'true' : 'false', Validators.required],
 			language: [this.market.language, Validators.required],
 			status: [this.market.status, Validators.required],
 			country: [this.market.country, Validators.required]
@@ -61,7 +63,7 @@ export class MarketEditDialogComponent implements OnInit {
 
 	/** UI */
 	getTitle(): string {
-			return `Edit market '${this.market.name}'`;
+			return `تعديل  متجر  '${this.market.name}'`;
 	}
 
 	isControlInvalid(controlName: string): boolean {
@@ -95,13 +97,13 @@ export class MarketEditDialogComponent implements OnInit {
 			blocked 	: JSON.parse(controls['blocked'].value),
 			verified 	: JSON.parse(controls['verified'].value),
 			language 	: controls['language'].value,
-			photo 		: this.tempPhoto['market']?this.tempPhoto['market']:this.market.photo,
-			licencePhoto: this.tempPhoto['licence']?this.tempPhoto['licence']:this.market.licencePhoto,
-			l 		    : [ this.tempGeo['latitude'],this.tempGeo['longitude']]
+			photo 		: this.tempPhoto['market'] ? this.tempPhoto['market'] : this.market.photo,
+			licencePhoto: this.tempPhoto['licence'] ? this.tempPhoto['licence'] : this.market.licencePhoto,
+			l 		    : [ this.tempGeo['latitude'], this.tempGeo['longitude']]
 			});
 
     	this.dialogRef.close({
-				'market':this.market,
+				'market': this.market,
 				isEdit: true
 			});
 	}
@@ -110,31 +112,27 @@ export class MarketEditDialogComponent implements OnInit {
 		this.hasFormErrors = false;
 	}
 
-	uploadPercent: Observable<number>;
-	downloadURL: Observable<string>;
-	isUploading = false;
-
-	uploadFile(event,imageType) {
+	uploadFile(event, imageType) {
 		const file = event.target.files[0];
-		const filePath = 'profile_images/'+imageType+'_profile_'+this.market.userId+(new Date()).getTime;
+		const filePath = 'profile_images/' + imageType + '_profile_' + this.market.userId + (new Date()).getTime;
 		const fileRef = this.storage.ref(filePath);
 		const task = this.storage.upload(filePath, file);
 
 		// observe percentage changes
 		this.uploadPercent = task.percentageChanges();
 		// get notified when the download URL is available
-		this.isUploading= true;
+		this.isUploading = true;
 		task.snapshotChanges().pipe(
 			finalize(() =>  fileRef.getDownloadURL().subscribe(
-				res=>{this.tempPhoto[imageType] =res;
-					this.isUploading= false;
+				res => {this.tempPhoto[imageType] = res;
+					this.isUploading = false;
 				}
 			) )
 		 )
 		.subscribe();
 	  }
 
-	  changeMarketLocation(location){
+	  changeMarketLocation(location) {
 			this.tempGeo.latitude = location.latitude;
 			this.tempGeo.longitude = location.longitude;
 	  }

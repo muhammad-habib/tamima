@@ -164,9 +164,9 @@ export class CustomersListComponent implements OnInit {
 	getItemStatusString(status: boolean = false): string {
 		switch (status) {
 			case true:
-				return 'Blocked';
+				return 'محظور';
 			case false:
-				return 'Un Blocked';
+				return 'غير محظور';
 		}
 		return '';
 	}

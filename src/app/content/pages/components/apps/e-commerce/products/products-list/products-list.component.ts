@@ -101,14 +101,21 @@ export class ProductsListComponent implements OnInit {
 		}
 		return '';
 	}
-	getItemStatusString(status: boolean = false): string {
+	getItemStatusString(status): string {
 		switch (status) {
 			case true:
-				return 'Blocked';
+				return 'محظور';
 			case false:
-				return 'Un Blocked';
+				return 'غير محظور';
+			case 'Open':
+				return 'مفتوح';
+			case 'Busy':
+				return 'غير محظور';
+			case 'Closed':
+				return 'غير محظور';
+
 		}
-		return '';
+		return status;
 	}
 
 	/** Delete */

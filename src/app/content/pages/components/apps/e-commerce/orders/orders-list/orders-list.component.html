@@ -85,7 +85,7 @@ fullScreen="true"
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;" scrollable
+		<div class="example-container mat-elevation-z8" style="height: 35rem !important; overflow-y: scroll !important;" scrollable
 			(scrollPosition)="scrollHandler($event)">
 			<mat-table class="" [dataSource]="page.data"
 					   (matSortChange)="sortData($event)"
