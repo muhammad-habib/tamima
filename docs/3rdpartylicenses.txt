@@ -148,6 +148,10 @@ maintained libraries used by this software which have their own
 licenses; we recommend you read them, as their terms may differ from the
 terms above.
 
+ngx-spinner@7.0.0
+MIT
+MIT
+
 firebase@5.8.0
 Apache-2.0
 Apache-2.0
