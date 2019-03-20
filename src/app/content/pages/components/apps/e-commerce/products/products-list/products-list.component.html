@@ -1,214 +1,202 @@
 <!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
 <m-portlet [options]="{headLarge: true}">
-    <!-- PORTLET LOADING | Binded to TABLE Datasource -->
-    <!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '../../_core/models/data-sources/_base.datasource.ts' (loading$) -->
 
-    <!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
-    <ng-container mPortletHeadTitle>
-        <div class="m-portlet__head-title">
-            <h3 class="m-portlet__head-text">
-                <span>قائمة الاسواق</span>
-            </h3>
-        </div>
-        <!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
-        <!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
-    </ng-container>
+	<!-- start::Header (attributtes: mPortletHeadTitle|mPortletHeadTools) -->
+	<ng-container mPortletHeadTitle>
+		<div class="m-portlet__head-title">
+			<h3 class="m-portlet__head-text">
+				<span>قائمة الاسواق</span>
+			</h3>
+		</div>
+		<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
+		<!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
+	</ng-container>
 
-    <ng-container mPortletHeadTools>
-        <!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
-        <!-- mat-raised-button | Rectangular contained button w/ elevation  -->
-    </ng-container>
-    <!-- end::Header -->
+	<ng-container mPortletHeadTools>
+		<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+		<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+	</ng-container>
+	<!-- end::Header -->
 
-    <!-- start::Body (attribute: mPortletBody) -->
-    <ng-container mPortletBody>
-        <!-- start::FILTERS & GROUP ACTIONS -->
-        <div class="m-form">
-            <!-- start::FILTERS -->
-            <div class="m-form__filtration">
-                <div class="row align-items-center">
+	<!-- start::Body (attribute: mPortletBody) -->
+	<ng-container mPortletBody>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<div class="m-form">
+			<!-- start::FILTERS -->
+			<div class="m-form__filtration">
+				<div class="row align-items-center">
 
-                    <div class="col-md-3 m--margin-bottom-10-mobile">
-                        <div class="m-form__control">
-                            <mat-form-field class="mat-form-field-fluid">
-                                <mat-select (selectionChange)="verifyChangedHandler($event)">
-                                    <mat-option value="">الكل</mat-option>
-                                    <mat-option value="false">غير متحقق منه</mat-option>
-                                    <mat-option value="true">متحقق منه</mat-option>
-                                </mat-select>
-                                <mat-hint align="start">
-                                    التصفية بواسطه <strong>المتحقق منهم</strong></mat-hint>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-3 m--margin-bottom-10-mobile">
-                        <!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
-                        <div class="m-form__control">
-                            <mat-form-field class="mat-form-field-fluid">
-                                <mat-select (selectionChange)="statusChangedHandler($event)">
-                                    <mat-option value="">الكل</mat-option>
-                                    <mat-option value="Open">مفتوح</mat-option>
-                                    <mat-option value="Busy">مغلق</mat-option>
-                                </mat-select>
-                                <mat-hint align="start">
-                                    التصفية بواسطه <strong>الحاله</strong></mat-hint>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 m--margin-bottom-10-mobile">
-                        <div class="m-form__control">
-                            <mat-form-field class="mat-form-field-fluid">
-                                <mat-select (selectionChange)="blockChangedHandler($event)">
-                                    <mat-option value="">الكل</mat-option>
-                                    <mat-option value="false">غير محظور</mat-option>
-                                    <mat-option value="true">محظور</mat-option>
-                                </mat-select>
-                                <mat-hint align="start">
-                                    التصفية بواسطه <strong>المحظورين</strong></mat-hint>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 m--margin-bottom-10-mobile">
-                        <mat-form-field class="mat-form-field-fluid">
-                            <input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="البحث">
-                            <mat-hint align="start">
-                                البحث بواسطه <strong>الاسم</strong></mat-hint>
-                        </mat-form-field>
-                    </div>
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<div class="m-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select (selectionChange)="verifyChangedHandler($event)">
+									<mat-option value="">الكل</mat-option>
+									<mat-option value="false">غير متحقق منه</mat-option>
+									<mat-option value="true">متحقق منه</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									التصفية بواسطه <strong>المتحقق منهم</strong></mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
 
 
-                    <div class="col-md-3 m--margin-bottom-10-mobile">
-                        <mat-form-field class="mat-form-field-fluid">
-                            <input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="البحث">
-                            <mat-hint align="start">
-                                البحث بواسطه <strong>الموبايل</strong></mat-hint>
-                        </mat-form-field>
-                    </div>
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+						<div class="m-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select (selectionChange)="statusChangedHandler($event)">
+									<mat-option value="">الكل</mat-option>
+									<mat-option value="Open">مفتوح</mat-option>
+									<mat-option value="Busy">مغلق</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									التصفية بواسطه <strong>الحاله</strong></mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
 
-                </div>
-            </div>
-            <!-- end::FILTERS -->
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<div class="m-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select (selectionChange)="blockChangedHandler($event)">
+									<mat-option value="">الكل</mat-option>
+									<mat-option value="false">غير محظور</mat-option>
+									<mat-option value="true">محظور</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									التصفية بواسطه <strong>المحظورين</strong></mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
 
-            <!-- start::GROUP ACTIONS -->
-            <!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
-            <!-- Group actions are shared for all LISTS | See '../../_shared' folder -->
-            <!--<div class="row align-items-center collapse m-form__group-actions m&#45;&#45;margin-top-20 m&#45;&#45;margin-bottom-20"-->
-            <!--[ngClass]="{'show' : selection.selected.length > 0}">&lt;!&ndash; We show 'Group Actions' div if smth are selected &ndash;&gt;-->
-            <!--<div class="col-xl-12">-->
-            <!--<div class="m-form__group m-form__group&#45;&#45;inline">-->
-            <!--<div class="m-form__label m-form__label-no-wrap">-->
-            <!--<label class="m&#45;&#45;font-bold m&#45;&#45;font-danger-">-->
-            <!--<span translate="ECOMMERCE.COMMON.SELECTED_RECORDS_COUNT"></span> {{ selection.selected.length }}-->
-            <!--</label>-->
-            <!--&lt;!&ndash; selectedCountsTitle => function from codeBehind (customer-list.component.ts file) &ndash;&gt;-->
-            <!--&lt;!&ndash; selectedCountsTitle => just returns title of selected items count &ndash;&gt;-->
-            <!--&lt;!&ndash; for example: Selected records count: 4 &ndash;&gt;-->
-            <!--</div>-->
-            <!--<div class="m-form__control m-form__group&#45;&#45;inline">-->
-            <!--<button (click)="deleteCustomers()" mat-raised-button color="accent" matTooltip="Delete selected customers">-->
-            <!--<mat-icon>delete</mat-icon> Delete All-->
-            <!--</button>&nbsp;&lt;!&ndash; Call 'delete-entity-dialog' from _shared folder &ndash;&gt;-->
-            <!--<button  (click)="fetchCustomers()" mat-raised-button matTooltip="Fetch selected customers">-->
-            <!--<mat-icon>clear_all</mat-icon> Fetch Selected-->
-            <!--</button>&nbsp;&lt;!&ndash; Call 'fetch-entity-dialog' from _shared folder &ndash;&gt;-->
-            <!--<button (click)="updateStatusForCustomers()" mat-raised-button matTooltip="Update status for selected customers">-->
-            <!--<mat-icon>update</mat-icon> Update status-->
-            <!--</button>&lt;!&ndash; Call 'update-stated-dialog' from _shared folder &ndash;&gt;-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!-- end::GROUP ACTIONS -->
-        </div>
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="البحث">
+							<input matInput placeholder="البحث">
+							<mat-hint align="start">
+								البحث بواسطه <strong>الاسم</strong></mat-hint>
+						</mat-form-field>
+					</div>
 
-        <!-- end::FILTERS & GROUP ACTIONS -->
 
-        <!-- MATERIAL TABLE | Binded to datasources -->
-        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-        <div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;" scrollable (scrollPosition)="scrollHandler($event)">
-            <mat-table class="" [dataSource]="page.data" matSort (matSortChange)="sortData($event)">
-                <!-- Checkbox Column -->
+					<div class="col-md-2 m--margin-bottom-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)"
+								placeholder="البحث">
+							<input matInput placeholder="البحث">
+							<mat-hint align="start">
+								البحث بواسطه <strong>الموبايل</strong></mat-hint>
+						</mat-form-field>
+					</div>
 
-                <!-- Table with selection -->
-                <!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				</div>
+			</div>
+			<!-- end::FILTERS -->
 
-                <ng-container matColumnDef="select">
-                    <mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
-                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
-                        </mat-checkbox>
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row" class="mat-column-checkbox">
-                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
-                        </mat-checkbox>
-                    </mat-cell>
-                </ng-container>
+			<!-- start::GROUP ACTIONS -->
+			<!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
+			<!-- Group actions are shared for all LISTS | See '../../_shared' folder -->
+			<!--<div class="row align-items-center collapse m-form__group-actions m&#45;&#45;margin-top-20 m&#45;&#45;margin-bottom-20"-->
+			<!--[ngClass]="{'show' : selection.selected.length > 0}">&lt;!&ndash; We show 'Group Actions' div if smth are selected &ndash;&gt;-->
+			<!--<div class="col-xl-12">-->
+			<!--<div class="m-form__group m-form__group&#45;&#45;inline">-->
+			<!--<div class="m-form__label m-form__label-no-wrap">-->
+			<!--<label class="m&#45;&#45;font-bold m&#45;&#45;font-danger-">-->
+			<!--<span translate="ECOMMERCE.COMMON.SELECTED_RECORDS_COUNT"></span> {{ selection.selected.length }}-->
+			<!--</label>-->
+			<!--&lt;!&ndash; selectedCountsTitle => function from codeBehind (customer-list.component.ts file) &ndash;&gt;-->
+			<!--&lt;!&ndash; selectedCountsTitle => just returns title of selected items count &ndash;&gt;-->
+			<!--&lt;!&ndash; for example: Selected records count: 4 &ndash;&gt;-->
+			<!--</div>-->
+			<!--<div class="m-form__control m-form__group&#45;&#45;inline">-->
+			<!--<button (click)="deleteCustomers()" mat-raised-button color="accent" matTooltip="Delete selected customers">-->
+			<!--<mat-icon>delete</mat-icon> Delete All-->
+			<!--</button>&nbsp;&lt;!&ndash; Call 'delete-entity-dialog' from _shared folder &ndash;&gt;-->
+			<!--<button  (click)="fetchCustomers()" mat-raised-button matTooltip="Fetch selected customers">-->
+			<!--<mat-icon>clear_all</mat-icon> Fetch Selected-->
+			<!--</button>&nbsp;&lt;!&ndash; Call 'fetch-entity-dialog' from _shared folder &ndash;&gt;-->
+			<!--<button (click)="updateStatusForCustomers()" mat-raised-button matTooltip="Update status for selected customers">-->
+			<!--<mat-icon>update</mat-icon> Update status-->
+			<!--</button>&lt;!&ndash; Call 'update-stated-dialog' from _shared folder &ndash;&gt;-->
+			<!--</div>-->
+			<!--</div>-->
+			<!--</div>-->
+			<!--</div>-->
+			<!-- end::GROUP ACTIONS -->
+		</div>
 
-                <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
-                <ng-container matColumnDef="id">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                    <mat-cell *matCellDef="let market">{{market.id}}</mat-cell>
-                </ng-container>
+		<!-- end::FILTERS & GROUP ACTIONS -->
 
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>الاسم</mat-header-cell>
-                    <mat-cell *matCellDef="let market">{{market.name}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="photo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>الصورة</mat-header-cell>
-                    <mat-cell *matCellDef="let market">
-                        <!-- <img width="60" height="50" src="{{market.photo}}" class="m--img-rounded m--marginless"
-							alt="" /> -->
-                        <a *ngIf="market.photo" target="_blanck" href="{{market?.photo}}}">
-                            <mat-icon>link</mat-icon>
-                        </a>
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;" scrollable
+			(scrollPosition)="scrollHandler($event)">
+			<mat-table class="" [dataSource]="page.data" matSort (matSortChange)="sortData($event)">
+				<!-- Checkbox Column -->
 
-                    </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="licencePhoto">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>الصوره المرخصة</mat-header-cell>
-                    <mat-cell *matCellDef="let market">
-                        <!-- <img width="60" height="50" src="{{market.licencePhoto}}" class="m--img-rounded m--marginless"
-							alt="" /> -->
-                        <a *ngIf="market.photo" target="_blanck" href="{{market?.photo}}}">
-                            <mat-icon>link</mat-icon>
-                        </a>
-                    </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="rateRatio">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>معدل النسبة</mat-header-cell>
-                    <mat-cell *matCellDef="let market">{{market.rateRatio}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="rateCount">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>معدل العد</mat-header-cell>
-                    <mat-cell *matCellDef="let market">{{market.rateCount}}</mat-cell>
-                </ng-container>
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
 
-                <ng-container matColumnDef="phone">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>الموبايل</mat-header-cell>
-                    <mat-cell *matCellDef="let market">{{market.phone}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>الحالة</mat-header-cell>
-                    <mat-cell *matCellDef="let market">
-                        <span *ngIf="market.status" class="m-badge m-badge--{{ getItemCssClassByStatus(market.status=='Open'?1:0) }} m-badge--wide">{{ market.status }}</span>
-                    </mat-cell>
-                </ng-container>
+				<ng-container matColumnDef="select">
+					<mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
+						<mat-checkbox (change)="$event ? masterToggle() : null"
+							[checked]="selection.hasValue() && isAllSelected()"
+							[indeterminate]="selection.hasValue() && !isAllSelected()">
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row" class="mat-column-checkbox">
+						<mat-checkbox (click)="$event.stopPropagation()"
+							(change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+						</mat-checkbox>
+					</mat-cell>
+				</ng-container>
 
-                <ng-container matColumnDef="blocked">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>حالة الحظر</mat-header-cell>
-                    <mat-cell *matCellDef="let market">
-                        <span class="m-badge m-badge--{{ getItemCssClassByStatus(market.blocked?2:1) }} m-badge--wide">{{  getItemStatusString(market.blocked) }}</span>
-                    </mat-cell>
-                </ng-container>
+				<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+				<ng-container matColumnDef="id">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.id}}</mat-cell>
+				</ng-container>
 
-                <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>العمليات</mat-header-cell>
-                    <mat-cell *matCellDef="let market">
-                        <button mat-icon-button color="primary" matTooltip="تعديل المتجر" (click)="editMarket(market)">
+				<ng-container matColumnDef="name">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الاسم</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.name}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="rateRatio">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>التقيم</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.rateRatio}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="rateCount">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> عدد التقيمات</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.rateCount}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="phone">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الموبايل</mat-header-cell>
+					<mat-cell *matCellDef="let market">{{market.phone}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="status">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الحالة</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<span *ngIf="market.status"
+							class="m-badge m-badge--{{ getItemCssClassByStatus(market.status=='Open'?1:0) }} m-badge--wide">{{ market.status }}</span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="blocked">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>حالة الحظر</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<span
+							class="m-badge m-badge--{{ getItemCssClassByStatus(market.blocked?2:1) }} m-badge--wide">{{  getItemStatusString(market.blocked) }}</span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>العمليات</mat-header-cell>
+					<mat-cell *matCellDef="let market">
+						<button mat-icon-button color="primary" matTooltip="تعديل المتجر" (click)="editMarket(market)">
 							<mat-icon>create</mat-icon>
 						</button>&nbsp;
                         <button mat-icon-button color="warn" matTooltip="مسح المتجر" type="button" (click)="deleteMarket(market)">

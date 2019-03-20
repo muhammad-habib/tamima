@@ -57,11 +57,13 @@ export class MarketShowDialogComponent implements OnInit {
 			status: [this.market.status, Validators.required],
 			country: [this.market.country, Validators.required]
 		});
+		this.marketForm.get(name).disable();
+
 	}
 
 	/** UI */
 	getTitle(): string {
-			return `Edit market '${this.market.name}'`;
+			return `${this.market.name}`;
 	}
 
 	isControlInvalid(controlName: string): boolean {

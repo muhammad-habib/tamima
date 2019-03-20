@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import { ShowOrderOnMapComponent } from '../show-order-on-map/show-order-on-map.component';
+import { MarketShowDialogComponent } from '../../products/product-show/market-show.dialog.component';
+import { CustomerShowDialogComponent } from '../../customers/customer-show/customer-show.dialog.component';
 
 @Component({
 	selector: 'm-orders-list',
@@ -106,6 +108,27 @@ export class OrdersListComponent implements OnInit {
 		else
 			delete this.filters['createdAt'];
 		this.getOrders();
+	}
+	showMarket(market){
+		let marketData = this.afs.doc('markets/'+market.id).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(MarketShowDialogComponent, {data: {market:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});
+
+	}
+	showCustomer(customer){
+		let marketData = this.afs.doc('users/'+customer.id).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(CustomerShowDialogComponent, {data: {customer:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});		
 	}
 
 }

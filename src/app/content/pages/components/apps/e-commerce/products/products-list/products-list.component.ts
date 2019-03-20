@@ -40,7 +40,7 @@ export class ProductsListComponent implements OnInit {
 	marketsDoc: AngularFirestoreDocument<any>;
 	markets: Observable<any[]>;
 	dataSource;
-	displayedColumns = ['name', 'photo','licencePhoto','rateCount','rateRatio', 'phone', 'status' ,'blocked', 'actions'];
+	displayedColumns = ['name','rateCount','rateRatio', 'phone', 'status' ,'blocked', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
