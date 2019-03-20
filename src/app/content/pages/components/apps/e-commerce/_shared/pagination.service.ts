@@ -39,7 +39,7 @@ export class PaginationService {
 		this.query = {
 			path,
 			field,
-			limit: 3,
+			limit: 10,
 			reverse: false,
 			prepend: false,
 			...opts
