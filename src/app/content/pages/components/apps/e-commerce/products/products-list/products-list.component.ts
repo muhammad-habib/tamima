@@ -22,6 +22,7 @@ import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import { FormControl } from '@angular/forms';
 import { MarketEditDialogComponent } from '../product-edit/market-edit.dialog.component';
+import { MarketShowDialogComponent } from '../product-show/market-show.dialog.component';
 
 // Table with EDIT item in new page
 // ARTICLE for table with sort/filter/paginator
@@ -263,6 +264,21 @@ export class ProductsListComponent implements OnInit {
 		this.getMarkets();
 
 	}
+
+
+	showMarket(market){
+		console.log(market);
+		let marketData = this.afs.doc('markets/'+market.marketId).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(MarketShowDialogComponent, {data: {market:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});
+
+	}
+
 
 
 }

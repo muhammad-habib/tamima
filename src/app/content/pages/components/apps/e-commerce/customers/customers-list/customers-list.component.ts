@@ -18,6 +18,7 @@ import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {FirebaseService} from '../../_shared/firebase.service';
 import {PaginationService} from '../../_shared/pagination.service';
+import { CustomerShowDialogComponent } from '../customer-show/customer-show.dialog.component';
 
 @Component({
 	selector: 'm-customers-list',
@@ -241,5 +242,16 @@ export class CustomersListComponent implements OnInit {
 		this.sortField = $event.active;
 		this.reverseDir = $event.direction == 'asc' || $event.direction == '' ? false : true;
 		this.getUsers();
+	}
+
+	showCustomer(customer){
+		let marketData = this.afs.doc('users/'+customer.userId).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(CustomerShowDialogComponent, {data: {customer:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});		
 	}
 }

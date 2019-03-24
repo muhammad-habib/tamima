@@ -155,7 +155,7 @@
 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>الاسم</mat-header-cell>
-                    <mat-cell *matCellDef="let market">{{market.name}}</mat-cell>
+                    <mat-cell style="cursor: pointer;" *matCellDef="let market"><a (click)="showMarket(market)">{{market.name}}</a></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="photo">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>الصورة</mat-header-cell>
@@ -179,11 +179,11 @@
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="rateRatio">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>معدل النسبة</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>التقييم</mat-header-cell>
                     <mat-cell *matCellDef="let market">{{market.rateRatio}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="rateCount">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>معدل العد</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>عدد التقيمات</mat-header-cell>
                     <mat-cell *matCellDef="let market">{{market.rateCount}}</mat-cell>
                 </ng-container>
 

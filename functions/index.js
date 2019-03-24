@@ -144,7 +144,9 @@ exports.createOrder = functions.firestore
             },
             data:{
                 id:snap.data().requestId,
-                'userType':snap.data().userType
+                'userType':snap.data().userType,
+                userId:snap.data().userId,
+                market:snap.data().marketId
             }
         };
 
@@ -168,6 +170,8 @@ exports.createOrder = functions.firestore
             payload:payload,              
             receiverLang:snap.data().receiverLang,
             receiverImage:snap.data().receiverImage,
+            userId:snap.data().userId,
+            market:snap.data().marketId,
             createdAt:fieldValue.serverTimestamp()
         });
             

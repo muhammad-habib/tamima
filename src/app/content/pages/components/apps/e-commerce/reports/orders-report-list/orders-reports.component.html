@@ -108,7 +108,7 @@
 
                 <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم</mat-header-cell>
-                    <mat-cell *matCellDef="let order">{{order.user.name}}</mat-cell>
+                    <mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showCustomer(order.user)">{{order.user.name}}</a></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="mobile">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>صورة المستخدم</mat-header-cell>
@@ -121,7 +121,7 @@
                 </ng-container>
                 <ng-container matColumnDef="market">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>السوق</mat-header-cell>
-                    <mat-cell *matCellDef="let order">{{order?.market?.name}}</mat-cell>
+                    <mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showMarket(order?.market)">{{order?.market?.name}}</a></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="photo">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>صورة السوق</mat-header-cell>

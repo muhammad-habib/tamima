@@ -139,7 +139,7 @@
 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>الاسم</mat-header-cell>
-                    <mat-cell *matCellDef="let customer">{{customer.name}}</mat-cell>
+                    <mat-cell style="cursor: pointer;" *matCellDef="let customer"><a (click)="showCustomer(customer)">{{customer.name}}</a></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="photo">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>الصوره</mat-header-cell>
