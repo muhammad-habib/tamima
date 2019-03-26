@@ -37,8 +37,8 @@
 									<mat-option value="false">غير متحقق منه</mat-option>
 									<mat-option value="true">متحقق منه</mat-option>
 								</mat-select>
-								<mat-hint align="start">
-									التصفية بواسطه <strong>المتحقق منهم</strong></mat-hint>
+								<mat-label align="start">
+									التصفية بواسطه <strong>المتحقق منهم</strong></mat-label>
 							</mat-form-field>
 						</div>
 					</div> -->
@@ -51,8 +51,8 @@
                                     <mat-option value="false">غير محظور</mat-option>
                                     <mat-option value="true">محظور</mat-option>
                                 </mat-select>
-                                <mat-hint align="start">
-                                    التصفية بواسطه <strong>المحظورين</strong></mat-hint>
+                                <mat-label align="start">
+                                    التصفية بواسطه <strong>المحظورين</strong></mat-label>
                             </mat-form-field>
                         </div>
                     </div>
@@ -60,16 +60,16 @@
                     <div class="col-md-2 m--margin-bottom-10-mobile">
                         <mat-form-field class="mat-form-field-fluid">
                             <input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="البحث">
-                            <mat-hint align="start">
-                                البحث بواسطه <strong>الاسم</strong></mat-hint>
+                            <mat-label align="start">
+                                البحث بواسطه <strong>الاسم</strong></mat-label>
                         </mat-form-field>
                     </div>
 
                     <div class="col-md-2 m--margin-bottom-10-mobile">
                         <mat-form-field class="mat-form-field-fluid">
                             <input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="البحث">
-                            <mat-hint align="start">
-                                البحث بواسطه <strong>الموبايل</strong></mat-hint>
+                            <mat-label align="start">
+                                البحث بواسطه <strong>الموبايل</strong></mat-label>
                         </mat-form-field>
                     </div>
 
@@ -113,7 +113,7 @@
 
         <!-- MATERIAL TABLE | Binded to datasources -->
         <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-        <div class="example-container mat-elevation-z8" appSimpleBar style="height: 35rem;overflow-y: scroll;" scrollable (scrollPosition)="scrollHandler($event)">
+        <div class="example-container mat-elevation-z8" appSimpleBar style="height: 35rem !important; overflow-y: scroll !important;" scrollable (scrollPosition)="scrollHandler($event)">
             <mat-table class="" (matSortChange)="sortData($event)" [dataSource]="page.data  | async" matSort>
                 <!-- Checkbox Column -->
 
@@ -139,7 +139,7 @@
 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>الاسم</mat-header-cell>
-                    <mat-cell *matCellDef="let customer">{{customer.name}}</mat-cell>
+                    <mat-cell style="cursor: pointer;" *matCellDef="let customer"><a (click)="showCustomer(customer)">{{customer.name}}</a></mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="photo">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>الصوره</mat-header-cell>
@@ -182,7 +182,7 @@
 
                         <button *ngIf="customer.blocked" mat-icon-button color="warn" matTooltip="un block customer" type="button" (click)="toggleCustomerBlock(customer)">
 								<mat-icon >lock_open</mat-icon></button>
-                        <button *ngIf="!customer.blocked" mat-icon-button color="warn" matTooltip="block customer" type="button" (click)="toggleCustomerBlock(customer)">
+						<button *ngIf="!customer.blocked"  mat-icon-button color="warn" matTooltip="حظر المستخدم" type="button" (click)="toggleCustomerBlock(customer)">
 								<mat-icon >lock</mat-icon></button>
                     </mat-cell>
                 </ng-container>

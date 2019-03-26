@@ -10,11 +10,11 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-	selector: 'm-customers-edit-dialog',
-	templateUrl: './customer-edit.dialog.component.html',
+	selector: 'm-customer-show-dialog',
+	templateUrl: './customer-show.dialog.component.html',
 	// changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomerEditDialogComponent implements OnInit {
+export class CustomerShowDialogComponent implements OnInit {
 	customer;
 	customerDoc;
 	customerForm: FormGroup;
@@ -24,7 +24,7 @@ export class CustomerEditDialogComponent implements OnInit {
 	userDoc:AngularFirestoreDocument<any>;
 	tempPhoto:string;
 
-	constructor(public dialogRef: MatDialogRef<CustomerEditDialogComponent>,
+	constructor(public dialogRef: MatDialogRef<CustomerShowDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private fb: FormBuilder,
 		private customerService: CustomersService,
@@ -56,7 +56,7 @@ export class CustomerEditDialogComponent implements OnInit {
 
 	/** UI */
 	getTitle(): string {
-			return ` تعديل المستخدم  '${this.customer.name}'`;
+			return `${this.customer.name}`;
 	}
 
 	isControlInvalid(controlName: string): boolean {

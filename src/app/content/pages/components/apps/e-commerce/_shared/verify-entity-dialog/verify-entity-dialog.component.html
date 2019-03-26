@@ -25,8 +25,8 @@
 		</div>
 		<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit text-right">
 			<div class="m-form__actions m-form__actions--sm">
-				<button mat-button (click)="onNoClick()">{{'AUTH.GENERAL.CANCEL'|translate}}</button>&nbsp;
-				<button mat-button (click)="onYesClick()" color="primary" cdkFocusInitial [disabled]="viewLoading">{{'AUTH.GENERAL.VERIFY'|translate}}</button>
+				<button mat-button (click)="onNoClick()">{{ data.cancel  }}</button>&nbsp;
+				<button mat-button (click)="onYesClick()" color="primary" cdkFocusInitial [disabled]="viewLoading">{{ data.confirm  }}</button>
 			</div>
 		</div>
 	</div>

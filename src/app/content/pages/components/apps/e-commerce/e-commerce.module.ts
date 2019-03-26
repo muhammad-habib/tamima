@@ -31,6 +31,9 @@ import { CustomersListComponent } from './customers/customers-list/customers-lis
 import { CustomerEditDialogComponent } from './customers/customer-edit/customer-edit.dialog.component';
 //Markets
 import { MarketEditDialogComponent } from './products/product-edit/market-edit.dialog.component';
+import { MarketShowDialogComponent } from './products/product-show/market-show.dialog.component';
+import { CustomerShowDialogComponent } from './customers/customer-show/customer-show.dialog.component';
+
 // Products
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { RemarksListComponent } from './products/_subs/remarks/remarks-list/remarks-list.component';
@@ -75,6 +78,8 @@ import { ShowOrderOnMapComponent } from './orders/show-order-on-map/show-order-o
 import {AuthNoticeComponent} from '../../../auth/auth-notice/auth-notice.component';
 import {CoreModule} from '../../../../../core/core.module';
 import {OrdersReportsComponent} from './reports/orders-report-list/orders-reports.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 const routes: Routes = [
 	{
 		path: '',
@@ -153,7 +158,8 @@ const routes: Routes = [
 		MatTabsModule,
 		MatTooltipModule,
 		AgmCoreModule.forRoot(environment.mapConfig),
-		CoreModule
+		CoreModule,
+		NgxSpinnerModule
 	],
 	providers: [
 		// InterceptService,
@@ -187,6 +193,8 @@ const routes: Routes = [
 		ActionNotificationComponent,
 		CustomerEditDialogComponent,
 		MarketEditDialogComponent,
+		MarketShowDialogComponent,
+		CustomerShowDialogComponent,
 		ShowOrderOnMapComponent,
 		DeleteEntityDialogComponent,
 		VerifyEntityDialogComponent,
@@ -209,6 +217,8 @@ const routes: Routes = [
 		CustomersListComponent,
 		CustomerEditDialogComponent,
 		MarketEditDialogComponent,
+		MarketShowDialogComponent,
+		CustomerShowDialogComponent,
 		// Orders
 		OrdersListComponent,
 		OrderEditComponent,

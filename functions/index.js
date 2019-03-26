@@ -1,5 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+var fieldValue = require("firebase-admin").firestore.FieldValue;
+
 const cors = require('cors')({ origin: true });
 
 admin.initializeApp();
@@ -72,7 +74,7 @@ exports.createOrder = functions.firestore
                     orderId:context.params.requestId,
                     marketId:snap.data().market.id,
                     payload:payload,
-                    createdAt:Date.now()
+                    createdAt:fieldValue.serverTimestamp()
                 });
 
             db.collection('markets_notifications').add({
@@ -80,7 +82,7 @@ exports.createOrder = functions.firestore
                     orderId:context.params.requestId,
                     marketId:snap.data().market.id,
                     payload:payload,
-                    createdAt:Date.now()
+                    createdAt:fieldValue.serverTimestamp()
                 });                              
 
             db.collection('portal_notifications').add({
@@ -88,7 +90,7 @@ exports.createOrder = functions.firestore
                     id:context.params.requestId,
                     body:'تم اضاقه طلب جديد برقم '+'  '+order_code,
                     type:'orders',
-                    createdAt:Date.now()
+                    createdAt:fieldValue.serverTimestamp()
                 });
 
             payload = {
@@ -119,21 +121,20 @@ exports.createOrder = functions.firestore
         console.log(snap.data(),context.params);
         let title='';
         let body='';
+        let receiverLang = snap.data().receiverLang; 
         switch(snap.data().content.type){
             case 'text':
-                    title = body = snap.data().content.text;
+                    title = snap.data().senderName + ((receiverLang=='en')? " ارسلك رساله جديده":" send you message")
+                    body = snap.data().content.text;
                     break;
             case 'image':                   
-                         title = "Image sent";
-                         body = 'click to open image'
+                         title = snap.data().senderName + ((receiverLang=='en')?" ارسلك صوره": " sent you Image " );
                     break;
             case 'voice':
-                        title = "voice sent";
-                        body = 'click to open voice'
+                        title = snap.data().senderName + ((receiverLang=='en')?" ارسلك رساله صوتيه": "sent you Voice ");
                     break;
             case 'invoice':
-                        title = "invoice image sent";
-                        body = 'click to open image'
+                        title = snap.data().senderName + ((receiverLang=='en')?" ارسلك رساله فاتوره": "sent you Invoice ");
                     break;
             }
         let payload = {
@@ -143,7 +144,9 @@ exports.createOrder = functions.firestore
             },
             data:{
                 id:snap.data().requestId,
-                'userType':snap.data().userType
+                'userType':snap.data().userType,
+                userId:snap.data().userId,
+                market:snap.data().marketId
             }
         };
 
@@ -164,8 +167,12 @@ exports.createOrder = functions.firestore
 
         db.collection(collection+'_notifications').add({
             orderId:snap.data().requestId,
-            payload:payload,
-            createdAt:Date.now()
+            payload:payload,              
+            receiverLang:snap.data().receiverLang,
+            receiverImage:snap.data().receiverImage,
+            userId:snap.data().userId,
+            market:snap.data().marketId,
+            createdAt:fieldValue.serverTimestamp()
         });
             
 
@@ -200,7 +207,7 @@ exports.createOrder = functions.firestore
             type:'markets',
             id:context.params.id,
             body:'تم اضافه متجر جديد ',
-            createdAt:Date.now()
+            createdAt:fieldValue.serverTimestamp()
         });
         
         

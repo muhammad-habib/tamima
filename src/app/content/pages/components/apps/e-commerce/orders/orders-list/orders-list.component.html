@@ -1,3 +1,12 @@
+<ngx-spinner
+fullScreen="true"
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+ <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
 <!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
 <m-portlet [options]="{headLarge: true}">
 	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
@@ -76,7 +85,7 @@
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 35rem;overflow-y: scroll;" scrollable
+		<div class="example-container mat-elevation-z8" style="height: 35rem !important; overflow-y: scroll !important;" scrollable
 			(scrollPosition)="scrollHandler($event)">
 			<mat-table class="" [dataSource]="page.data"
 					   (matSortChange)="sortData($event)"
@@ -95,7 +104,7 @@
 
 				<ng-container matColumnDef="user">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order.user.name}}</mat-cell>
+					<mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showCustomer(order?.user)">{{order.user.name}}</a></mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="mobile">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة المستخدم</mat-header-cell>
@@ -108,7 +117,7 @@
 				</ng-container>
 				<ng-container matColumnDef="market">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>السوق</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order?.market?.name}}</mat-cell>
+					<mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showMarket(order?.market)">{{order?.market?.name}}</a></mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="photo">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة السوق</mat-header-cell>
@@ -172,3 +181,4 @@
 	<!-- end::Body -->
 
 </m-portlet>
+

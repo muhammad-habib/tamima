@@ -22,6 +22,7 @@ import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import { FormControl } from '@angular/forms';
 import { MarketEditDialogComponent } from '../product-edit/market-edit.dialog.component';
+import { MarketShowDialogComponent } from '../product-show/market-show.dialog.component';
 
 // Table with EDIT item in new page
 // ARTICLE for table with sort/filter/paginator
@@ -40,7 +41,7 @@ export class ProductsListComponent implements OnInit {
 	marketsDoc: AngularFirestoreDocument<any>;
 	markets: Observable<any[]>;
 	dataSource;
-	displayedColumns = ['name', 'photo','licencePhoto','rateCount','rateRatio', 'phone', 'status' ,'blocked', 'actions'];
+	displayedColumns = ['name','rateCount','rateRatio', 'phone', 'status' ,'blocked', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
@@ -101,14 +102,21 @@ export class ProductsListComponent implements OnInit {
 		}
 		return '';
 	}
-	getItemStatusString(status: boolean = false): string {
+	getItemStatusString(status): string {
 		switch (status) {
 			case true:
-				return 'Blocked';
+				return 'محظور';
 			case false:
-				return 'Un Blocked';
+				return 'غير محظور';
+			case 'Open':
+				return 'مفتوح';
+			case 'Busy':
+				return 'غير محظور';
+			case 'Closed':
+				return 'غير محظور';
+
 		}
-		return '';
+		return status;
 	}
 
 	/** Delete */
@@ -138,8 +146,8 @@ export class ProductsListComponent implements OnInit {
 		const _description: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.DESCRIPTION');
 		const _waitDesciption: string = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.WAIT_DESCRIPTION');
 		const _deleteMessage = this.translate.instant('ECOMMERCE.CUSTOMERS.BLOCK_MARKET_SIMPLE.MESSAGE');
-
-		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption);
+		const _blockOrUnBlock = _item.blocked?'فك الحظر':'حظر';
+		const dialogRef = this.layoutUtilsService.blockElement(_title, _description, _waitDesciption,_blockOrUnBlock);
 		dialogRef.afterClosed().subscribe(res => {
 			if (!res) {
 				return;
@@ -256,6 +264,21 @@ export class ProductsListComponent implements OnInit {
 		this.getMarkets();
 
 	}
+
+
+	showMarket(market){
+		console.log(market);
+		let marketData = this.afs.doc('markets/'+market.marketId).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(MarketShowDialogComponent, {data: {market:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});
+
+	}
+
 
 
 }

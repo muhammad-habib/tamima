@@ -48,22 +48,25 @@ export class LayoutUtilsService {
 	}
 
 	// Method returns instance of MatDialog
-	deleteElement(title: string = '', description: string = '', waitDesciption: string = '') {
+	deleteElement(title: string = '', description: string = '', waitDesciption: string = ''
+										,confirm:string='مسح',cancel:string='ألغاء') {
 		return this.dialog.open(DeleteEntityDialogComponent, {
-			data: { title, description, waitDesciption },
+			data: { title, description, waitDesciption,confirm,cancel },
 			width: '440px'
 		});
 	}
-	blockElement(title: string = '', description: string = '', waitDesciption: string = '') {
+	blockElement(title: string = '', description: string = '', waitDesciption: string = ''
+										,confirm:string='حظر',cancel:string='ألغاء') {
 		return this.dialog.open(BlockEntityDialogComponent, {
-			data: { title, description, waitDesciption },
+			data: { title, description, waitDesciption,confirm,cancel },
 			width: '440px'
 		});
 	}
 
-	verifyElement(title: string = '', description: string = '', waitDesciption: string = '') {
+	verifyElement(title: string = '', description: string = '', waitDesciption: string = ''
+											,confirm:string='اعتماد',cancel:string='ألغاء') {
 		return this.dialog.open(VerifyEntityDialogComponent, {
-			data: { title, description, waitDesciption },
+			data: { title, description, waitDesciption,confirm,cancel },
 			width: '440px'
 		});
 	}	

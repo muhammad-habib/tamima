@@ -10,6 +10,8 @@ import { FirebaseService } from '../../_shared/firebase.service';
 import { PaginationService } from '../../_shared/pagination.service';
 import {reduce} from 'rxjs/operators';
 import {forEach} from '@angular/router/src/utils/collection';
+import { CustomerShowDialogComponent } from '../../customers/customer-show/customer-show.dialog.component';
+import { MarketShowDialogComponent } from '../../products/product-show/market-show.dialog.component';
 
 @Component({
 	templateUrl: './orders-reports.component.html',
@@ -107,6 +109,28 @@ export class OrdersReportsComponent implements OnInit {
 		else
 			delete this.filters['status.code'];
 		this.getOrders();
+	}
+
+	showCustomer(customer){
+		let marketData = this.afs.doc('users/'+customer.id).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(CustomerShowDialogComponent, {data: {customer:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});		
+	}
+	showMarket(market){
+		let marketData = this.afs.doc('markets/'+market.id).valueChanges().subscribe(m=>{
+			console.log(m)
+			const dialogRef = this.dialog.open(MarketShowDialogComponent, {data: {market:m}});
+			dialogRef.afterClosed().subscribe(res => {
+				marketData.unsubscribe();
+			});
+	
+		});
+
 	}
 
 }
