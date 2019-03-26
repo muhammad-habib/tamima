@@ -43,7 +43,7 @@
             </mat-toolbar>
             <br />
             <mat-card-content>
-                <app-counter *ngIf="data?.requests" [circleColor]="'#59C089'" [from]=0 [to]="data?.requests" [of]="data?.requests"></app-counter>
+                <app-counter *ngIf="data?.requests" [animationTime]="500" [circleColor]="'#59C089'" [from]=0 [to]="data?.requests" [of]="data?.requests"></app-counter>
             </mat-card-content>
         </mat-card>
     </div>
@@ -54,7 +54,7 @@
             </mat-toolbar>
             <br />
             <mat-card-content>
-                <app-counter *ngIf="data?.users" [circleColor]="'#FEDF40'" [from]=0 [to]="data?.users" [of]="data?.users"></app-counter>
+                <app-counter *ngIf="data?.users" [circleColor]="'#FEDF40'" [animationTime]="500" [from]=0 [to]="data?.users" [of]="data?.users"></app-counter>
             </mat-card-content>
         </mat-card>
     </div>
@@ -70,7 +70,7 @@
             </mat-toolbar>
             <br />
             <mat-card-content>
-                <app-counter *ngIf="data?.markets" [circleColor]="'#E54443'" [from]=0 [to]="data?.markets" [of]="data?.markets"></app-counter>
+                <app-counter *ngIf="data?.markets" [circleColor]="'#E54443'" [animationTime]="500" [from]=0 [to]="data?.markets" [of]="data?.markets"></app-counter>
             </mat-card-content>
         </mat-card>
     </div>

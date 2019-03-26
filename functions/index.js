@@ -144,9 +144,7 @@ exports.createOrder = functions.firestore
             },
             data:{
                 id:snap.data().requestId,
-                'userType':snap.data().userType,
-                userId:snap.data().userId,
-                market:snap.data().marketId
+                'userType':snap.data().userType
             }
         };
 
@@ -161,7 +159,6 @@ exports.createOrder = functions.firestore
         var receiver_indexRef = db.collection(collection).doc(snap.data().receiverId);    
         
         return receiver_indexRef.get().then(receiver=>{
-            console.log(receiver.data().token);
             if(receiver.data() && receiver.data().notification && receiver.data().token)
                 admin.messaging().sendToDevice(receiver.data().token, payload);
 
@@ -170,8 +167,9 @@ exports.createOrder = functions.firestore
             payload:payload,              
             receiverLang:snap.data().receiverLang,
             receiverImage:snap.data().receiverImage,
+            senderImage:snap.data().senderImage || '',
             userId:snap.data().userId,
-            market:snap.data().marketId,
+            marketId:snap.data().marketId,
             createdAt:fieldValue.serverTimestamp()
         });
             

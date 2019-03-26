@@ -105,7 +105,10 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
                     <mat-cell *matCellDef="let market">{{market.id}}</mat-cell>
                 </ng-container>
-
+                <ng-container matColumnDef="orderId">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>الرقم</mat-header-cell>
+						<mat-cell  *matCellDef="let order">{{order.orderId}}</mat-cell>
+					</ng-container>	
                 <ng-container matColumnDef="user">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم</mat-header-cell>
                     <mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showCustomer(order.user)">{{order.user.name}}</a></mat-cell>
