@@ -24,7 +24,7 @@ export class MarketEditDialogComponent implements OnInit {
 	hasFormErrors: boolean = false;
 	viewLoading: boolean = false;
 	loadingAfterSubmit: boolean = false;
-	tempPhoto = { market: '', licence: ''};
+	tempPhoto = { market: '', licence: '',licencePhoto_2:'',licencePhoto_3:''};
 	tempGeo = { latitude: '', longitude: ''};
 
 	uploadPercent: Observable<number>;
@@ -38,6 +38,8 @@ export class MarketEditDialogComponent implements OnInit {
 		this.createForm();
 		this.tempPhoto['market'] = this.market.photo;
 		this.tempPhoto['licence'] = this.market.licencePhoto;
+		this.tempPhoto['licencePhoto_2'] = this.market.licencePhoto_2;
+		this.tempPhoto['licencePhoto_3'] = this.market.licencePhoto_3;
 		this.tempGeo.latitude = this.market.l ? this.market.l[0] : '';
 		this.tempGeo.longitude = this.market.l ? this.market.l[1] : '';
 		// /* Server loading imitation. Remove this on real code */
