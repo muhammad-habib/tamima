@@ -49,7 +49,7 @@ export class CustomerEditDialogComponent implements OnInit {
 			name: [this.customer.name, Validators.required],
 			phone: [this.customer.phone,Validators.required],
 			userName: [this.customer.name, Validators.required],
-			blocked: [this.customer.blocked, Validators.required],
+			blocked: [this.customer.blocked ? 'true' : 'false', Validators.required],
 			language: [this.customer.language, Validators.required]
 		});
 	}

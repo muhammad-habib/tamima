@@ -6,7 +6,7 @@
 			<div class="col-md-2 m--margin-bottom-10-mobile">
 				<mat-form-field class="mat-form-field-fluid">
 					<input matInput placeholder="Search product remark" #searchInput placeholder="Search">
-					<mat-hint align="start">Search in all fields</mat-hint>
+					<mat-label align="start">Search in all fields</mat-label>
 				</mat-form-field>
 			</div>
 			<div class="col-md-8 m--margin-bottom-10-mobile"></div>
@@ -68,9 +68,9 @@
 				<mat-header-cell *matHeaderCellDef class="mat-column mat-column-main">
 					<mat-form-field *ngIf="remarkForAdd._isEditMode" class="mat-form-field-fluid">
 						<input matInput placeholder="Enter Remark text" formControlName="newText">
-						<mat-hint align="start">Please enter
+						<mat-label align="start">Please enter
 							<strong>Text</strong>
-						</mat-hint>
+						</mat-label>
 					</mat-form-field>
 				</mat-header-cell>
 			</ng-container>
@@ -83,9 +83,9 @@
 							<mat-option value="1">Note</mat-option>
 							<mat-option value="2">Reminder</mat-option>
 						</mat-select>
-						<mat-hint align="start">
+						<mat-label align="start">
 							<strong>Select remark type</strong>
-						</mat-hint>
+						</mat-label>
 					</mat-form-field>
 				</mat-header-cell>
 			</ng-container>
@@ -98,9 +98,9 @@
 							formControlName="newDueDate">
 						<mat-datepicker-toggle matSuffix [for]="addPicker"></mat-datepicker-toggle>
 						<mat-datepicker #addPicker></mat-datepicker>
-						<mat-hint align="start">Please enter
+						<mat-label align="start">Please enter
 							<strong>Due Date</strong> in 'mm/dd/yyyy' format
-						</mat-hint>
+						</mat-label>
 					</mat-form-field>
 				</mat-header-cell>
 			</ng-container>
@@ -157,9 +157,9 @@
 				<mat-cell *matCellDef="let remark" class="mat-column mat-column-main">
 					<mat-form-field *ngIf="remark._isEditMode" class="mat-form-field-fluid">
 						<input matInput placeholder="Enter Remark text" formControlName="editText">
-						<mat-hint align="start">Please enter
+						<mat-label align="start">Please enter
 							<strong>Text</strong>
-						</mat-hint>
+						</mat-label>
 					</mat-form-field>
 					<span *ngIf="!remark._isEditMode">{{remark.text}}</span>
 				</mat-cell>
@@ -175,9 +175,9 @@
 							<mat-option value="1">Note</mat-option>
 							<mat-option value="2">Reminder</mat-option>
 						</mat-select>
-						<mat-hint align="start">
+						<mat-label align="start">
 							<strong>Select remark type</strong>
-						</mat-hint>
+						</mat-label>
 					</mat-form-field>
 				</mat-cell>
 			</ng-container>
@@ -191,9 +191,9 @@
 							<input matInput [matDatepicker]="editPicker" placeholder="Choose a Due Date" formControlName="editDueDate">
 							<mat-datepicker-toggle matSuffix [for]="editPicker"></mat-datepicker-toggle>
 							<mat-datepicker #editPicker></mat-datepicker>
-							<mat-hint align="start">Please enter
+							<mat-label align="start">Please enter
 								<strong>Due Date</strong> in 'mm/dd/yyyy' format
-							</mat-hint>
+							</mat-label>
 						</mat-form-field>
 					</span>
 				</mat-cell>

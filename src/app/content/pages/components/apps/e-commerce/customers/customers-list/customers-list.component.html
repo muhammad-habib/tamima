@@ -37,8 +37,8 @@
 									<mat-option value="false">غير متحقق منه</mat-option>
 									<mat-option value="true">متحقق منه</mat-option>
 								</mat-select>
-								<mat-hint align="start">
-									التصفية بواسطه <strong>المتحقق منهم</strong></mat-hint>
+								<mat-label align="start">
+									التصفية بواسطه <strong>المتحقق منهم</strong></mat-label>
 							</mat-form-field>
 						</div>
 					</div> -->
@@ -51,8 +51,8 @@
                                     <mat-option value="false">غير محظور</mat-option>
                                     <mat-option value="true">محظور</mat-option>
                                 </mat-select>
-                                <mat-hint align="start">
-                                    التصفية بواسطه <strong>المحظورين</strong></mat-hint>
+                                <mat-label align="start">
+                                    التصفية بواسطه <strong>المحظورين</strong></mat-label>
                             </mat-form-field>
                         </div>
                     </div>
@@ -60,16 +60,16 @@
                     <div class="col-md-2 m--margin-bottom-10-mobile">
                         <mat-form-field class="mat-form-field-fluid">
                             <input matInput (keydown.enter)="applyFilter($event.target.value)" placeholder="البحث">
-                            <mat-hint align="start">
-                                البحث بواسطه <strong>الاسم</strong></mat-hint>
+                            <mat-label align="start">
+                                البحث بواسطه <strong>الاسم</strong></mat-label>
                         </mat-form-field>
                     </div>
 
                     <div class="col-md-2 m--margin-bottom-10-mobile">
                         <mat-form-field class="mat-form-field-fluid">
                             <input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="البحث">
-                            <mat-hint align="start">
-                                البحث بواسطه <strong>الموبايل</strong></mat-hint>
+                            <mat-label align="start">
+                                البحث بواسطه <strong>الموبايل</strong></mat-label>
                         </mat-form-field>
                     </div>
 
