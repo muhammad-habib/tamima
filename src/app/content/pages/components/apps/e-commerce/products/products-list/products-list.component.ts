@@ -68,10 +68,19 @@ export class ProductsListComponent implements OnInit {
 		private afs: AngularFirestore,
 		private http: HttpClient,
 		private fs: FirebaseService,
-		public page: PaginationService
+		public page: PaginationService,
+		private route: ActivatedRoute
 	) {
 	}
 	ngOnInit() {
+		this.route.paramMap.subscribe(params => {
+			const market_id = params.get('id');
+			if (market_id) {
+				this.filters['id'] = market_id;
+				this.getMarkets();
+			}
+		});
+
 		this.query.setValue('');
 		this.status.setValue('');
 		this.block.setValue('');
