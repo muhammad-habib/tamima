@@ -35,8 +35,8 @@
 							<mat-select placeholder="Status" [formControl]="selectedStatusForUpdate">
 								<mat-option *ngFor="let status of data.statuses" value="{{ status.value }}">{{status.text}}</mat-option>
 							</mat-select>
-							<mat-hint align="start">Select
-								<strong>Status</strong> for rows updating</mat-hint>
+							<mat-label align="start">Select
+								<strong>Status</strong> for rows updating</mat-label>
 						</mat-form-field>
 						&nbsp;
 						<button type="button" mat-raised-button color="primary" (click)="updateStatus()" [disabled]="selectedStatusForUpdate.value.length == 0">Update status</button>&nbsp;
