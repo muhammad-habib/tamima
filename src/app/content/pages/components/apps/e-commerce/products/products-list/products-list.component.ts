@@ -120,9 +120,9 @@ export class ProductsListComponent implements OnInit {
 			case 'Open':
 				return 'مفتوح';
 			case 'Busy':
-				return 'غير محظور';
+				return 'مشغول';
 			case 'Closed':
-				return 'غير محظور';
+				return 'مغلق';
 
 		}
 		return status;
