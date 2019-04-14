@@ -122,6 +122,7 @@ exports.createOrder = functions.firestore
         let title='';
         let body='';
         let receiverLang = snap.data().receiverLang; 
+        let sound = 'default';
         switch(snap.data().content.type){
             case 'text':
                     title = snap.data().senderName + ((receiverLang=='en')? " ارسلك رساله جديده":" send you message")
@@ -131,6 +132,7 @@ exports.createOrder = functions.firestore
                          title = snap.data().senderName + ((receiverLang=='en')?" ارسلك صوره": " sent you Image " );
                     break;
             case 'voice':
+                        sound = 'notification_alert';
                         title = snap.data().senderName + ((receiverLang=='en')?" ارسلك رساله صوتيه": "sent you Voice ");
                     break;
             case 'invoice':
@@ -140,7 +142,8 @@ exports.createOrder = functions.firestore
         let payload = {
             notification: {
                 title: title,
-                body: body
+                body: body,
+                sound:sound
             },
             data:{
                 id:snap.data().requestId,
