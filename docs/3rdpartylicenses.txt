@@ -152,7 +152,7 @@ ngx-spinner@7.0.0
 MIT
 MIT
 
-firebase@5.9.0
+firebase@5.9.1
 Apache-2.0
 Apache-2.0
 
@@ -872,31 +872,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-@firebase/database@0.3.15
+@firebase/database@0.3.16
 Apache-2.0
 Apache-2.0
 
-@firebase/app@0.3.12
+@firebase/app@0.3.13
 Apache-2.0
 Apache-2.0
 
-@firebase/util@0.2.10
+@firebase/util@0.2.11
 Apache-2.0
 Apache-2.0
 
-@firebase/logger@0.1.9
+@firebase/logger@0.1.10
 Apache-2.0
 Apache-2.0
 
-@firebase/firestore@1.1.0
+@firebase/firestore@1.1.1
 Apache-2.0
 Apache-2.0
 
-@firebase/webchannel-wrapper@0.2.15
+@firebase/webchannel-wrapper@0.2.16
 Apache-2.0
 Apache-2.0
 
-@firebase/polyfill@0.3.8
+@firebase/polyfill@0.3.9
 Apache-2.0
 Apache-2.0
 
