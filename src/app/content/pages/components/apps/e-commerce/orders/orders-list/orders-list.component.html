@@ -1,10 +1,10 @@
 <ngx-spinner
-fullScreen="true"
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple">
- <p style="font-size: 20px; color: white">Loading...</p>
+	fullScreen="true"
+	bdColor="rgba(51,51,51,0.8)"
+	size="medium"
+	color="#fff"
+	type="ball-scale-multiple">
+	<p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
 
 <!-- STYCKY PORTLET CONTROL | See structure => /metronic/sticky-form-actions -->
@@ -39,7 +39,8 @@ fullScreen="true"
 					<div class="col-md-2 m--margin-bottom-10-mobile">
 						<div class="m-form__control">
 							<mat-form-field>
-								<input matInput [matDatepicker]="picker" (dateChange)="dateHandeler($event)" placeholder="Choose a date">
+								<input matInput [matDatepicker]="picker" (dateChange)="dateHandeler($event)"
+									   placeholder="حدد التاريخ">
 								<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 								<mat-datepicker #picker></mat-datepicker>
 							</mat-form-field>
@@ -85,12 +86,13 @@ fullScreen="true"
 
 		<!-- MATERIAL TABLE | Binded to datasources -->
 		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
-		<div class="example-container mat-elevation-z8" style="height: 35rem !important; overflow-y: scroll !important;" scrollable
-			(scrollPosition)="scrollHandler($event)">
+		<div class="example-container mat-elevation-z8" style="height: 35rem !important; overflow-y: scroll !important;"
+			 scrollable
+			 (scrollPosition)="scrollHandler($event)">
 			<mat-table class="" [dataSource]="page.data"
 					   (matSortChange)="sortData($event)"
 					   matSort matSortActive="id" matSortDirection="asc"
-				matSortDisableClear>
+					   matSortDisableClear>
 				<!-- Checkbox Column -->
 
 				<!-- Table with selection -->
@@ -103,34 +105,36 @@ fullScreen="true"
 				</ng-container>
 
 				<ng-container matColumnDef="orderId">
-						<mat-header-cell *matHeaderCellDef mat-sort-header>الرقم</mat-header-cell>
-						<mat-cell  *matCellDef="let order">{{order.orderId}}</mat-cell>
-					</ng-container>				
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الرقم</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order.orderId}}</mat-cell>
+				</ng-container>
 
 				<ng-container matColumnDef="user">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>المستخدم</mat-header-cell>
-					<mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showCustomer(order?.user)">{{order.user.name}}</a></mat-cell>
+					<mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showCustomer(order?.user)">{{order.user.name}}</a>
+					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="mobile">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة المستخدم</mat-header-cell>
 					<mat-cell *matCellDef="let order">
 						<a *ngIf="order.user.photo" target="_blanck" href="{{order?.user?.photo}}}">
-								<mat-icon>link</mat-icon>
+							<mat-icon>link</mat-icon>
 						</a>
 						<!-- <img width="60" height="50" src="{{order.user.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="market">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>السوق</mat-header-cell>
-					<mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showMarket(order?.market)">{{order?.market?.name}}</a></mat-cell>
+					<mat-cell style="cursor: pointer;" *matCellDef="let order"><a (click)="showMarket(order?.market)">{{order?.market?.name}}</a>
+					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="photo">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>صورة السوق</mat-header-cell>
 					<mat-cell *matCellDef="let order">
-							<a *ngIf="order?.market?.photo" target="_blanck" href="{{order?.market?.photo}}}">
-									<mat-icon>link</mat-icon>
-							</a>
-							<!-- <img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
+						<a *ngIf="order?.market?.photo" target="_blanck" href="{{order?.market?.photo}}}">
+							<mat-icon>link</mat-icon>
+						</a>
+						<!-- <img width="60" height="50" src="{{order.market.photo}}" class="m--img-rounded m--marginless" alt="" /> -->
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="price">
@@ -138,15 +142,20 @@ fullScreen="true"
 					<mat-cell *matCellDef="let order">{{order?.market?.price}}</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="status">
-						<mat-header-cell *matHeaderCellDef mat-sort-header>الحاله</mat-header-cell>
-						<mat-cell *matCellDef="let order">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>الحاله</mat-header-cell>
+					<mat-cell *matCellDef="let order">
 								<span *ngIf="order?.status"
-									class="m-badge m-badge--{{statusColor[order?.status?.code] }} m-badge--wide">{{ order?.status?.name }}</span>
-							</mat-cell>
-					</ng-container>
+									  class="m-badge m-badge--{{statusColor[order?.status?.code] }} m-badge--wide">{{ order?.status?.name }}</span>
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="takenBy">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> تم بواسطة</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order?.status?.statusInfo?.actionTakerType}}</mat-cell>
+				</ng-container>
 				<ng-container matColumnDef="createdAt">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>التاريخ</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order?.createdAt?.toDate() | date: 'M/d/yyyy  -  h:mm a'}}</mat-cell>
+					<mat-cell *matCellDef="let order">{{order?.createdAt?.toDate() | date: 'M/d/yyyy - h:mm a'}}
+					</mat-cell>
 				</ng-container>
 				<!-- <ng-container matColumnDef="photo">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Photo</mat-header-cell>
@@ -174,7 +183,9 @@ fullScreen="true"
 				<ng-container matColumnDef="actions">
 					<mat-header-cell *matHeaderCellDef>العمليات</mat-header-cell>
 					<mat-cell *matCellDef="let market">
-						<button mat-icon-button color="primary" matTooltip="show on map" (click)="editOrder(order)"><mat-icon>map</mat-icon></button>
+						<button mat-icon-button color="primary" matTooltip="show on map" (click)="editOrder(order)">
+							<mat-icon>map</mat-icon>
+						</button>
 					</mat-cell>
 				</ng-container>
 

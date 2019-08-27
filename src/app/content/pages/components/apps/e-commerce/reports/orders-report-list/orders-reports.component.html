@@ -31,7 +31,7 @@
                         <mat-form-field class="mat-form-field-fluid">
                             <input matInput (keydown.enter)="applyFilterOnMobile($event.target.value)" placeholder="البحث">
                             <mat-label align="start">
-                                البحث بواسطه <strong>الموبايل</strong></mat-label>
+                                البحث بواسطه <strong>الجوال</strong></mat-label>
                         </mat-form-field>
                     </div>
 
@@ -165,6 +165,10 @@
 					<mat-header-cell *matHeaderCellDef mat-sort-header>Rate Count</mat-header-cell>
 					<mat-cell *matCellDef="let market">{{market.rateCount}}</mat-cell>
 				</ng-container> -->
+				<ng-container matColumnDef="takenBy">
+					<mat-header-cell *matHeaderCellDef mat-sort-header> تم بواسطة</mat-header-cell>
+					<mat-cell *matCellDef="let order">{{order?.status?.statusInfo?.actionTakerType}}</mat-cell>
+				</ng-container>
 
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef>العمليات</mat-header-cell>

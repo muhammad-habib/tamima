@@ -2,7 +2,7 @@
 <header mHeader #mHeader class="m-grid__item m-header" [attr.m-minimize-offset]="headerService.attrMinimizeOffset" [attr.m-minimize-mobile-offset]="headerService.attrMinimizeMobileOffset">
 	<div [ngClass]="headerService.containerClass">
 		<div class="m-stack m-stack--ver m-stack--desktop">
-			<m-brand></m-brand>
+			<m-brand style="background-color: #f4f5f8"></m-brand>
 			<mat-progress-bar class="m-loading-bar" *ngIf="(loader.progress$|async) > 0" [value]="loader.progress$|async"></mat-progress-bar>
 			<div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
 				<!-- BEGIN: Horizontal Menu -->

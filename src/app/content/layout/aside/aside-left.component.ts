@@ -11,7 +11,6 @@ import { DOCUMENT } from '@angular/common';
 @Component({
 	selector: 'm-aside-left',
 	templateUrl: './aside-left.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AsideLeftComponent implements OnInit, AfterViewInit {
 

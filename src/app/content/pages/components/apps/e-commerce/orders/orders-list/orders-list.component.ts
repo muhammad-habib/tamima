@@ -31,7 +31,7 @@ export class OrdersListComponent implements OnInit {
 	reverseDir = false;
 	customers: Observable<any[]>;
 	dataSource;
-	displayedColumns = ['orderId','user', 'mobile', 'market', 'photo', 'price' ,'status', 'createdAt'];
+	displayedColumns = ['orderId','user', 'mobile', 'market', 'photo', 'price' ,'status','takenBy', 'createdAt'];
 	@ViewChild(MatSort) sort: MatSort;
 	public length: number;
 	resultsLength = 0;
