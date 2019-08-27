@@ -42,7 +42,7 @@ exports.createOrder = functions.firestore
 
             var orderRef = db.collection("requests").doc(context.params.requestId);
             orderRef.update({
-                orderId: order_code
+                orderId: snap.data().user.id + '-' + order_code
             })
             .then(function () {
                     console.log("Document successfully updated!");
