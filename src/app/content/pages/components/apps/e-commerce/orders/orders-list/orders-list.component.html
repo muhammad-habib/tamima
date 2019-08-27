@@ -150,7 +150,7 @@
 				</ng-container>
 				<ng-container matColumnDef="takenBy">
 					<mat-header-cell *matHeaderCellDef mat-sort-header> تم بواسطة</mat-header-cell>
-					<mat-cell *matCellDef="let order">{{order?.status?.statusInfo.actionTakerName}}</mat-cell>
+					<mat-cell *matCellDef="let order">{{order?.status?.statusInfo?.actionTakerType}}</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="createdAt">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>التاريخ</mat-header-cell>
