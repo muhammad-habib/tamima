@@ -122,17 +122,20 @@ exports.createOrder = functions.firestore
         let title='';
         let body='';
         let receiverLang = snap.data().receiverLang; 
-        let sound = 'default';
+        var sound = 'default';
         switch(snap.data().content.type){
             case 'text':
                     title = snap.data().senderName + ((receiverLang=='en')? " ارسلك رساله جديده":" send you message")
                     body = snap.data().content.text;
+                    if(body.includes("I'm still waiting here") || body.includes('مازلت انتظر هنا') ) {
+                        sound = 'notification_alert';
+                        console.log (sound,'notification_alert')
+                    }   
                     break;
             case 'image':                   
                          title = snap.data().senderName + ((receiverLang=='en')?" ارسلك صوره": " sent you Image " );
                     break;
             case 'voice':
-                        sound = 'notification_alert';
                         title = snap.data().senderName + ((receiverLang=='en')?" ارسلك رساله صوتيه": "sent you Voice ");
                     break;
             case 'invoice':
